@@ -1,11 +1,107 @@
 'use client'
 
+import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
-import { FiCalendar, FiUser, FiArrowRight, FiMail, FiBookOpen } from 'react-icons/fi'
-import { GiWheat, GiPlantSeed, GiTomato } from 'react-icons/gi'
+import { FiCalendar, FiUser, FiArrowRight, FiMail, FiClock } from 'react-icons/fi'
+import { getAllBlogPosts, getFeaturedBlogPosts } from '@/lib/contentful'
+
+interface BlogPost {
+  id: string
+  title: string
+  slug: string
+  excerpt: string
+  featuredImage: {
+    url: string
+    alt: string
+  }
+  author: string
+  publishDate: string
+  category: string[]
+  featured: boolean
+  readTime: number
+}
 
 const NewsPage = () => {
+  const [featuredPost, setFeaturedPost] = useState<BlogPost | null>(null)
+  const [recentPosts, setRecentPosts] = useState<BlogPost[]>([])
+  const [loading, setLoading] = useState(true)
+  const [email, setEmail] = useState('')
+  const [subscribing, setSubscribing] = useState(false)
+  const [subscribeMessage, setSubscribeMessage] = useState('')
+
+  useEffect(() => {
+    async function loadPosts() {
+      try {
+        setLoading(true)
+        const featured = await getFeaturedBlogPosts(1)
+        const all = await getAllBlogPosts(20)
+
+        if (featured.length > 0) {
+          setFeaturedPost(featured[0] as BlogPost)
+          // Filter out featured post from recent posts
+          setRecentPosts(all.filter((p: any) => p.id !== featured[0].id).slice(0, 6) as BlogPost[])
+        } else {
+          // If no featured post, use first post as featured
+          if (all.length > 0) {
+            setFeaturedPost(all[0] as BlogPost)
+            setRecentPosts(all.slice(1, 7) as BlogPost[])
+          }
+        }
+      } catch (error) {
+        console.error('Error loading posts:', error)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    loadPosts()
+  }, [])
+
+  const handleSubscribe = async (e: React.FormEvent) => {
+    e.preventDefault()
+
+    if (!email) {
+      setSubscribeMessage('Please enter a valid email address')
+      return
+    }
+
+    setSubscribing(true)
+    setSubscribeMessage('')
+
+    try {
+      const response = await fetch('/api/subscribe', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email }),
+      })
+
+      const data = await response.json()
+
+      if (response.ok) {
+        setSubscribeMessage('Successfully subscribed! Check your email for confirmation.')
+        setEmail('')
+      } else {
+        setSubscribeMessage(data.error || 'Failed to subscribe. Please try again.')
+      }
+    } catch (error) {
+      setSubscribeMessage('An error occurred. Please try again later.')
+    } finally {
+      setSubscribing(false)
+    }
+  }
+
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString)
+    return date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    })
+  }
+
   const fadeInUp = {
     initial: { opacity: 0, y: 60 },
     animate: { opacity: 1, y: 0 },
@@ -19,79 +115,6 @@ const NewsPage = () => {
       }
     }
   }
-
-  // Handler for Read More buttons
-  const handleReadMore = () => {
-    // Scroll to newsletter section
-    const newsletterSection = document.getElementById('newsletter-section')
-    if (newsletterSection) {
-      newsletterSection.scrollIntoView({ behavior: 'smooth' })
-      // Show a message encouraging subscription
-      setTimeout(() => {
-        alert('Full articles are coming soon! Subscribe to our newsletter "When Silence Isn\'t an Option" to be the first to read our latest stories and updates.')
-      }, 500)
-    }
-  }
-
-  const featuredArticle = {
-    title: 'Agroecology is the Only Option for Our Food Systems',
-    excerpt: 'As Kenya faces increasing climate challenges, we explore why transitioning to agroecological farming practices is not just beneficial, but essential for our food security and environmental sustainability.',
-    author: 'Sylvia Kuria',
-    date: 'October 20, 2025',
-    category: 'Advocacy',
-    readTime: '8 min read'
-  }
-
-  const articles = [
-    {
-      title: 'Training 50 Women Farmers in Kiambu County',
-      excerpt: 'A recap of our recent intensive training program that equipped women farmers with organic farming techniques and business skills.',
-      author: 'Sylvia Kuria',
-      date: 'October 15, 2025',
-      category: 'Training',
-      icon: <FiUser className="w-5 h-5" />
-    },
-    {
-      title: 'Crop of the Month: Indigenous Leafy Vegetables',
-      excerpt: 'Discover the nutritional powerhouse of traditional African leafy vegetables and how to grow them organically.',
-      author: 'Sylvia Kuria',
-      date: 'October 1, 2025',
-      category: 'Farming Tips',
-      icon: <GiWheat className="w-5 h-5" />
-    },
-    {
-      title: 'Policy Win: Kiambu County Adopts Agroecology Framework',
-      excerpt: 'Our advocacy efforts contribute to groundbreaking policy changes supporting sustainable agriculture in Kiambu County.',
-      author: 'Sylvia Kuria',
-      date: 'September 28, 2025',
-      category: 'Policy',
-      icon: <FiBookOpen className="w-5 h-5" />
-    },
-    {
-      title: 'From Seed to Market: Success Story of Our Aggregation Hub',
-      excerpt: 'How our farmers collective is connecting small-scale organic producers with premium markets in Nairobi.',
-      author: 'Sylvia Kuria',
-      date: 'September 20, 2025',
-      category: 'Impact',
-      icon: <GiTomato className="w-5 h-5" />
-    },
-    {
-      title: 'Composting Workshop Transforms Farm Productivity',
-      excerpt: 'Farmers learn to turn waste into black gold, reducing costs and improving soil health.',
-      author: 'Sylvia Kuria',
-      date: 'September 10, 2025',
-      category: 'Training',
-      icon: <GiPlantSeed className="w-5 h-5" />
-    },
-    {
-      title: 'Youth in Agriculture: Breaking Stereotypes',
-      excerpt: 'Meet the young farmers proving that agriculture can be modern, profitable, and cool.',
-      author: 'Sylvia Kuria',
-      date: 'September 1, 2025',
-      category: 'Youth',
-      icon: <FiUser className="w-5 h-5" />
-    },
-  ]
 
   return (
     <div className="overflow-hidden">
@@ -138,85 +161,127 @@ const NewsPage = () => {
             <p className="text-xl mb-8 opacity-90">
               Our monthly newsletter featuring advocacy updates, farming tips, and stories from the field
             </p>
-            <div className="max-w-md mx-auto">
+            <form onSubmit={handleSubscribe} className="max-w-md mx-auto">
               <div className="flex flex-col sm:flex-row gap-4">
                 <input
                   type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   placeholder="Enter your email"
                   className="flex-1 px-6 py-4 rounded-full text-gray-900 focus:outline-none focus:ring-2 focus:ring-white"
+                  disabled={subscribing}
                 />
                 <motion.button
+                  type="submit"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className="bg-white text-primary-700 px-8 py-4 rounded-full font-semibold shadow-xl hover:shadow-2xl transition-shadow whitespace-nowrap"
+                  disabled={subscribing}
+                  className="bg-white text-primary-700 px-8 py-4 rounded-full font-semibold shadow-xl hover:shadow-2xl transition-shadow whitespace-nowrap disabled:opacity-50"
                 >
-                  Subscribe Now
+                  {subscribing ? 'Subscribing...' : 'Subscribe Now'}
                 </motion.button>
               </div>
+              {subscribeMessage && (
+                <p className={`text-sm mt-4 ${subscribeMessage.includes('Successfully') ? 'text-green-200' : 'text-red-200'}`}>
+                  {subscribeMessage}
+                </p>
+              )}
               <p className="text-sm mt-4 opacity-75">
-                Join 1,000+ subscribers staying informed about sustainable agriculture
+                Join our community staying informed about sustainable agriculture
               </p>
-            </div>
+            </form>
           </motion.div>
         </div>
       </section>
 
       {/* Featured Article */}
-      <section className="section-padding bg-white">
-        <div className="container-custom">
-          <motion.div
-            className="max-w-5xl mx-auto"
-            initial="initial"
-            whileInView="animate"
-            viewport={{ once: true }}
-            variants={fadeInUp}
-          >
-            <div className="mb-8">
-              <span className="text-sm font-semibold text-primary-600 uppercase tracking-wide">
-                Featured Article
-              </span>
+      {loading ? (
+        <section className="section-padding bg-white">
+          <div className="container-custom">
+            <div className="max-w-5xl mx-auto animate-pulse">
+              <div className="h-8 bg-gray-200 rounded w-1/4 mb-8"></div>
+              <div className="glass-card p-12 rounded-3xl">
+                <div className="h-6 bg-gray-200 rounded w-1/3 mb-4"></div>
+                <div className="h-12 bg-gray-200 rounded w-3/4 mb-6"></div>
+                <div className="h-4 bg-gray-200 rounded w-full mb-2"></div>
+                <div className="h-4 bg-gray-200 rounded w-5/6"></div>
+              </div>
             </div>
+          </div>
+        </section>
+      ) : featuredPost ? (
+        <section className="section-padding bg-white">
+          <div className="container-custom">
             <motion.div
-              whileHover={{ scale: 1.02, y: -8 }}
-              className="glass-card rounded-3xl overflow-hidden shadow-2xl hover:shadow-accent-500/20 transition-all"
+              className="max-w-5xl mx-auto"
+              initial="initial"
+              whileInView="animate"
+              viewport={{ once: true }}
+              variants={fadeInUp}
             >
-              <div className="p-10 md:p-12">
-                <div className="flex flex-wrap gap-4 mb-6">
-                  <span className="px-4 py-1 bg-primary-600 text-white rounded-full text-sm font-semibold">
-                    {featuredArticle.category}
-                  </span>
-                  <div className="flex items-center gap-2 text-gray-600">
-                    <FiCalendar className="w-4 h-4" />
-                    <span className="text-sm">{featuredArticle.date}</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-gray-600">
-                    <FiUser className="w-4 h-4" />
-                    <span className="text-sm">{featuredArticle.author}</span>
-                  </div>
+              <div className="mb-8">
+                <span className="text-sm font-semibold text-primary-600 uppercase tracking-wide">
+                  Featured Article
+                </span>
+              </div>
+              <motion.div
+                whileHover={{ scale: 1.02, y: -8 }}
+                className="glass-card rounded-3xl overflow-hidden shadow-2xl hover:shadow-accent-500/20 transition-all"
+              >
+                {/* Featured Image */}
+                <div className="relative w-full h-[400px] overflow-hidden">
+                  <img
+                    src={featuredPost.featuredImage.url}
+                    alt={featuredPost.featuredImage.alt}
+                    className="w-full h-full object-cover"
+                  />
                 </div>
 
-                <h2 className="text-4xl md:text-5xl font-display font-bold text-gray-900 mb-6">
-                  {featuredArticle.title}
-                </h2>
+                <div className="p-10 md:p-12">
+                  <div className="flex flex-wrap gap-4 mb-6">
+                    {featuredPost.category.map((cat) => (
+                      <span key={cat} className="px-4 py-1 bg-primary-600 text-white rounded-full text-sm font-semibold">
+                        {cat}
+                      </span>
+                    ))}
+                    <div className="flex items-center gap-2 text-gray-600">
+                      <FiCalendar className="w-4 h-4" />
+                      <span className="text-sm">{formatDate(featuredPost.publishDate)}</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-gray-600">
+                      <FiUser className="w-4 h-4" />
+                      <span className="text-sm">{featuredPost.author}</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-gray-600">
+                      <FiClock className="w-4 h-4" />
+                      <span className="text-sm">{featuredPost.readTime} min read</span>
+                    </div>
+                  </div>
 
-                <p className="text-xl text-gray-700 leading-relaxed mb-8">
-                  {featuredArticle.excerpt}
-                </p>
+                  <h2 className="text-4xl md:text-5xl font-display font-bold text-gray-900 mb-6">
+                    {featuredPost.title}
+                  </h2>
 
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={handleReadMore}
-                  className="gradient-primary text-white px-8 py-4 rounded-full font-semibold shadow-lg hover:shadow-xl transition-shadow flex items-center gap-2"
-                >
-                  Read Full Article
-                  <FiArrowRight className="w-5 h-5" />
-                </motion.button>
-              </div>
+                  <p className="text-xl text-gray-700 leading-relaxed mb-8">
+                    {featuredPost.excerpt}
+                  </p>
+
+                  <Link href={`/news/${featuredPost.slug}`}>
+                    <motion.button
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      className="gradient-primary text-white px-8 py-4 rounded-full font-semibold shadow-lg hover:shadow-xl transition-shadow flex items-center gap-2"
+                    >
+                      Read Full Article
+                      <FiArrowRight className="w-5 h-5" />
+                    </motion.button>
+                  </Link>
+                </div>
+              </motion.div>
             </motion.div>
-          </motion.div>
-        </div>
-      </section>
+          </div>
+        </section>
+      ) : null}
 
       {/* Recent Articles - Glassmorphism */}
       <section className="section-padding bg-gradient-to-br from-accent-50 via-sage-50 to-sky-50 relative overflow-hidden">
@@ -238,56 +303,83 @@ const NewsPage = () => {
             </p>
           </motion.div>
 
-          <motion.div
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-            variants={staggerContainer}
-            initial="initial"
-            whileInView="animate"
-            viewport={{ once: true }}
-          >
-            {articles.map((article, index) => (
-              <motion.div
-                key={index}
-                variants={fadeInUp}
-                whileHover={{ y: -12, scale: 1.02 }}
-                className="glass-card rounded-2xl overflow-hidden shadow-2xl hover:shadow-accent-500/20 transition-all"
-              >
-                <div className="p-6">
-                  <div className="flex items-center justify-between mb-4">
-                    <span className="px-3 py-1 bg-primary-100 text-primary-700 rounded-full text-xs font-semibold">
-                      {article.category}
-                    </span>
-                    <div className="text-primary-600">
-                      {article.icon}
-                    </div>
-                  </div>
-
-                  <h3 className="text-xl font-display font-bold text-gray-900 mb-3 line-clamp-2">
-                    {article.title}
-                  </h3>
-
-                  <p className="text-gray-600 mb-4 line-clamp-3">
-                    {article.excerpt}
-                  </p>
-
-                  <div className="flex items-center gap-4 text-sm text-gray-500 mb-4">
-                    <div className="flex items-center gap-1">
-                      <FiCalendar className="w-3.5 h-3.5" />
-                      <span>{article.date}</span>
-                    </div>
-                  </div>
-
-                  <button
-                    onClick={handleReadMore}
-                    className="text-primary-600 font-semibold hover:text-primary-700 flex items-center gap-2 group"
-                  >
-                    Read More
-                    <FiArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                  </button>
+          {loading ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {[...Array(6)].map((_, i) => (
+                <div key={i} className="glass-card p-6 rounded-2xl animate-pulse">
+                  <div className="h-4 bg-gray-200 rounded w-1/3 mb-4"></div>
+                  <div className="h-6 bg-gray-200 rounded w-3/4 mb-3"></div>
+                  <div className="h-4 bg-gray-200 rounded w-full mb-2"></div>
+                  <div className="h-4 bg-gray-200 rounded w-5/6 mb-4"></div>
+                  <div className="h-4 bg-gray-200 rounded w-1/2"></div>
                 </div>
-              </motion.div>
-            ))}
-          </motion.div>
+              ))}
+            </div>
+          ) : recentPosts.length > 0 ? (
+            <motion.div
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+              variants={staggerContainer}
+              initial="initial"
+              whileInView="animate"
+              viewport={{ once: true }}
+            >
+              {recentPosts.map((post) => (
+                <motion.div
+                  key={post.id}
+                  variants={fadeInUp}
+                  whileHover={{ y: -12, scale: 1.02 }}
+                  className="glass-card rounded-2xl overflow-hidden shadow-2xl hover:shadow-accent-500/20 transition-all"
+                >
+                  {/* Post Image */}
+                  <div className="relative w-full h-48 overflow-hidden">
+                    <img
+                      src={post.featuredImage.url}
+                      alt={post.featuredImage.alt}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+
+                  <div className="p-6">
+                    <div className="flex items-center justify-between mb-4">
+                      <span className="px-3 py-1 bg-primary-100 text-primary-700 rounded-full text-xs font-semibold">
+                        {post.category[0]}
+                      </span>
+                    </div>
+
+                    <h3 className="text-xl font-display font-bold text-gray-900 mb-3 line-clamp-2">
+                      {post.title}
+                    </h3>
+
+                    <p className="text-gray-600 mb-4 line-clamp-3">
+                      {post.excerpt}
+                    </p>
+
+                    <div className="flex items-center gap-4 text-sm text-gray-500 mb-4">
+                      <div className="flex items-center gap-1">
+                        <FiCalendar className="w-3.5 h-3.5" />
+                        <span>{formatDate(post.publishDate)}</span>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <FiClock className="w-3.5 h-3.5" />
+                        <span>{post.readTime} min</span>
+                      </div>
+                    </div>
+
+                    <Link href={`/news/${post.slug}`}>
+                      <button className="text-primary-600 font-semibold hover:text-primary-700 flex items-center gap-2 group">
+                        Read More
+                        <FiArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                      </button>
+                    </Link>
+                  </div>
+                </motion.div>
+              ))}
+            </motion.div>
+          ) : (
+            <div className="text-center py-12">
+              <p className="text-xl text-gray-600">No blog posts yet. Check back soon!</p>
+            </div>
+          )}
         </div>
       </section>
 
@@ -331,22 +423,32 @@ const NewsPage = () => {
                   </div>
                 </div>
               </div>
-              <div className="max-w-md mx-auto">
+              <form onSubmit={handleSubscribe} className="max-w-md mx-auto">
                 <div className="flex flex-col sm:flex-row gap-4">
                   <input
                     type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                     placeholder="Enter your email"
                     className="flex-1 px-6 py-4 rounded-full border-2 border-primary-200 focus:outline-none focus:ring-2 focus:ring-primary-500"
+                    disabled={subscribing}
                   />
                   <motion.button
+                    type="submit"
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    className="gradient-primary text-white px-8 py-4 rounded-full font-semibold shadow-lg hover:shadow-xl transition-shadow whitespace-nowrap"
+                    disabled={subscribing}
+                    className="gradient-primary text-white px-8 py-4 rounded-full font-semibold shadow-lg hover:shadow-xl transition-shadow whitespace-nowrap disabled:opacity-50"
                   >
-                    Join Now
+                    {subscribing ? 'Joining...' : 'Join Now'}
                   </motion.button>
                 </div>
-              </div>
+                {subscribeMessage && (
+                  <p className={`text-sm mt-4 ${subscribeMessage.includes('Successfully') ? 'text-green-600' : 'text-red-600'}`}>
+                    {subscribeMessage}
+                  </p>
+                )}
+              </form>
             </div>
           </motion.div>
         </div>

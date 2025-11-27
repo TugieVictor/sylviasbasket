@@ -1,5 +1,6 @@
 'use client'
 
+import { useState } from 'react'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { FiMail, FiPhone, FiMapPin, FiFacebook, FiTwitter, FiInstagram, FiLinkedin, FiArrowRight, FiHeart } from 'react-icons/fi'
@@ -7,6 +8,44 @@ import { GiPlantSeed } from 'react-icons/gi'
 
 const Footer = () => {
   const currentYear = new Date().getFullYear()
+  const [email, setEmail] = useState('')
+  const [subscribing, setSubscribing] = useState(false)
+  const [subscribeMessage, setSubscribeMessage] = useState('')
+
+  const handleSubscribe = async (e: React.FormEvent) => {
+    e.preventDefault()
+
+    if (!email) {
+      setSubscribeMessage('Please enter a valid email address')
+      return
+    }
+
+    setSubscribing(true)
+    setSubscribeMessage('')
+
+    try {
+      const response = await fetch('/api/subscribe', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email }),
+      })
+
+      const data = await response.json()
+
+      if (response.ok) {
+        setSubscribeMessage('Successfully subscribed! Check your email for confirmation.')
+        setEmail('')
+      } else {
+        setSubscribeMessage(data.error || 'Failed to subscribe. Please try again.')
+      }
+    } catch (error) {
+      setSubscribeMessage('An error occurred. Please try again later.')
+    } finally {
+      setSubscribing(false)
+    }
+  }
 
   return (
     <footer className="bg-gradient-to-br from-accent-50 via-sage-50 to-sky-50 text-gray-900 relative overflow-hidden pt-20 pb-8">
@@ -32,21 +71,33 @@ const Footer = () => {
             <p className="text-gray-700 text-lg mb-8">
               Get monthly updates on organic farming, training opportunities, and inspiring stories from our farmer network
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
-              <input
-                type="email"
-                placeholder="Enter your email"
-                className="flex-1 px-6 py-4 rounded-full glass-card focus:outline-none focus:ring-2 focus:ring-accent-500 text-gray-900 placeholder-gray-500"
-              />
-              <motion.button
-                whileHover={{ scale: 1.05, x: 5 }}
-                whileTap={{ scale: 0.95 }}
-                className="bg-gradient-to-r from-accent-600 to-sage-600 text-white px-8 py-4 rounded-full font-semibold shadow-2xl hover:shadow-accent-500/50 transition-all flex items-center justify-center gap-2 whitespace-nowrap"
-              >
-                Subscribe
-                <FiArrowRight className="w-5 h-5" />
-              </motion.button>
-            </div>
+            <form onSubmit={handleSubscribe} className="max-w-md mx-auto">
+              <div className="flex flex-col sm:flex-row gap-4">
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="Enter your email"
+                  className="flex-1 px-6 py-4 rounded-full glass-card focus:outline-none focus:ring-2 focus:ring-accent-500 text-gray-900 placeholder-gray-500"
+                  disabled={subscribing}
+                />
+                <motion.button
+                  type="submit"
+                  whileHover={{ scale: 1.05, x: 5 }}
+                  whileTap={{ scale: 0.95 }}
+                  disabled={subscribing}
+                  className="bg-gradient-to-r from-accent-600 to-sage-600 text-white px-8 py-4 rounded-full font-semibold shadow-2xl hover:shadow-accent-500/50 transition-all flex items-center justify-center gap-2 whitespace-nowrap disabled:opacity-50"
+                >
+                  {subscribing ? 'Subscribing...' : 'Subscribe'}
+                  <FiArrowRight className="w-5 h-5" />
+                </motion.button>
+              </div>
+              {subscribeMessage && (
+                <p className={`text-sm mt-4 ${subscribeMessage.includes('Successfully') ? 'text-green-600' : 'text-red-600'}`}>
+                  {subscribeMessage}
+                </p>
+              )}
+            </form>
           </div>
         </motion.div>
 

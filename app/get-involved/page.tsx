@@ -1,10 +1,15 @@
 'use client'
 
+import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { FiHeart, FiUsers, FiGlobe, FiMail, FiPhone, FiMapPin, FiShare2, FiDollarSign, FiUserCheck } from 'react-icons/fi'
 import { GiFarmer } from 'react-icons/gi'
 
 const GetInvolvedPage = () => {
+  const [email, setEmail] = useState('')
+  const [subscribing, setSubscribing] = useState(false)
+  const [subscribeMessage, setSubscribeMessage] = useState('')
+
   const fadeInUp = {
     initial: { opacity: 0, y: 60 },
     animate: { opacity: 1, y: 0 },
@@ -16,6 +21,41 @@ const GetInvolvedPage = () => {
       transition: {
         staggerChildren: 0.15
       }
+    }
+  }
+
+  const handleSubscribe = async (e: React.FormEvent) => {
+    e.preventDefault()
+
+    if (!email) {
+      setSubscribeMessage('Please enter a valid email address')
+      return
+    }
+
+    setSubscribing(true)
+    setSubscribeMessage('')
+
+    try {
+      const response = await fetch('/api/subscribe', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email }),
+      })
+
+      const data = await response.json()
+
+      if (response.ok) {
+        setSubscribeMessage('Successfully subscribed! Check your email for confirmation.')
+        setEmail('')
+      } else {
+        setSubscribeMessage(data.error || 'Failed to subscribe. Please try again.')
+      }
+    } catch (error) {
+      setSubscribeMessage('An error occurred. Please try again later.')
+    } finally {
+      setSubscribing(false)
     }
   }
 
@@ -381,22 +421,32 @@ const GetInvolvedPage = () => {
               <p className="text-lg text-gray-700 mb-8">
                 Sign up for our newsletter to receive updates, impact stories, and opportunities to get involved
               </p>
-              <div className="max-w-md mx-auto">
+              <form onSubmit={handleSubscribe} className="max-w-md mx-auto">
                 <div className="flex flex-col sm:flex-row gap-4">
                   <input
                     type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                     placeholder="Enter your email"
                     className="flex-1 px-6 py-4 rounded-full border-2 border-primary-200 focus:outline-none focus:ring-2 focus:ring-primary-500"
+                    disabled={subscribing}
                   />
                   <motion.button
+                    type="submit"
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    className="gradient-primary text-white px-8 py-4 rounded-full font-semibold shadow-lg hover:shadow-xl transition-shadow whitespace-nowrap"
+                    disabled={subscribing}
+                    className="gradient-primary text-white px-8 py-4 rounded-full font-semibold shadow-lg hover:shadow-xl transition-shadow whitespace-nowrap disabled:opacity-50"
                   >
-                    Subscribe
+                    {subscribing ? 'Subscribing...' : 'Subscribe'}
                   </motion.button>
                 </div>
-              </div>
+                {subscribeMessage && (
+                  <p className={`text-sm mt-4 ${subscribeMessage.includes('Successfully') ? 'text-green-600' : 'text-red-600'}`}>
+                    {subscribeMessage}
+                  </p>
+                )}
+              </form>
             </div>
           </motion.div>
         </div>

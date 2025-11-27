@@ -113,12 +113,42 @@ const OurWorkPage = () => {
   ]
 
   const galleryItems = [
-    { title: 'Training Sessions', description: 'Hands-on farmer education in the field', icon: <FiBook /> },
-    { title: 'Organic Harvest', description: 'Fresh produce from our partner farms', icon: <GiTomato /> },
-    { title: 'Community Events', description: 'Bringing farmers together', icon: <FiUsers /> },
-    { title: 'Indigenous Trees', description: 'Planting for the future', icon: <GiPlantSeed /> },
-    { title: 'Women Farmers', description: 'Empowering women in agriculture', icon: <GiFarmer /> },
-    { title: 'Youth Training', description: 'Next generation of farmers', icon: <FiTarget /> },
+    {
+      title: 'Training Sessions',
+      description: 'Hands-on farmer education in the field',
+      icon: <FiBook />,
+      slug: 'training-sessions'
+    },
+    {
+      title: 'Organic Harvest',
+      description: 'Fresh produce from our partner farms',
+      icon: <GiTomato />,
+      slug: 'organic-harvest'
+    },
+    {
+      title: 'Community Events',
+      description: 'Bringing farmers together',
+      icon: <FiUsers />,
+      slug: 'community-events'
+    },
+    {
+      title: 'Indigenous Trees',
+      description: 'Planting for the future',
+      icon: <GiPlantSeed />,
+      slug: 'indigenous-trees'
+    },
+    {
+      title: 'Women Farmers',
+      description: 'Empowering women in agriculture',
+      icon: <GiFarmer />,
+      slug: 'women-farmers'
+    },
+    {
+      title: 'Youth Training',
+      description: 'Next generation of farmers',
+      icon: <FiTarget />,
+      slug: 'youth-training'
+    },
   ]
 
   return (
@@ -314,22 +344,27 @@ const OurWorkPage = () => {
             viewport={{ once: true }}
           >
             {galleryItems.map((item, index) => (
-              <motion.div
-                key={index}
-                variants={fadeInUp}
-                whileHover={{ scale: 1.05 }}
-                className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20 hover:bg-white/20 transition-all"
-              >
-                <div className="text-4xl mb-4">
-                  {item.icon}
-                </div>
-                <h3 className="text-xl font-display font-bold mb-2">
-                  {item.title}
-                </h3>
-                <p className="opacity-90">
-                  {item.description}
-                </p>
-              </motion.div>
+              <Link key={index} href={`/gallery/${item.slug}`}>
+                <motion.div
+                  variants={fadeInUp}
+                  whileHover={{ scale: 1.05 }}
+                  className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20 hover:bg-white/20 transition-all cursor-pointer"
+                >
+                  <div className="text-4xl mb-4">
+                    {item.icon}
+                  </div>
+                  <h3 className="text-xl font-display font-bold mb-2">
+                    {item.title}
+                  </h3>
+                  <p className="opacity-90 mb-3">
+                    {item.description}
+                  </p>
+                  <div className="flex items-center gap-2 text-sm opacity-80">
+                    <span>View Gallery</span>
+                    <FiArrowRight className="w-4 h-4" />
+                  </div>
+                </motion.div>
+              </Link>
             ))}
           </motion.div>
         </div>
