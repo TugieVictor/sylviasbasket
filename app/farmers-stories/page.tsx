@@ -98,20 +98,30 @@ const FarmersStoriesPage = () => {
   return (
     <div className="overflow-hidden">
       {/* Hero Section */}
-      <section className="relative min-h-[60vh] flex items-center justify-center gradient-earth pt-32 pb-20">
-        <div className="container-custom">
+      <section className="relative min-h-[60vh] flex items-center justify-center pt-32 pb-20 overflow-hidden">
+        {/* Background Image */}
+        <div className="absolute inset-0">
+          <img
+            src="/images/happy_african_child.jpg"
+            alt="Happy African child - the future we're building"
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-harvest-900/90 via-clay-900/85 to-sage-900/90"></div>
+        </div>
+        <div className="container-custom relative z-10">
           <motion.div
             className="max-w-4xl mx-auto text-center"
             initial="initial"
             animate="animate"
             variants={fadeInUp}
           >
-            <h1 className="text-5xl md:text-6xl lg:text-7xl font-display font-bold text-gray-900 mb-6">
+            <span className="text-overline text-white">Real Stories, Real Impact</span>
+            <h1 className="text-display text-white mt-3 mb-6">
               Stories from{' '}
-              <span className="text-primary-600">Our Farmers</span>
+              <span className="text-harvest-300">Our Farmers</span>
             </h1>
-            <p className="text-xl md:text-2xl text-gray-700">
-              Real people. Real change. Real impact on communities across Kenya.
+            <p className="text-subtitle text-white">
+              <span className="font-bold">Real people</span>. <span className="font-bold">Real change</span>. <span className="font-bold">Real impact</span> on communities across Kenya and Africa.
             </p>
           </motion.div>
         </div>
@@ -127,11 +137,11 @@ const FarmersStoriesPage = () => {
             viewport={{ once: true }}
             variants={fadeInUp}
           >
-            <p className="text-xl text-gray-700 leading-relaxed mb-6">
-              Every farmer has a story. Behind each harvest is a journey of learning, perseverance, and transformation. Here are just a few of the incredible farmers who have been part of Sylvia's Basket community.
+            <p className="text-body-lg mb-6">
+              <span className="text-highlight font-semibold">Every farmer has a story</span>. Behind each harvest is a journey of <span className="text-gradient-warm font-bold">learning, perseverance, and transformation</span>. Here are just a few of the incredible farmers who have been part of Sylvia's Basket community.
             </p>
             <p className="text-lg text-gray-600">
-              These stories demonstrate the power of organic farming to change lives, strengthen communities, and build a more sustainable future.
+              These stories demonstrate the power of organic farming to <span className="font-semibold text-accent-700">change lives</span>, <span className="font-semibold text-sage-700">strengthen communities</span>, and <span className="font-semibold text-harvest-700">build a more sustainable future</span>.
             </p>
           </motion.div>
         </div>
@@ -189,7 +199,7 @@ const FarmersStoriesPage = () => {
       </section>
 
       {/* Testimonials */}
-      <section className="section-padding bg-gradient-to-br from-primary-700 via-primary-600 to-primary-800 text-white">
+      <section className="section-padding bg-gradient-to-br from-harvest-600 via-clay-600 to-sage-700 text-white">
         <div className="container-custom">
           <motion.div
             className="text-center mb-16"
@@ -198,11 +208,12 @@ const FarmersStoriesPage = () => {
             viewport={{ once: true }}
             variants={fadeInUp}
           >
-            <h2 className="text-4xl md:text-5xl font-display font-bold mb-4">
+            <span className="text-overline text-white">Testimonials</span>
+            <h2 className="text-hero text-white mt-3 mb-6">
               In Their Own Words
             </h2>
-            <p className="text-xl opacity-90">
-              Hear what farmers are saying about their experience
+            <p className="text-subtitle text-white">
+              Hear what farmers are saying about <span className="font-bold">their experience</span>
             </p>
           </motion.div>
 
@@ -245,11 +256,12 @@ const FarmersStoriesPage = () => {
             variants={fadeInUp}
           >
             <div className="text-center mb-12">
-              <h2 className="text-4xl md:text-5xl font-display font-bold text-gray-900 mb-4">
+              <span className="text-kicker text-harvest-600">By the Numbers</span>
+              <h2 className="text-hero text-gray-900 mt-3 mb-6">
                 Collective Impact
               </h2>
-              <p className="text-xl text-gray-700">
-                Together, our farmers are creating lasting change
+              <p className="text-subtitle text-gray-700">
+                Together, our farmers are creating <span className="text-gradient-accent font-bold">lasting change</span>
               </p>
             </div>
 
@@ -288,6 +300,113 @@ const FarmersStoriesPage = () => {
         </div>
       </section>
 
+      {/* Message from Sylvia */}
+      <section className="section-padding bg-gradient-to-br from-accent-600 via-sage-600 to-accent-700 text-white relative overflow-hidden">
+        <div className="absolute inset-0 opacity-20">
+          <img
+            src="/images/sylvia-hero_3.jpg"
+            alt="Sylvia Kuria with farmers"
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-accent-900/80 to-sage-900/80"></div>
+        </div>
+        <div className="container-custom relative z-10">
+          <motion.div
+            className="max-w-4xl mx-auto text-center"
+            initial="initial"
+            whileInView="animate"
+            viewport={{ once: true }}
+            variants={fadeInUp}
+          >
+            <div className="mb-8">
+              <div className="w-40 h-40 mx-auto mb-6 bg-white p-2 rounded-full shadow-2xl">
+                <div className="w-full h-full rounded-full overflow-hidden border-4 border-white shadow-xl">
+                  <img
+                    src="/images/sylvia-hero_2.jpg"
+                    alt="Sylvia Kuria"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              </div>
+              <h2 className="text-3xl md:text-4xl font-cursive font-bold mb-4">
+                A Message from Sylvia
+              </h2>
+            </div>
+            <blockquote className="text-xl md:text-2xl leading-relaxed italic mb-6">
+              "Every farmer has a unique story and immense potential. My vision is to train and support as many farmers as possible so we can leave a lasting legacy for our children - one of healthy food, thriving communities, and a restored planet."
+            </blockquote>
+            <p className="text-lg font-semibold">
+              - Sylvia Kuria, Founder & CEO
+            </p>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Video Testimonials Section */}
+      <section className="section-padding bg-white">
+        <div className="container-custom">
+          <motion.div
+            className="max-w-6xl mx-auto"
+            initial="initial"
+            whileInView="animate"
+            viewport={{ once: true }}
+            variants={fadeInUp}
+          >
+            <div className="text-center mb-12">
+              <span className="text-kicker text-harvest-600">Watch & Listen</span>
+              <h2 className="text-hero text-gray-900 mt-3 mb-6">
+                Video Testimonials
+              </h2>
+              <p className="text-subtitle text-gray-600">
+                Hear directly from farmers whose <span className="text-gradient-warm font-bold">lives have been transformed</span>
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Video 1 - Moya Moja */}
+              <motion.div
+                variants={fadeInUp}
+                className="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow"
+              >
+                <div className="aspect-video bg-gray-100">
+                  <iframe
+                    className="w-full h-full"
+                    src="https://www.youtube.com/embed/xL3rzsk3DO0"
+                    title="Moya Moja"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                  ></iframe>
+                </div>
+                <div className="p-4">
+                  <h3 className="font-bold text-gray-900 mb-1">Moya Moja</h3>
+                  <p className="text-sm text-gray-600">Farm visit experience and organic farming insights</p>
+                </div>
+              </motion.div>
+
+              {/* Video 2 - Elephant Vert East Africa */}
+              <motion.div
+                variants={fadeInUp}
+                className="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow"
+              >
+                <div className="aspect-video bg-gray-100">
+                  <iframe
+                    className="w-full h-full"
+                    src="https://www.youtube.com/embed/wtSGEnezhlY"
+                    title="Elephant Vert East Africa"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                  ></iframe>
+                </div>
+                <div className="p-4">
+                  <h3 className="font-bold text-gray-900 mb-1">Elephant Vert East Africa</h3>
+                  <p className="text-sm text-gray-600">Partnership in sustainable agriculture solutions</p>
+                </div>
+              </motion.div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
       {/* CTA Section */}
       <section className="section-padding gradient-earth">
         <div className="container-custom">
@@ -298,11 +417,12 @@ const FarmersStoriesPage = () => {
             viewport={{ once: true }}
             variants={fadeInUp}
           >
-            <h2 className="text-4xl md:text-5xl font-display font-bold text-gray-900 mb-6">
+            <span className="text-kicker text-harvest-600">Join the Movement</span>
+            <h2 className="text-hero text-gray-900 mt-3 mb-6">
               Your Story Could Be Next
             </h2>
-            <p className="text-xl text-gray-700 mb-10">
-              Join our community of farmers and be part of the organic farming revolution in Kenya
+            <p className="text-subtitle text-gray-700 mb-10">
+              Join our <span className="text-gradient-accent font-bold">community of farmers</span> and be part of the <span className="text-gradient-warm font-bold">organic farming revolution</span> in Kenya
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/our-work">

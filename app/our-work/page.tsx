@@ -41,47 +41,42 @@ const OurWorkPage = () => {
     },
     {
       icon: <FiGlobe className="w-8 h-8" />,
-      title: 'Policy Advocacy',
-      description: 'Active engagement in shaping policies for sustainable food systems through participation in County Integrated Development Plans (CIDPs).',
-      highlights: ['Kiambu County committee', 'Regional representation', 'International forums']
+      title: 'Policy Advocacy & System Change',
+      description: 'Leading advocacy for agroecology in Kenya through CIDP engagement, pesticide regulation reform, and policy framework development. Member of Kiambu County agroecology policy steering committee.',
+      highlights: ['Successful pesticide ban advocacy (July 2023)', '100+ farmer advocacy group', 'Kiambu County CIDP integration', 'Agroecology policy development']
     },
   ]
 
   const partners = [
     {
-      name: 'CIFOR-ICRAF',
-      description: 'Collaboration on smallholder agroecology training programs',
-      type: 'Research & Training'
-    },
-    {
       name: 'IFOAM',
-      description: 'Organic Leadership Course alumni network',
-      type: 'International Network'
-    },
-    {
-      name: 'GIZ-KCOA',
-      description: 'Master trainer for Knowledge Centre for Organic Agriculture',
-      type: 'Training Partner'
-    },
-    {
-      name: 'Access Agriculture',
-      description: 'Community training and knowledge sharing partnership',
-      type: 'Training Partner'
+      description: 'Training & Advocacy ambassador for organic movement',
+      type: 'NGO/Civil Society'
     },
     {
       name: 'KOAN',
-      description: 'Kenya Organic Agriculture Network collaboration',
-      type: 'Industry Association'
+      description: 'Market access for smallholder farmers',
+      type: 'NGO/Civil Society'
     },
     {
-      name: 'PELUM',
-      description: 'Participatory Ecological Land Use Management network',
-      type: 'Regional Network'
+      name: 'HPS',
+      description: 'Advocacy mainstreaming Agro-ecology',
+      type: 'NGO/Civil Society'
     },
     {
-      name: 'Biovision Africa Trust',
-      description: 'Sustainable agriculture and environmental initiatives',
-      type: 'Development Partner'
+      name: 'Biovision',
+      description: 'Creating enabling environment for Agro-ecological entrepreneurs',
+      type: 'NGO/Civil Society'
+    },
+    {
+      name: 'ICRAF',
+      description: 'Agroforestry research and training',
+      type: 'NGO/Civil Society'
+    },
+    {
+      name: 'Greenspoon',
+      description: 'Organic produce marketing and distribution',
+      type: 'Commercial Partner'
     },
   ]
 
@@ -110,6 +105,12 @@ const OurWorkPage = () => {
       label: 'Partner Farmers',
       color: 'from-primary-500 to-primary-600'
     },
+    {
+      icon: <GiWheat className="w-12 h-12" />,
+      stat: '2,000+',
+      label: 'Trees Planted',
+      color: 'from-accent-500 to-sage-600'
+    },
   ]
 
   const galleryItems = [
@@ -133,28 +134,37 @@ const OurWorkPage = () => {
     },
     {
       title: 'Indigenous Trees',
-      description: 'Planting for the future',
+      description: 'Agroforestry for sustainability',
       icon: <GiPlantSeed />,
       slug: 'indigenous-trees'
     },
     {
-      title: 'Women Farmers',
-      description: 'Empowering women in agriculture',
-      icon: <GiFarmer />,
-      slug: 'women-farmers'
+      title: 'The Voice of Africa',
+      description: 'Representing African farmers globally',
+      icon: <FiGlobe />,
+      slug: 'voice-of-africa'
     },
     {
-      title: 'Youth Training',
-      description: 'Next generation of farmers',
+      title: 'Advocacy',
+      description: 'Policy change for sustainable food systems',
       icon: <FiTarget />,
-      slug: 'youth-training'
+      slug: 'advocacy'
     },
   ]
 
   return (
     <div className="overflow-hidden">
       {/* Hero Section - Glassmorphism */}
-      <section className="relative min-h-[60vh] flex items-center justify-center bg-gradient-to-br from-earth-50 via-primary-50 to-harvest-50 pt-32 pb-20 overflow-hidden">
+      <section className="relative min-h-[60vh] flex items-center justify-center pt-32 pb-20 overflow-hidden">
+        {/* Background Image */}
+        <div className="absolute inset-0">
+          <img
+            src="/images/green_maize.jpg"
+            alt="Green maize plantation - organic farming in action"
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-harvest-900/90 via-clay-900/85 to-sage-900/90"></div>
+        </div>
         {/* Decorative Glowing Orbs */}
         <div className="absolute top-20 left-10 w-96 h-96 bg-accent-500/20 rounded-full blur-3xl"></div>
         <div className="absolute bottom-20 right-10 w-96 h-96 bg-harvest-500/20 rounded-full blur-3xl"></div>
@@ -166,12 +176,13 @@ const OurWorkPage = () => {
             animate="animate"
             variants={fadeInUp}
           >
-            <h1 className="text-5xl md:text-6xl lg:text-7xl font-display font-bold text-gray-900 mb-6">
+            <span className="text-overline text-white">Making a Difference</span>
+            <h1 className="text-display text-white mt-3 mb-6">
               Our Work in{' '}
-              <span className="bg-gradient-to-r from-accent-600 via-sage-600 to-accent-700 bg-clip-text text-transparent">Action</span>
+              <span className="text-harvest-300">Action</span>
             </h1>
-            <p className="text-xl md:text-2xl text-gray-700">
-              Training farmers, building communities, and transforming food systems across Kenya
+            <p className="text-subtitle text-white">
+              Training farmers, building communities, and <span className="font-bold">transforming food systems</span> across Kenya
             </p>
           </motion.div>
         </div>
@@ -181,7 +192,7 @@ const OurWorkPage = () => {
       <section className="section-padding bg-white">
         <div className="container-custom">
           <motion.div
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8"
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6"
             variants={staggerContainer}
             initial="initial"
             whileInView="animate"
@@ -221,11 +232,12 @@ const OurWorkPage = () => {
             viewport={{ once: true }}
             variants={fadeInUp}
           >
-            <h2 className="text-4xl md:text-5xl font-display font-bold text-gray-900 mb-4">
+            <span className="text-kicker text-harvest-600">What We Offer</span>
+            <h2 className="text-hero text-gray-900 mt-3 mb-6">
               Our Programs
             </h2>
-            <p className="text-xl text-gray-700 max-w-3xl mx-auto">
-              Comprehensive initiatives designed to empower farmers and build sustainable food systems
+            <p className="text-subtitle text-gray-600 max-w-3xl mx-auto">
+              Comprehensive initiatives designed to <span className="text-gradient-accent font-bold">empower farmers</span> and build <span className="text-gradient-warm font-bold">sustainable food systems</span>
             </p>
           </motion.div>
 
@@ -276,11 +288,12 @@ const OurWorkPage = () => {
             viewport={{ once: true }}
             variants={fadeInUp}
           >
-            <h2 className="text-4xl md:text-5xl font-display font-bold text-gray-900 mb-4">
+            <span className="text-kicker text-harvest-600">Working Together</span>
+            <h2 className="text-hero text-gray-900 mt-3 mb-6">
               Our Partners
             </h2>
-            <p className="text-xl text-gray-700">
-              Collaborating with leading organizations to amplify our impact
+            <p className="text-subtitle text-gray-600">
+              Collaborating with <span className="text-gradient-primary font-bold">leading organizations</span> to amplify our impact
             </p>
           </motion.div>
 
@@ -316,7 +329,7 @@ const OurWorkPage = () => {
       </section>
 
       {/* Gallery Section - Glassmorphism */}
-      <section className="section-padding bg-gradient-to-br from-primary-600 via-earth-600 to-harvest-600 text-white relative overflow-hidden">
+      <section className="section-padding bg-gradient-to-br from-harvest-600 via-clay-600 to-sage-700 text-white relative overflow-hidden">
         {/* Decorative Glowing Orbs */}
         <div className="absolute top-10 left-10 w-96 h-96 bg-accent-500/20 rounded-full blur-3xl"></div>
         <div className="absolute bottom-10 right-10 w-96 h-96 bg-sage-500/20 rounded-full blur-3xl"></div>
@@ -328,10 +341,11 @@ const OurWorkPage = () => {
             viewport={{ once: true }}
             variants={fadeInUp}
           >
-            <h2 className="text-4xl md:text-5xl font-display font-bold mb-4">
+            <span className="text-overline text-white">Photo Gallery</span>
+            <h2 className="text-hero text-white mt-3 mb-6">
               Our Work in Pictures
             </h2>
-            <p className="text-xl opacity-90">
+            <p className="text-subtitle text-white">
               Visual stories from the field
             </p>
           </motion.div>
@@ -380,11 +394,12 @@ const OurWorkPage = () => {
             viewport={{ once: true }}
             variants={fadeInUp}
           >
-            <h2 className="text-4xl md:text-5xl font-display font-bold text-gray-900 mb-6">
+            <span className="text-kicker text-harvest-600">Discover More</span>
+            <h2 className="text-hero text-gray-900 mt-3 mb-6">
               Want to Learn More?
             </h2>
-            <p className="text-xl text-gray-700 mb-10">
-              Read stories from the farmers we've trained and the communities we've transformed
+            <p className="text-subtitle text-gray-700 mb-10">
+              Read stories from the <span className="text-gradient-warm font-bold">farmers we've trained</span> and the <span className="text-gradient-accent font-bold">communities we've transformed</span>
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/farmers-stories">

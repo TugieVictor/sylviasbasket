@@ -119,7 +119,16 @@ const NewsPage = () => {
   return (
     <div className="overflow-hidden">
       {/* Hero Section - Glassmorphism */}
-      <section className="relative min-h-[60vh] flex items-center justify-center bg-gradient-to-br from-earth-50 via-primary-50 to-harvest-50 pt-32 pb-20 overflow-hidden">
+      <section className="relative min-h-[60vh] flex items-center justify-center pt-32 pb-20 overflow-hidden">
+        {/* Background Image */}
+        <div className="absolute inset-0">
+          <img
+            src="/images/Africa_map.jpg"
+            alt="Map of Africa - stories from across the continent"
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-harvest-900/90 via-clay-900/85 to-sage-900/90"></div>
+        </div>
         {/* Decorative Glowing Orbs */}
         <div className="absolute top-20 left-10 w-96 h-96 bg-accent-500/20 rounded-full blur-3xl"></div>
         <div className="absolute bottom-20 right-10 w-96 h-96 bg-harvest-500/20 rounded-full blur-3xl"></div>
@@ -131,22 +140,32 @@ const NewsPage = () => {
             animate="animate"
             variants={fadeInUp}
           >
-            <h1 className="text-5xl md:text-6xl lg:text-7xl font-display font-bold text-gray-900 mb-6">
-              News & <span className="bg-gradient-to-r from-accent-600 via-sage-600 to-accent-700 bg-clip-text text-transparent">Insights</span>
+            <span className="text-overline text-white">Latest Updates</span>
+            <h1 className="text-display text-white mt-3 mb-6">
+              News & <span className="text-harvest-300">Insights</span>
             </h1>
-            <p className="text-xl md:text-2xl text-gray-700">
-              Stories, updates, and advocacy from the frontlines of organic farming in Kenya
+            <p className="text-subtitle text-white">
+              Stories, updates, and advocacy from the <span className="font-bold">frontlines of organic farming</span> in Kenya
             </p>
           </motion.div>
         </div>
       </section>
 
       {/* Newsletter Highlight - Glassmorphism */}
-      <section className="section-padding bg-gradient-to-br from-primary-600 via-earth-600 to-harvest-600 text-white relative overflow-hidden">
+      <section className="section-padding bg-gradient-to-br from-harvest-600 via-clay-600 to-accent-700 text-white relative overflow-hidden">
+        {/* Sylvia's Image Background */}
+        <div className="absolute inset-0 opacity-15">
+          <img
+            src="/images/sylvia-hero_4.jpg"
+            alt="Sylvia Kuria advocating for farmers"
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-harvest-900/90 to-accent-900/90"></div>
+        </div>
         {/* Decorative Glowing Orbs */}
         <div className="absolute top-10 left-10 w-96 h-96 bg-accent-500/20 rounded-full blur-3xl"></div>
         <div className="absolute bottom-10 right-10 w-96 h-96 bg-sage-500/20 rounded-full blur-3xl"></div>
-        <div className="container-custom">
+        <div className="container-custom relative z-10">
           <motion.div
             className="max-w-4xl mx-auto text-center"
             initial="initial"
@@ -155,11 +174,12 @@ const NewsPage = () => {
             variants={fadeInUp}
           >
             <FiMail className="w-16 h-16 mx-auto mb-6 opacity-90" />
-            <h2 className="text-4xl md:text-5xl font-display font-bold mb-4">
+            <span className="text-overline text-white">Monthly Newsletter</span>
+            <h2 className="text-hero text-white mt-3 mb-6">
               When Silence Isn't an Option
             </h2>
-            <p className="text-xl mb-8 opacity-90">
-              Our monthly newsletter featuring advocacy updates, farming tips, and stories from the field
+            <p className="text-subtitle text-white mb-8">
+              Our monthly newsletter featuring <span className="font-bold">advocacy updates</span>, <span className="font-bold">farming tips</span>, and <span className="font-bold">stories from the field</span>
             </p>
             <form onSubmit={handleSubscribe} className="max-w-md mx-auto">
               <div className="flex flex-col sm:flex-row gap-4">
@@ -176,7 +196,7 @@ const NewsPage = () => {
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   disabled={subscribing}
-                  className="bg-white text-primary-700 px-8 py-4 rounded-full font-semibold shadow-xl hover:shadow-2xl transition-shadow whitespace-nowrap disabled:opacity-50"
+                  className="bg-white text-harvest-700 px-8 py-4 rounded-full font-semibold shadow-xl hover:shadow-2xl transition-shadow whitespace-nowrap disabled:opacity-50"
                 >
                   {subscribing ? 'Subscribing...' : 'Subscribe Now'}
                 </motion.button>
@@ -295,11 +315,12 @@ const NewsPage = () => {
             viewport={{ once: true }}
             variants={fadeInUp}
           >
-            <h2 className="text-4xl md:text-5xl font-display font-bold text-gray-900 mb-4">
+            <span className="text-kicker text-harvest-600">From the Blog</span>
+            <h2 className="text-hero text-gray-900 mt-3 mb-6">
               Recent Articles
             </h2>
-            <p className="text-xl text-gray-700">
-              Stay updated with the latest from Sylvia's Basket
+            <p className="text-subtitle text-gray-600">
+              Stay updated with the <span className="text-gradient-accent font-bold">latest from Sylvia's Basket</span>
             </p>
           </motion.div>
 
@@ -394,11 +415,12 @@ const NewsPage = () => {
             variants={fadeInUp}
           >
             <div className="text-center">
-              <h2 className="text-3xl md:text-4xl font-display font-bold text-gray-900 mb-4">
+              <span className="text-kicker text-harvest-600">Stay Connected</span>
+              <h2 className="text-hero text-gray-900 mt-3 mb-6">
                 Never Miss an Update
               </h2>
-              <p className="text-lg text-gray-700 mb-8">
-                Subscribe to "When Silence Isn't an Option" and get monthly insights on:
+              <p className="text-body-lg text-gray-700 mb-8">
+                Subscribe to <span className="text-gradient-warm font-bold">"When Silence Isn't an Option"</span> and get monthly insights on:
               </p>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8 text-left">
                 <div className="flex items-start gap-3">
@@ -464,11 +486,12 @@ const NewsPage = () => {
             viewport={{ once: true }}
             variants={fadeInUp}
           >
-            <h2 className="text-4xl md:text-5xl font-display font-bold text-gray-900 mb-6">
+            <span className="text-kicker text-harvest-600">Join the Conversation</span>
+            <h2 className="text-hero text-gray-900 mt-3 mb-6">
               Want to Contribute?
             </h2>
-            <p className="text-xl text-gray-700 mb-10">
-              Have a story to share or want to collaborate on advocacy content? We'd love to hear from you.
+            <p className="text-subtitle text-gray-700 mb-10">
+              Have a <span className="text-gradient-accent font-bold">story to share</span> or want to collaborate on <span className="text-gradient-warm font-bold">advocacy content</span>? We'd love to hear from you.
             </p>
             <Link href="/get-involved">
               <motion.button

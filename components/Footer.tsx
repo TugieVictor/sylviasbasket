@@ -54,23 +54,35 @@ const Footer = () => {
       <div className="absolute bottom-0 right-0 w-96 h-96 bg-harvest-500/20 rounded-full blur-3xl"></div>
 
       <div className="container-custom relative z-10">
-        {/* Newsletter Section - Glass Card */}
+        {/* Newsletter Section - Glass Card with African Children */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="glass-card rounded-3xl p-10 mb-16 shadow-2xl"
+          className="glass-card rounded-3xl overflow-hidden mb-16 shadow-2xl"
         >
-          <div className="max-w-3xl mx-auto text-center">
-            <div className="w-16 h-16 bg-gradient-to-br from-accent-500 to-sage-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-xl">
-              <GiPlantSeed className="w-8 h-8 text-white" />
+          <div className="grid lg:grid-cols-2 gap-0">
+            {/* Left: Image */}
+            <div className="relative h-64 lg:h-auto min-h-[300px]">
+              <img
+                src="/images/happy_african_children.jpg"
+                alt="Happy African children - the future we're building together"
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-r from-accent-900/40 to-transparent"></div>
             </div>
-            <h3 className="text-3xl font-display font-bold mb-4 bg-gradient-to-r from-accent-700 via-sage-700 to-accent-800 bg-clip-text text-transparent">
-              Join Our Community
-            </h3>
-            <p className="text-gray-700 text-lg mb-8">
-              Get monthly updates on organic farming, training opportunities, and inspiring stories from our farmer network
-            </p>
+
+            {/* Right: Newsletter Form */}
+            <div className="p-10 flex flex-col justify-center">
+              <div className="w-16 h-16 bg-gradient-to-br from-accent-500 to-sage-600 rounded-2xl flex items-center justify-center mb-6 shadow-xl">
+                <GiPlantSeed className="w-8 h-8 text-white" />
+              </div>
+              <h3 className="text-3xl font-cursive font-bold mb-4 bg-gradient-to-r from-harvest-600 via-sage-700 to-accent-700 bg-clip-text text-transparent">
+                Join Our Community
+              </h3>
+              <p className="text-gray-700 text-lg mb-8">
+                Get monthly updates on organic farming, training opportunities, and inspiring stories from our farmer network
+              </p>
             <form onSubmit={handleSubscribe} className="max-w-md mx-auto">
               <div className="flex flex-col sm:flex-row gap-4">
                 <input
@@ -98,6 +110,7 @@ const Footer = () => {
                 </p>
               )}
             </form>
+            </div>
           </div>
         </motion.div>
 

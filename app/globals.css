@@ -2,15 +2,37 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700;800&display=swap');
-
 @layer base {
   body {
-    @apply bg-white text-gray-900 antialiased;
+    @apply bg-white text-gray-900 antialiased font-sans text-base;
   }
 
-  h1, h2, h3, h4, h5, h6 {
-    @apply font-display font-bold;
+  h1 {
+    @apply font-display font-bold tracking-tight;
+  }
+
+  h2 {
+    @apply font-display font-bold tracking-tight;
+  }
+
+  h3 {
+    @apply font-display font-semibold tracking-tight;
+  }
+
+  h4, h5, h6 {
+    @apply font-display font-semibold;
+  }
+
+  p {
+    @apply text-base leading-relaxed;
+  }
+
+  .lead {
+    @apply text-xl md:text-2xl lg:text-3xl font-light leading-relaxed text-gray-700;
+  }
+
+  a {
+    @apply font-sans;
   }
 }
 
@@ -19,8 +41,94 @@
     text-wrap: balance;
   }
 
+  /* Font Families */
+  .font-cursive {
+    font-family: 'Dancing Script', 'Courgette', 'Pacifico', cursive !important;
+  }
+
+  .font-display {
+    font-family: 'Poppins', system-ui, sans-serif !important;
+  }
+
+  /* Typography Styles - Figma Inspired */
+  .text-micro {
+    @apply text-xs uppercase tracking-widest font-bold opacity-70;
+  }
+
+  .text-overline {
+    @apply text-xs md:text-sm uppercase tracking-wider font-bold;
+  }
+
+  .text-kicker {
+    @apply text-sm md:text-base font-semibold tracking-wide;
+  }
+
+  .text-display {
+    @apply text-4xl md:text-6xl lg:text-7xl font-display font-bold tracking-tighter leading-none;
+  }
+
+  .text-hero {
+    @apply text-3xl md:text-5xl lg:text-6xl font-display font-bold tracking-tight leading-tight;
+  }
+
+  .text-subtitle {
+    @apply text-lg md:text-xl lg:text-2xl font-light leading-relaxed;
+  }
+
+  .text-body-lg {
+    @apply text-lg md:text-xl leading-relaxed;
+  }
+
+  .text-caption {
+    @apply text-sm text-gray-500 leading-snug;
+  }
+
+  /* Text Gradients */
+  .text-gradient-primary {
+    @apply bg-gradient-to-r from-harvest-600 via-clay-600 to-sage-700 bg-clip-text text-transparent;
+  }
+
+  .text-gradient-accent {
+    @apply bg-gradient-to-r from-accent-600 via-sage-600 to-accent-700 bg-clip-text text-transparent;
+  }
+
+  .text-gradient-warm {
+    @apply bg-gradient-to-r from-harvest-500 via-clay-500 to-earth-600 bg-clip-text text-transparent;
+  }
+
+  /* Text Highlights */
+  .text-highlight {
+    @apply relative inline-block px-2 py-0.5 bg-harvest-100 rounded;
+  }
+
+  .text-badge {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-accent-100 text-accent-700;
+  }
+
+  .text-pill {
+    @apply inline-flex items-center px-4 py-2 rounded-full text-sm font-semibold bg-gradient-to-r from-harvest-100 to-clay-100 text-harvest-800;
+  }
+
+  /* Special Effects */
+  .text-shadow-sm {
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  }
+
+  .text-shadow {
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+  }
+
+  .text-shadow-lg {
+    text-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  .text-glow {
+    text-shadow: 0 0 20px rgba(42, 157, 106, 0.4);
+  }
+
+  /* Background Gradients */
   .gradient-primary {
-    @apply bg-gradient-to-r from-earth-700 to-earth-600;
+    @apply bg-gradient-to-r from-harvest-600 via-clay-600 to-sage-700;
   }
 
   .gradient-accent {
@@ -28,7 +136,7 @@
   }
 
   .gradient-earth {
-    @apply bg-gradient-to-br from-earth-50 via-primary-50 to-harvest-50;
+    @apply bg-gradient-to-br from-harvest-100 via-clay-50 to-sage-100;
   }
 
   .gradient-vibrant-green {

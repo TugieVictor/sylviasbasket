@@ -1,12 +1,14 @@
 
 'use client'
 
+import { useState } from 'react'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
-import { FiArrowRight, FiUsers, FiTrendingUp, FiAward, FiHeart, FiTarget, FiGlobe, FiExternalLink } from 'react-icons/fi'
+import { FiArrowRight, FiUsers, FiTrendingUp, FiAward, FiHeart, FiTarget, FiGlobe, FiExternalLink, FiPlay } from 'react-icons/fi'
 import { GiFarmer, GiPlantSeed, GiWheat } from 'react-icons/gi'
 
 const HomePage = () => {
+  const [showVideo, setShowVideo] = useState(false)
   const fadeInUp = {
     initial: { opacity: 0, y: 40 },
     animate: { opacity: 1, y: 0 },
@@ -36,9 +38,10 @@ const HomePage = () => {
   // VERIFIED METRICS ONLY
   const impactStats = [
     { icon: <FiUsers />, number: '1,000+', label: 'Farmers Trained', description: 'Across Kenya in organic methods' },
+    { icon: <GiFarmer />, number: '10-15', label: 'Seasonal Crops', description: 'Grown year-round' },
     { icon: <GiPlantSeed />, number: '5+', label: 'Tonnes Monthly', description: 'Organic produce aggregated' },
     { icon: <FiAward />, number: '50+', label: 'Partner Farmers', description: 'In our organic network' },
-    { icon: <GiFarmer />, number: '10-15', label: 'Seasonal Crops', description: 'Grown year-round' },
+    { icon: <GiWheat />, number: '2,000+', label: 'Trees Planted', description: 'Agroforestry for sustainability' },
   ]
 
   const focusAreas = [
@@ -66,12 +69,12 @@ const HomePage = () => {
 
   // Verified partnerships
   const partnerships = [
-    { name: 'CIFOR-ICRAF', description: 'Smallholder agroecology training' },
-    { name: 'GIZ-KCOA', description: 'Master trainer certification' },
-    { name: 'KOAN', description: 'Kenya Organic Agriculture Network' },
-    { name: 'PELUM', description: 'Ecological land use management' },
-    { name: 'Access Agriculture', description: 'Community training partner' },
-    { name: 'Biovision Africa', description: 'Sustainable agriculture initiatives' },
+    { name: 'IFOAM', description: 'Training & Advocacy ambassador' },
+    { name: 'KOAN', description: 'Market for smallholder farmers' },
+    { name: 'HPS', description: 'Advocacy mainstreaming Agro-ecology' },
+    { name: 'Biovision', description: 'Creating enabling environment for Agro-ecological entrepreneurs' },
+    { name: 'ICRAF', description: 'Agroforestry' },
+    { name: 'Greenspoon', description: 'Organic produce marketing' },
   ]
 
   return (
@@ -91,37 +94,51 @@ const HomePage = () => {
               variants={fadeInLeft}
               className="lg:col-span-3 space-y-6"
             >
-              {/* Glass Badge */}
+              {/* Overline Badge */}
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.1 }}
-                className="inline-flex items-center gap-2 glass-card px-4 py-2 rounded-full"
               >
-                <span className="w-2 h-2 bg-accent-600 rounded-full animate-pulse"></span>
-                <span className="text-sm font-semibold bg-gradient-to-r from-accent-700 to-sage-700 bg-clip-text text-transparent">IFOAM Ambassador | GIZ-KCOA Master Trainer</span>
+                <span className="text-overline">IFOAM Ambassador • Food Systems Fellow • Master Trainer</span>
               </motion.div>
 
-              {/* Main Heading with Gradient */}
-              <motion.h1
-                className="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-gray-900 leading-tight"
+              {/* Main Heading with Dynamic Sizing */}
+              <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 }}
+                className="space-y-3"
               >
-                Empowering Communities Through{' '}
-                <span className="bg-gradient-to-r from-accent-600 via-sage-600 to-accent-700 bg-clip-text text-transparent">Organic Farming</span>
-              </motion.h1>
+                <h1 className="text-display">
+                  Empowering
+                  <br />
+                  <span className="text-gradient-accent">Communities</span>
+                </h1>
+                <p className="text-subtitle max-w-2xl">
+                  Through Organic Farming & Sustainable Agriculture
+                </p>
+              </motion.div>
 
-              {/* Subtitle */}
-              <motion.p
-                className="text-lg md:text-xl text-gray-600 leading-relaxed max-w-2xl"
+              {/* Description with Varied Sizing */}
+              <motion.div
+                className="space-y-4"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.3 }}
               >
-                Growing more than food — we're growing awareness, opportunity, and a healthier planet. Since 2016, Sylvia's Basket has trained over 1,000 farmers in sustainable agriculture.
-              </motion.p>
+                <p className="text-body-lg max-w-2xl">
+                  Growing more than food — we're growing{' '}
+                  <span className="text-highlight font-semibold">awareness</span>,{' '}
+                  <span className="text-highlight font-semibold">opportunity</span>, and a{' '}
+                  <span className="text-highlight font-semibold">healthier planet</span>.
+                </p>
+                <div className="flex flex-wrap gap-3">
+                  <span className="text-pill">🌱 1,000+ Farmers Trained</span>
+                  <span className="text-pill">📍 Kenya & Africa</span>
+                  <span className="text-pill">🏆 Since 2016</span>
+                </div>
+              </motion.div>
 
               {/* CTA Buttons */}
               <motion.div
@@ -154,7 +171,7 @@ const HomePage = () => {
 
               {/* Stats Row with Gradients */}
               <motion.div
-                className="grid grid-cols-3 gap-6 pt-8 mt-8"
+                className="grid grid-cols-2 sm:grid-cols-4 gap-6 pt-8 mt-8"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.5 }}
@@ -171,6 +188,10 @@ const HomePage = () => {
                   <div className="text-3xl font-bold bg-gradient-to-r from-primary-600 to-earth-600 bg-clip-text text-transparent">50+</div>
                   <div className="text-sm text-gray-700 mt-1 font-medium">Partners</div>
                 </div>
+                <div>
+                  <div className="text-3xl font-bold bg-gradient-to-r from-sage-600 to-accent-600 bg-clip-text text-transparent">2,000+</div>
+                  <div className="text-sm text-gray-700 mt-1 font-medium">Trees Planted</div>
+                </div>
               </motion.div>
             </motion.div>
 
@@ -185,7 +206,7 @@ const HomePage = () => {
               <div className="relative h-[500px] lg:h-[600px] rounded-3xl overflow-hidden shadow-2xl ring-2 ring-white/20">
                 {/* Sylvia's Photo with gradient overlay */}
                 <img
-                  src="/images/sylvia-hero.jpg"
+                  src="/images/sylvia-hero_1.jpg"
                   alt="Sylvia Kuria - Founder of Sylvia's Basket"
                   className="w-full h-full object-cover object-center"
                 />
@@ -221,27 +242,37 @@ const HomePage = () => {
       </section>
 
       {/* What We Stand For - Glassmorphism Cards */}
-      <section className="py-20 bg-gradient-to-br from-primary-100 via-earth-50 to-harvest-100 relative overflow-hidden">
+      <section className="py-20 bg-gradient-to-br from-harvest-100 via-clay-50 to-sage-100 relative overflow-hidden">
         {/* Decorative elements */}
         <div className="absolute top-0 right-0 w-72 h-72 bg-accent-500/10 rounded-full blur-3xl"></div>
         <div className="absolute bottom-0 left-0 w-72 h-72 bg-harvest-500/10 rounded-full blur-3xl"></div>
 
         <div className="container-custom relative z-10">
           <motion.div
-            className="text-center mb-16 max-w-3xl mx-auto"
+            className="text-center mb-16 max-w-4xl mx-auto space-y-6"
             initial="initial"
             whileInView="animate"
             viewport={{ once: true }}
             variants={fadeInUp}
           >
-            <h2 className="text-3xl md:text-4xl font-display font-bold text-gray-900 mb-4">
-              What We Stand For
-            </h2>
-            <p className="text-xl font-bold mb-3 bg-gradient-to-r from-accent-700 via-sage-700 to-accent-800 bg-clip-text text-transparent">
-              Healthy Food. Healthy People. Healthy Planet.
-            </p>
-            <p className="text-gray-700 text-lg">
-              We advocate for farming systems that respect nature, empower farmers, and ensure that nutritious food is accessible to everyone.
+            <div>
+              <span className="text-kicker">Our Mission</span>
+              <h2 className="text-hero mt-3 mb-6">
+                What We Stand For
+              </h2>
+            </div>
+
+            <div className="inline-flex flex-wrap justify-center gap-4 mb-6">
+              <span className="text-badge">🌿 Healthy Food</span>
+              <span className="text-badge">💚 Healthy People</span>
+              <span className="text-badge">🌍 Healthy Planet</span>
+            </div>
+
+            <p className="text-body-lg max-w-3xl mx-auto">
+              We advocate for farming systems that{' '}
+              <span className="text-gradient-accent font-bold">respect nature</span>,{' '}
+              <span className="text-gradient-accent font-bold">empower farmers</span>, and ensure that{' '}
+              <span className="text-gradient-accent font-bold">nutritious food</span> is accessible to everyone.
             </p>
           </motion.div>
 
@@ -301,7 +332,7 @@ const HomePage = () => {
           </motion.div>
 
           <motion.div
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto"
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 max-w-7xl mx-auto"
             variants={staggerContainer}
             initial="initial"
             whileInView="animate"
@@ -309,10 +340,11 @@ const HomePage = () => {
           >
             {impactStats.map((stat, index) => {
               const gradients = [
-                'from-accent-500 to-sage-600',
-                'from-sage-500 to-accent-600',
-                'from-harvest-500 to-clay-600',
-                'from-primary-600 to-earth-600'
+                'from-harvest-600 to-clay-600',
+                'from-clay-600 to-sage-700',
+                'from-harvest-600 via-clay-600 to-sage-700',
+                'from-sage-700 to-harvest-600',
+                'from-clay-600 to-harvest-600'
               ]
               return (
                 <motion.div
@@ -341,8 +373,16 @@ const HomePage = () => {
       </section>
 
       {/* Partnerships - Glassmorphism */}
-      <section className="py-20 bg-gradient-to-br from-harvest-50 via-earth-50 to-primary-100">
-        <div className="container-custom">
+      <section className="py-20 bg-gradient-to-br from-harvest-100 via-clay-50 to-sage-100 relative overflow-hidden">
+        {/* Decorative farming image */}
+        <div className="absolute left-0 top-0 w-1/4 h-full opacity-10 hidden lg:block">
+          <img
+            src="/images/green_maize.jpg"
+            alt="Green maize plantation"
+            className="w-full h-full object-cover"
+          />
+        </div>
+        <div className="container-custom relative z-10">
           <motion.div
             className="text-center mb-12 max-w-2xl mx-auto"
             initial="initial"
@@ -367,12 +407,12 @@ const HomePage = () => {
           >
             {partnerships.map((partner, index) => {
               const gradients = [
-                'from-accent-500 to-sage-600',
-                'from-sage-500 to-accent-600',
-                'from-harvest-500 to-clay-600',
-                'from-sky-500 to-accent-600',
-                'from-clay-500 to-harvest-600',
-                'from-primary-600 to-earth-600'
+                'from-harvest-600 to-clay-600',
+                'from-clay-600 to-sage-700',
+                'from-harvest-600 via-clay-600 to-sage-700',
+                'from-sage-700 to-harvest-600',
+                'from-clay-600 to-harvest-600',
+                'from-harvest-600 to-sage-700'
               ]
               return (
                 <motion.div
@@ -416,60 +456,218 @@ const HomePage = () => {
       <section className="py-20 bg-white">
         <div className="container-custom">
           <motion.div
-            className="max-w-4xl mx-auto"
+            className="max-w-7xl mx-auto"
             initial="initial"
             whileInView="animate"
             viewport={{ once: true }}
             variants={fadeInUp}
           >
-            <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-display font-bold text-gray-900 mb-3">
-                See Our Work in Action
+            <div className="text-center mb-12 space-y-4">
+              <span className="text-overline">Featured Stories</span>
+              <h2 className="text-hero">
+                See Our Work in{' '}
+                <span className="text-gradient-primary">Action</span>
               </h2>
-              <p className="text-gray-600">
-                Watch Sylvia's journey and impact on communities
+              <p className="text-subtitle max-w-3xl mx-auto">
+                Watch Sylvia's journey and impact on communities across Kenya and Africa
               </p>
             </div>
 
-            <div className="aspect-video rounded-xl overflow-hidden shadow-lg bg-gray-100">
+            {/* Main Featured Video */}
+            <div className="aspect-video rounded-2xl overflow-hidden shadow-2xl bg-gray-100 mb-8 relative group">
+              {!showVideo && (
+                <motion.div
+                  initial={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="absolute inset-0 z-10 cursor-pointer overflow-hidden"
+                  onClick={() => setShowVideo(true)}
+                >
+                  {/* Background with Gradient Mesh Effect */}
+                  <div className="absolute inset-0">
+                    {/* Sylvia's Image Background */}
+                    <div className="absolute inset-0">
+                      <img
+                        src="/images/sylvia-hero_1.jpg"
+                        alt="Sylvia Kuria"
+                        className="w-full h-full object-cover object-center"
+                      />
+                    </div>
+                    {/* Gradient Overlay on Image */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-harvest-500/90 via-harvest-600/85 to-clay-700/90"></div>
+                    {/* Decorative Gradient Orbs */}
+                    <div className="absolute top-0 right-0 w-96 h-96 bg-harvest-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse"></div>
+                    <div className="absolute bottom-0 left-0 w-96 h-96 bg-clay-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse" style={{ animationDelay: '1s' }}></div>
+                  </div>
+
+                  {/* Content Layout - Asymmetric Design */}
+                  <div className="absolute inset-0 flex items-center justify-between p-8 md:p-12 lg:p-16">
+                    {/* Left Side - Text Content */}
+                    <div className="flex-1 text-white max-w-3xl">
+                      {/* Brand Badge */}
+                      <motion.div
+                        initial={{ opacity: 0, x: -30 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.2, type: "spring", stiffness: 100 }}
+                        className="inline-flex items-center gap-2 mb-6 px-4 py-2 bg-white/15 backdrop-blur-md rounded-full border border-white/20"
+                      >
+                        <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
+                        <p className="text-xs md:text-sm font-bold tracking-wide uppercase">IFOAM - Organics International</p>
+                      </motion.div>
+
+                      {/* Main Title */}
+                      <motion.div
+                        initial={{ opacity: 0, x: -30 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.3, type: "spring", stiffness: 100 }}
+                      >
+                        <h3 className="text-3xl md:text-5xl lg:text-6xl font-display font-bold leading-tight mb-4">
+                          Nourishing the World{' '}
+                          <span className="inline-block">🌍</span>
+                        </h3>
+                        <h4 className="text-2xl md:text-4xl lg:text-5xl font-display font-bold leading-tight mb-6 text-white/90">
+                          Organically{' '}
+                          <span className="inline-block">🥗</span>
+                        </h4>
+                      </motion.div>
+
+                      {/* Subtitle */}
+                      <motion.p
+                        initial={{ opacity: 0, x: -30 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.4, type: "spring", stiffness: 100 }}
+                        className="text-lg md:text-xl lg:text-2xl font-sans mb-8 text-white/90 max-w-xl"
+                      >
+                        The Story of Sylvia Kuria
+                      </motion.p>
+
+                      {/* Watch CTA */}
+                      <motion.div
+                        initial={{ opacity: 0, x: -30 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.5, type: "spring", stiffness: 100 }}
+                        className="flex items-center gap-3"
+                      >
+                        <div className="w-12 h-12 md:w-14 md:h-14 bg-white rounded-full flex items-center justify-center shadow-2xl group-hover:scale-110 transition-transform">
+                          <FiPlay className="w-6 h-6 md:w-7 md:h-7 text-harvest-600 ml-0.5" />
+                        </div>
+                        <div>
+                          <p className="text-sm md:text-base font-bold uppercase tracking-wider">Watch Now</p>
+                          <p className="text-xs md:text-sm opacity-80">Featured Documentary</p>
+                        </div>
+                      </motion.div>
+                    </div>
+
+                    {/* Right Side - Large Play Button */}
+                    <motion.div
+                      initial={{ opacity: 0, scale: 0.5 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ delay: 0.6, type: "spring", stiffness: 100 }}
+                      whileHover={{ scale: 1.05 }}
+                      className="hidden lg:flex items-center justify-center"
+                    >
+                      <div className="relative">
+                        {/* Outer Ring */}
+                        <div className="absolute inset-0 w-32 h-32 bg-white/20 rounded-full animate-ping"></div>
+                        {/* Inner Circle */}
+                        <div className="relative w-32 h-32 bg-white rounded-full flex items-center justify-center shadow-2xl backdrop-blur-sm">
+                          <FiPlay className="w-16 h-16 text-harvest-600 ml-2" />
+                        </div>
+                      </div>
+                    </motion.div>
+                  </div>
+
+                  {/* Bottom Decorative Line */}
+                  <motion.div
+                    initial={{ scaleX: 0 }}
+                    animate={{ scaleX: 1 }}
+                    transition={{ delay: 0.7, duration: 0.8 }}
+                    className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-white to-transparent origin-left"
+                  ></motion.div>
+                </motion.div>
+              )}
+
               <iframe
                 className="w-full h-full"
-                src="https://www.youtube.com/embed/ZiAI75YcWig"
+                src={showVideo ? "https://www.youtube.com/embed/Qy8WZfT0DqE?autoplay=1" : "https://www.youtube.com/embed/Qy8WZfT0DqE"}
                 title="Sylvia's Basket - Organic Farming in Kenya"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen
               ></iframe>
             </div>
 
-            {/* Additional Video Links */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+            {/* Video Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {/* Video 1 */}
+              <motion.div
+                variants={fadeInUp}
+                className="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow"
+              >
+                <div className="aspect-video bg-gray-100">
+                  <iframe
+                    className="w-full h-full"
+                    src="https://www.youtube.com/embed/mfiKOtcDYn4"
+                    title="Training Program"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                  ></iframe>
+                </div>
+                <div className="p-4">
+                  <h3 className="font-bold text-gray-900 mb-1">The Power of Kitchen Garden</h3>
+                  <p className="text-sm text-gray-600">Growing food at home for better nutrition</p>
+                </div>
+              </motion.div>
+
+              {/* Video 2 */}
+              <motion.div
+                variants={fadeInUp}
+                className="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow"
+              >
+                <div className="aspect-video bg-gray-100">
+                  <iframe
+                    className="w-full h-full"
+                    src="https://www.youtube.com/embed/IjTaNJFOr9I"
+                    title="Farmer Success Stories"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                  ></iframe>
+                </div>
+                <div className="p-4">
+                  <h3 className="font-bold text-gray-900 mb-1">Sylvia's Bountiful Sanctuary</h3>
+                  <p className="text-sm text-gray-600">A haven of organic abundance and life</p>
+                </div>
+              </motion.div>
+
+              {/* Video 3 - Community Impact */}
+              <motion.div
+                variants={fadeInUp}
+                className="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow"
+              >
+                <div className="aspect-video bg-gray-100">
+                  <iframe
+                    className="w-full h-full"
+                    src="https://www.youtube.com/embed/fLH-r4gtWbg"
+                    title="Community Impact"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                  ></iframe>
+                </div>
+                <div className="p-4">
+                  <h3 className="font-bold text-gray-900 mb-1">Why Eat Organic</h3>
+                  <p className="text-sm text-gray-600">The benefits of organic food for health and planet</p>
+                </div>
+              </motion.div>
+            </div>
+
+            {/* View More Link */}
+            <div className="text-center mt-10">
               <a
-                href="https://www.youtube.com/watch?v=mfiKOtcDYn4"
+                href="https://www.youtube.com/results?search_query=sylvia%27s+basket"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-3 p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors border border-gray-200"
+                className="inline-flex items-center gap-2 text-accent-600 hover:text-accent-700 font-semibold text-lg"
               >
-                <div className="w-10 h-10 bg-accent-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                  <FiExternalLink className="w-5 h-5 text-accent-600" />
-                </div>
-                <div className="flex-1 text-sm">
-                  <div className="font-semibold text-gray-900">Training Program Video</div>
-                  <div className="text-gray-500">Watch on YouTube</div>
-                </div>
-              </a>
-              <a
-                href="https://www.youtube.com/watch?v=IjTaNJFOr9I"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-3 p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors border border-gray-200"
-              >
-                <div className="w-10 h-10 bg-accent-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                  <FiExternalLink className="w-5 h-5 text-accent-600" />
-                </div>
-                <div className="flex-1 text-sm">
-                  <div className="font-semibold text-gray-900">Farmer Success Stories</div>
-                  <div className="text-gray-500">Watch on YouTube</div>
-                </div>
+                <span>View More Videos</span>
+                <FiExternalLink className="w-5 h-5" />
               </a>
             </div>
           </motion.div>

@@ -32,6 +32,11 @@ const AboutPage = () => {
       description: 'Organic produce aggregated from our farmer network'
     },
     {
+      icon: <GiPlantSeed className="w-8 h-8" />,
+      title: '2,000+ Trees Planted',
+      description: 'Advancing agroforestry for sustainable farming'
+    },
+    {
       icon: <FiGlobe className="w-8 h-8" />,
       title: 'International Representation',
       description: 'Representing African farmers at regional and global forums'
@@ -39,7 +44,7 @@ const AboutPage = () => {
     {
       icon: <FiAward className="w-8 h-8" />,
       title: 'Strategic Partnerships',
-      description: 'With CIFOR-ICRAF, GIZ-KCOA, KOAN, PELUM, Access Agriculture, and more'
+      description: 'With IFOAM, KOAN, HPS, Biovision, ICRAF, Greenspoon, and more'
     },
   ]
 
@@ -69,24 +74,36 @@ const AboutPage = () => {
   return (
     <div className="overflow-hidden">
       {/* Hero Section - Glassmorphism */}
-      <section className="relative min-h-[60vh] flex items-center justify-center bg-gradient-to-br from-earth-50 via-primary-50 to-harvest-50 pt-32 pb-20 overflow-hidden">
+      <section className="relative min-h-[60vh] flex items-center justify-center pt-32 pb-20 overflow-hidden">
+        {/* Background Image */}
+        <div className="absolute inset-0">
+          <img
+            src="/images/woman_with_child_on_farm.jpg"
+            alt="African woman farming with child - sustainable agriculture"
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-harvest-900/90 via-clay-900/85 to-sage-900/90"></div>
+        </div>
         {/* Decorative Glowing Orbs */}
         <div className="absolute top-20 left-10 w-96 h-96 bg-accent-500/20 rounded-full blur-3xl"></div>
         <div className="absolute bottom-20 right-10 w-96 h-96 bg-harvest-500/20 rounded-full blur-3xl"></div>
 
         <div className="container-custom relative z-10">
           <motion.div
-            className="max-w-4xl mx-auto text-center"
+            className="max-w-5xl mx-auto text-center space-y-6"
             initial="initial"
             animate="animate"
             variants={fadeInUp}
           >
-            <h1 className="text-5xl md:text-6xl lg:text-7xl font-display font-bold text-gray-900 mb-6">
-              From a Kitchen Garden to a{' '}
-              <span className="bg-gradient-to-r from-accent-600 via-sage-600 to-accent-700 bg-clip-text text-transparent">Movement for Change</span>
+            <span className="text-overline text-white">The Sylvia's Basket Story</span>
+            <h1 className="text-display text-white">
+              From a Kitchen Garden
+              <br />
+              to a{' '}
+              <span className="text-harvest-300">Movement</span>
             </h1>
-            <p className="text-xl md:text-2xl text-gray-700">
-              A story of passion, purpose, and the power to transform communities
+            <p className="text-subtitle text-white max-w-3xl mx-auto">
+              A story of passion, purpose, and the power to transform communities across Kenya
             </p>
           </motion.div>
         </div>
@@ -103,14 +120,14 @@ const AboutPage = () => {
               variants={fadeInUp}
               className="prose prose-lg max-w-none"
             >
-              <p className="text-xl text-gray-700 leading-relaxed mb-6">
-                Sylvia's Basket began in a <span className="font-semibold text-primary-600">small kitchen garden in Limuru, Kenya</span>. What started as Sylvia Kuria's passion for growing organic vegetables for her family has blossomed into a movement transforming communities.
+              <p className="text-body-lg mb-6">
+                Sylvia's Basket started as a <span className="text-highlight font-semibold">small kitchen garden in Limuru, Kenya</span>. What began as Sylvia Kuria's passion for growing organic vegetables for her family has blossomed into a <span className="text-gradient-accent font-bold">movement</span> transforming communities through agroecology and sustainable farming practices.
               </p>
               <p className="text-lg text-gray-600 leading-relaxed mb-6">
-                Today, Sylvia's Basket combines organic food production, training, and advocacy to help farmers adopt agro-ecological methods, earn fair incomes, and secure nutritious food for their families.
+                Today, Sylvia's Basket combines <span className="font-semibold text-harvest-700">organic food production</span>, <span className="font-semibold text-accent-700">training</span>, and <span className="font-semibold text-sage-700">advocacy</span> to help farmers adopt agro-ecological methods, earn fair incomes, and secure nutritious food for their families.
               </p>
               <p className="text-lg text-gray-600 leading-relaxed">
-                Through hands-on training, community building, and policy engagement, we're proving that sustainable agriculture isn't just possible — it's the path to a healthier, more equitable future.
+                Through hands-on training, community building, and policy engagement, we're proving that sustainable agriculture isn't just possible — <span className="text-gradient-warm font-bold">it's the path to a healthier, more equitable future</span>.
               </p>
             </motion.div>
           </div>
@@ -138,11 +155,12 @@ const AboutPage = () => {
               <div className="w-20 h-20 bg-gradient-to-br from-accent-500 to-sage-600 rounded-2xl flex items-center justify-center mb-6 shadow-xl">
                 <FiGlobe className="w-10 h-10 text-white" />
               </div>
-              <h2 className="text-3xl font-display font-bold text-gray-900 mb-4">
+              <span className="text-kicker text-accent-600">Looking Ahead</span>
+              <h2 className="text-hero text-gray-900 mt-2 mb-4">
                 Our Vision
               </h2>
               <p className="text-lg text-gray-700 leading-relaxed">
-                A Kenya, an Africa, and a World where every family has access to safe, organic food, and every farmer has the skills and support to produce it sustainably.
+                A Kenya, an Africa, and a World where <span className="text-gradient-accent font-bold">every family has access to safe, organic food</span>, and every farmer has the skills and support to produce it sustainably.
               </p>
             </motion.div>
 
@@ -154,19 +172,95 @@ const AboutPage = () => {
               <div className="w-20 h-20 bg-gradient-to-br from-harvest-500 to-clay-600 rounded-2xl flex items-center justify-center mb-6 shadow-xl">
                 <FiHeart className="w-10 h-10 text-white" />
               </div>
-              <h2 className="text-3xl font-display font-bold text-gray-900 mb-4">
+              <span className="text-kicker text-harvest-600">Our Purpose</span>
+              <h2 className="text-hero text-gray-900 mt-2 mb-4">
                 Our Mission
               </h2>
               <p className="text-lg text-gray-700 leading-relaxed">
-                To promote agro-ecological farming through training, community building, and policy advocacy — empowering farmers while restoring the health of our ecosystems.
+                To promote <span className="text-gradient-warm font-bold">agro-ecological farming</span> through training, community building, and policy advocacy — empowering farmers while restoring the health of our ecosystems.
               </p>
             </motion.div>
           </motion.div>
         </div>
       </section>
 
+      {/* Our Work Overview Section */}
+      <section className="section-padding bg-white relative overflow-hidden">
+        {/* Decorative African Map Background */}
+        <div className="absolute right-0 top-1/2 -translate-y-1/2 w-1/3 h-2/3 opacity-10 hidden lg:block">
+          <img
+            src="/images/Africa_map.jpg"
+            alt="Map of Africa"
+            className="w-full h-full object-contain"
+          />
+        </div>
+
+        <div className="container-custom relative z-10">
+          <motion.div
+            className="text-center mb-12"
+            initial="initial"
+            whileInView="animate"
+            viewport={{ once: true }}
+            variants={fadeInUp}
+          >
+            <span className="text-kicker text-harvest-600">Our Impact</span>
+            <h2 className="text-hero text-gray-900 mt-3 mb-6">
+              What We Do
+            </h2>
+            <p className="text-subtitle text-gray-600 max-w-3xl mx-auto">
+              From training farmers to advocating for policy change, our work spans the <span className="text-gradient-primary font-bold">entire food system</span>
+            </p>
+          </motion.div>
+
+          <motion.div
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto"
+            variants={staggerContainer}
+            initial="initial"
+            whileInView="animate"
+            viewport={{ once: true }}
+          >
+            {roles.map((role, index) => (
+              <motion.div
+                key={index}
+                variants={fadeInUp}
+                whileHover={{ y: -8, scale: 1.05 }}
+                className="glass-card p-6 rounded-2xl shadow-xl hover:shadow-2xl transition-all text-center"
+              >
+                <div className="w-14 h-14 bg-gradient-to-br from-accent-500 to-sage-600 rounded-xl flex items-center justify-center text-white mx-auto mb-4 shadow-lg">
+                  {role.icon}
+                </div>
+                <h3 className="font-bold text-gray-900 mb-2">
+                  {role.title}
+                </h3>
+                <p className="text-sm text-gray-600 mb-4">
+                  {role.description}
+                </p>
+              </motion.div>
+            ))}
+          </motion.div>
+
+          <motion.div
+            className="mt-12 text-center"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+          >
+            <Link href="/our-work">
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="bg-gradient-to-r from-accent-600 to-sage-600 text-white px-8 py-4 rounded-full font-semibold shadow-2xl hover:shadow-accent-500/50 transition-all flex items-center gap-2 mx-auto"
+              >
+                <FiArrowRight className="w-5 h-5" />
+                Explore Our Work in Detail
+              </motion.button>
+            </Link>
+          </motion.div>
+        </div>
+      </section>
+
       {/* Achievements */}
-      <section className="section-padding bg-white">
+      <section className="section-padding bg-gradient-to-br from-accent-50 via-sage-50 to-sky-50">
         <div className="container-custom">
           <motion.div
             className="text-center mb-16"
@@ -175,11 +269,12 @@ const AboutPage = () => {
             viewport={{ once: true }}
             variants={fadeInUp}
           >
-            <h2 className="text-4xl md:text-5xl font-display font-bold text-gray-900 mb-4">
+            <span className="text-kicker text-harvest-600">Our Progress</span>
+            <h2 className="text-hero text-gray-900 mt-3 mb-6">
               Our Achievements
             </h2>
-            <p className="text-xl text-gray-600">
-              Building momentum for change across Kenya and beyond
+            <p className="text-subtitle text-gray-600">
+              Building <span className="text-gradient-accent font-bold">momentum for change</span> across Kenya and beyond
             </p>
           </motion.div>
 
@@ -213,7 +308,7 @@ const AboutPage = () => {
       </section>
 
       {/* Founder Section - Glassmorphism */}
-      <section className="section-padding bg-gradient-to-br from-primary-600 via-earth-600 to-harvest-600 text-white relative overflow-hidden">
+      <section className="section-padding bg-gradient-to-br from-harvest-600 via-clay-600 to-sage-700 text-white relative overflow-hidden">
         {/* Decorative Glowing Orbs */}
         <div className="absolute top-10 left-10 w-96 h-96 bg-accent-500/20 rounded-full blur-3xl"></div>
         <div className="absolute bottom-10 right-10 w-96 h-96 bg-sage-500/20 rounded-full blur-3xl"></div>
@@ -226,12 +321,16 @@ const AboutPage = () => {
             variants={fadeInUp}
           >
             <div className="text-center mb-12">
-              <h2 className="text-4xl md:text-5xl font-display font-bold mb-4">
+              <span className="text-overline text-white">The Visionary Behind It All</span>
+              <h2 className="text-hero text-white mt-3 mb-4">
                 Meet Sylvia Kuria
               </h2>
-              <p className="text-xl opacity-90">
-                Founder, CEO, and Passionate Advocate for Organic Farming
-              </p>
+              <div className="flex flex-wrap justify-center gap-3 mt-6">
+                <span className="text-badge bg-white/20 text-white border border-white/30">Founder & CEO</span>
+                <span className="text-badge bg-white/20 text-white border border-white/30">IFOAM Ambassador</span>
+                <span className="text-badge bg-white/20 text-white border border-white/30">Food Systems Fellow</span>
+                <span className="text-badge bg-white/20 text-white border border-white/30">Master Trainer</span>
+              </div>
             </div>
 
             <div className="grid lg:grid-cols-2 gap-10 items-center mb-12">
@@ -245,7 +344,7 @@ const AboutPage = () => {
               >
                 <div className="relative h-[500px] rounded-2xl overflow-hidden shadow-2xl">
                   <img
-                    src="/images/sylvia-hero.jpg"
+                    src="/images/sylvia-hero_2.jpg"
                     alt="Sylvia Kuria"
                     className="w-full h-full object-cover object-center"
                   />
@@ -268,11 +367,11 @@ const AboutPage = () => {
                 <div className="space-y-4">
                   <div className="flex items-start gap-3">
                     <div className="w-2 h-2 bg-accent-300 rounded-full mt-2 flex-shrink-0"></div>
-                    <p><span className="font-semibold">Alumni</span> of the IFOAM Organic Leadership Course</p>
+                    <p><span className="font-semibold">Ambassador</span> for IFOAM - Organics International</p>
                   </div>
                   <div className="flex items-start gap-3">
                     <div className="w-2 h-2 bg-accent-300 rounded-full mt-2 flex-shrink-0"></div>
-                    <p><span className="font-semibold">Master Trainer</span> for GIZ-funded Knowledge Centre for Organic Agriculture (KCOA)</p>
+                    <p><span className="font-semibold">Alumni</span> of the IFOAM Organic Leadership Course</p>
                   </div>
                   <div className="flex items-start gap-3">
                     <div className="w-2 h-2 bg-accent-300 rounded-full mt-2 flex-shrink-0"></div>
@@ -280,7 +379,7 @@ const AboutPage = () => {
                   </div>
                   <div className="flex items-start gap-3">
                     <div className="w-2 h-2 bg-accent-300 rounded-full mt-2 flex-shrink-0"></div>
-                    <p><span className="font-semibold">Ambassador</span> for IFOAM - Organics International</p>
+                    <p><span className="font-semibold">Food Systems Fellow</span></p>
                   </div>
                 </div>
               </motion.div>
@@ -308,6 +407,71 @@ const AboutPage = () => {
         </div>
       </section>
 
+      {/* Video Section */}
+      <section className="section-padding bg-white">
+        <div className="container-custom">
+          <motion.div
+            className="max-w-6xl mx-auto"
+            initial="initial"
+            whileInView="animate"
+            viewport={{ once: true }}
+            variants={fadeInUp}
+          >
+            <div className="text-center mb-12">
+              <span className="text-kicker text-harvest-600">Video Stories</span>
+              <h2 className="text-hero text-gray-900 mt-3 mb-6">
+                Watch Sylvia's Journey
+              </h2>
+              <p className="text-subtitle text-gray-600">
+                From <span className="text-gradient-warm font-bold">local farmer</span> to <span className="text-gradient-accent font-bold">global advocate</span> for organic agriculture
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Video 1 */}
+              <motion.div
+                variants={fadeInUp}
+                className="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow"
+              >
+                <div className="aspect-video bg-gray-100">
+                  <iframe
+                    className="w-full h-full"
+                    src="https://www.youtube.com/embed/B6-k392J6uw"
+                    title="Sylvia's Story"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                  ></iframe>
+                </div>
+                <div className="p-4">
+                  <h3 className="font-bold text-gray-900 mb-1">Sylvia's Mission</h3>
+                  <p className="text-sm text-gray-600">Building sustainable food systems in Kenya</p>
+                </div>
+              </motion.div>
+
+              {/* Video 2 */}
+              <motion.div
+                variants={fadeInUp}
+                className="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow"
+              >
+                <div className="aspect-video bg-gray-100">
+                  <iframe
+                    className="w-full h-full"
+                    src="https://www.youtube.com/embed/ZiAI75YcWig"
+                    title="Sylvia's Impact"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                  ></iframe>
+                </div>
+                <div className="p-4">
+                  <h3 className="font-bold text-gray-900 mb-1">Transforming Communities</h3>
+                  <p className="text-sm text-gray-600">Organic farming making a difference</p>
+                </div>
+              </motion.div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
       {/* CTA Section */}
       <section className="section-padding bg-white">
         <div className="container-custom">
@@ -318,11 +482,12 @@ const AboutPage = () => {
             viewport={{ once: true }}
             variants={fadeInUp}
           >
-            <h2 className="text-4xl md:text-5xl font-display font-bold text-gray-900 mb-6">
+            <span className="text-kicker text-harvest-600">Be Part of the Change</span>
+            <h2 className="text-hero text-gray-900 mt-3 mb-6">
               Join Our Movement
             </h2>
-            <p className="text-xl text-gray-700 mb-10">
-              Together, we can build a future where safe, organic food is accessible to all, and farmers thrive sustainably.
+            <p className="text-subtitle text-gray-600 mb-10">
+              Together, we can build a future where <span className="text-gradient-accent font-bold">safe, organic food is accessible to all</span>, and farmers thrive sustainably.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/our-work">

@@ -1,15 +1,10 @@
 'use client'
 
-import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { FiHeart, FiUsers, FiGlobe, FiMail, FiPhone, FiMapPin, FiShare2, FiDollarSign, FiUserCheck } from 'react-icons/fi'
 import { GiFarmer } from 'react-icons/gi'
 
 const GetInvolvedPage = () => {
-  const [email, setEmail] = useState('')
-  const [subscribing, setSubscribing] = useState(false)
-  const [subscribeMessage, setSubscribeMessage] = useState('')
-
   const fadeInUp = {
     initial: { opacity: 0, y: 60 },
     animate: { opacity: 1, y: 0 },
@@ -21,41 +16,6 @@ const GetInvolvedPage = () => {
       transition: {
         staggerChildren: 0.15
       }
-    }
-  }
-
-  const handleSubscribe = async (e: React.FormEvent) => {
-    e.preventDefault()
-
-    if (!email) {
-      setSubscribeMessage('Please enter a valid email address')
-      return
-    }
-
-    setSubscribing(true)
-    setSubscribeMessage('')
-
-    try {
-      const response = await fetch('/api/subscribe', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email }),
-      })
-
-      const data = await response.json()
-
-      if (response.ok) {
-        setSubscribeMessage('Successfully subscribed! Check your email for confirmation.')
-        setEmail('')
-      } else {
-        setSubscribeMessage(data.error || 'Failed to subscribe. Please try again.')
-      }
-    } catch (error) {
-      setSubscribeMessage('An error occurred. Please try again later.')
-    } finally {
-      setSubscribing(false)
     }
   }
 
@@ -169,7 +129,7 @@ const GetInvolvedPage = () => {
 
   const partnershipTypes = [
     {
-      type: 'NGOs & Organizations',
+      type: 'NGOs & Civil Societies',
       description: 'Collaborate on programs, research, and advocacy initiatives',
       icon: <FiGlobe className="w-6 h-6" />
     },
@@ -193,11 +153,16 @@ const GetInvolvedPage = () => {
   return (
     <div className="overflow-hidden">
       {/* Hero Section - Glassmorphism */}
-      <section className="relative min-h-[60vh] flex items-center justify-center bg-gradient-to-br from-earth-50 via-primary-50 to-harvest-50 pt-32 pb-20 overflow-hidden">
-        {/* Decorative Glowing Orbs */}
-        <div className="absolute top-20 left-10 w-96 h-96 bg-accent-500/20 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-20 right-10 w-96 h-96 bg-harvest-500/20 rounded-full blur-3xl"></div>
-
+      <section className="relative min-h-[60vh] flex items-center justify-center pt-32 pb-20 overflow-hidden">
+        {/* Background Image */}
+        <div className="absolute inset-0">
+          <img
+            src="/images/happy_african_children.jpg"
+            alt="Happy African children - the future we're building together"
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-harvest-900/90 via-clay-900/85 to-sage-900/90"></div>
+        </div>
         <div className="container-custom relative z-10">
           <motion.div
             className="max-w-4xl mx-auto text-center"
@@ -205,12 +170,13 @@ const GetInvolvedPage = () => {
             animate="animate"
             variants={fadeInUp}
           >
-            <h1 className="text-5xl md:text-6xl lg:text-7xl font-display font-bold text-gray-900 mb-6">
+            <span className="text-overline text-white">Join Us</span>
+            <h1 className="text-display text-white mt-3 mb-6">
               Be Part of the{' '}
-              <span className="bg-gradient-to-r from-accent-600 via-sage-600 to-accent-700 bg-clip-text text-transparent">Change</span>
+              <span className="text-harvest-300">Change</span>
             </h1>
-            <p className="text-xl md:text-2xl text-gray-700">
-              Real change begins when ordinary people come together with a shared purpose to nurture the earth, empower farmers, and make healthy food accessible to all.
+            <p className="text-subtitle text-white">
+              Real change begins when ordinary people come together with a shared purpose to <span className="font-bold">nurture the earth</span>, <span className="font-bold">empower farmers</span>, and make <span className="font-bold">healthy food accessible to all</span>.
             </p>
           </motion.div>
         </div>
@@ -229,11 +195,12 @@ const GetInvolvedPage = () => {
             viewport={{ once: true }}
             variants={fadeInUp}
           >
-            <h2 className="text-4xl md:text-5xl font-display font-bold text-gray-900 mb-4">
+            <span className="text-kicker text-harvest-600">Make an Impact</span>
+            <h2 className="text-hero text-gray-900 mt-3 mb-6">
               How You Can Help
             </h2>
-            <p className="text-xl text-gray-700">
-              Choose the way that works best for you
+            <p className="text-subtitle text-gray-600">
+              Choose the way that <span className="text-gradient-accent font-bold">works best for you</span>
             </p>
           </motion.div>
 
@@ -297,11 +264,12 @@ const GetInvolvedPage = () => {
             variants={fadeInUp}
           >
             <div className="text-center mb-12">
-              <h2 className="text-4xl md:text-5xl font-display font-bold text-gray-900 mb-4">
+              <span className="text-kicker text-harvest-600">See Your Contribution</span>
+              <h2 className="text-hero text-gray-900 mt-3 mb-6">
                 Your Impact
               </h2>
-              <p className="text-xl text-gray-700">
-                Every donation, big or small, directly supports sustainable farming and empowerment
+              <p className="text-subtitle text-gray-600">
+                Every donation, big or small, directly supports <span className="text-gradient-warm font-bold">sustainable farming</span> and <span className="text-gradient-accent font-bold">empowerment</span>
               </p>
             </div>
 
@@ -332,22 +300,50 @@ const GetInvolvedPage = () => {
               className="mt-12 text-center"
               whileHover={{ scale: 1.02 }}
             >
-              <div className="bg-gradient-to-br from-primary-700 to-primary-800 rounded-2xl p-10 text-white shadow-2xl">
+              <div className="bg-gradient-to-br from-accent-700 via-sage-700 to-accent-800 rounded-2xl p-10 text-white shadow-2xl">
                 <h3 className="text-2xl font-display font-bold mb-4">
                   Ready to Make a Difference?
                 </h3>
-                <p className="text-lg mb-6 opacity-90">
-                  Choose a donation amount or enter your own
+                <p className="text-lg mb-8 opacity-90">
+                  Support our mission through secure donations
                 </p>
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={handleDonate}
-                  className="bg-white text-primary-700 px-10 py-4 rounded-full font-semibold text-lg shadow-xl hover:shadow-2xl transition-shadow flex items-center gap-2 mx-auto"
-                >
-                  <FiHeart className="w-5 h-5" />
-                  Donate Now
-                </motion.button>
+
+                {/* Donation Options */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl mx-auto">
+                  {/* PayPal Option */}
+                  <motion.a
+                    href="https://www.paypal.com/donate"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="bg-white text-accent-700 px-8 py-5 rounded-xl font-semibold text-lg shadow-xl hover:shadow-2xl transition-all flex flex-col items-center gap-3 group"
+                  >
+                    <FiGlobe className="w-8 h-8 group-hover:scale-110 transition-transform" />
+                    <div>
+                      <div className="font-bold">PayPal</div>
+                      <div className="text-sm text-gray-600">International Donations</div>
+                    </div>
+                  </motion.a>
+
+                  {/* M-Pesa / Bank Transfer */}
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={handleDonate}
+                    className="bg-white text-accent-700 px-8 py-5 rounded-xl font-semibold text-lg shadow-xl hover:shadow-2xl transition-all flex flex-col items-center gap-3 group"
+                  >
+                    <FiPhone className="w-8 h-8 group-hover:scale-110 transition-transform" />
+                    <div>
+                      <div className="font-bold">M-Pesa / Bank</div>
+                      <div className="text-sm text-gray-600">Contact for Details</div>
+                    </div>
+                  </motion.button>
+                </div>
+
+                <p className="text-sm mt-6 opacity-75">
+                  All donations support farmer training, organic production, and sustainable food systems
+                </p>
               </div>
             </motion.div>
           </motion.div>
@@ -355,7 +351,7 @@ const GetInvolvedPage = () => {
       </section>
 
       {/* Partnership Opportunities - Glassmorphism */}
-      <section className="section-padding bg-gradient-to-br from-primary-600 via-earth-600 to-harvest-600 text-white relative overflow-hidden">
+      <section className="section-padding bg-gradient-to-br from-harvest-600 via-clay-600 to-sage-700 text-white relative overflow-hidden">
         {/* Decorative Glowing Orbs */}
         <div className="absolute top-10 left-10 w-96 h-96 bg-accent-500/20 rounded-full blur-3xl"></div>
         <div className="absolute bottom-10 right-10 w-96 h-96 bg-sage-500/20 rounded-full blur-3xl"></div>
@@ -368,11 +364,12 @@ const GetInvolvedPage = () => {
             variants={fadeInUp}
           >
             <div className="text-center mb-12">
-              <h2 className="text-4xl md:text-5xl font-display font-bold mb-4">
+              <span className="text-overline text-white">Collaborate With Us</span>
+              <h2 className="text-hero text-white mt-3 mb-6">
                 Partnership Opportunities
               </h2>
-              <p className="text-xl opacity-90">
-                We welcome collaboration with organizations and individuals
+              <p className="text-subtitle text-white">
+                We welcome <span className="font-bold">collaboration</span> with organizations and individuals
               </p>
             </div>
 
@@ -403,55 +400,6 @@ const GetInvolvedPage = () => {
         </div>
       </section>
 
-      {/* Newsletter */}
-      <section className="section-padding gradient-earth">
-        <div className="container-custom">
-          <motion.div
-            className="max-w-3xl mx-auto bg-white rounded-2xl p-10 shadow-xl"
-            initial="initial"
-            whileInView="animate"
-            viewport={{ once: true }}
-            variants={fadeInUp}
-          >
-            <div className="text-center">
-              <FiMail className="w-12 h-12 mx-auto mb-4 text-primary-600" />
-              <h2 className="text-3xl font-display font-bold text-gray-900 mb-4">
-                Stay Connected
-              </h2>
-              <p className="text-lg text-gray-700 mb-8">
-                Sign up for our newsletter to receive updates, impact stories, and opportunities to get involved
-              </p>
-              <form onSubmit={handleSubscribe} className="max-w-md mx-auto">
-                <div className="flex flex-col sm:flex-row gap-4">
-                  <input
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="Enter your email"
-                    className="flex-1 px-6 py-4 rounded-full border-2 border-primary-200 focus:outline-none focus:ring-2 focus:ring-primary-500"
-                    disabled={subscribing}
-                  />
-                  <motion.button
-                    type="submit"
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    disabled={subscribing}
-                    className="gradient-primary text-white px-8 py-4 rounded-full font-semibold shadow-lg hover:shadow-xl transition-shadow whitespace-nowrap disabled:opacity-50"
-                  >
-                    {subscribing ? 'Subscribing...' : 'Subscribe'}
-                  </motion.button>
-                </div>
-                {subscribeMessage && (
-                  <p className={`text-sm mt-4 ${subscribeMessage.includes('Successfully') ? 'text-green-600' : 'text-red-600'}`}>
-                    {subscribeMessage}
-                  </p>
-                )}
-              </form>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
       {/* Contact Section */}
       <section id="contact-section" className="section-padding bg-white">
         <div className="container-custom">
@@ -463,11 +411,12 @@ const GetInvolvedPage = () => {
             variants={fadeInUp}
           >
             <div className="text-center mb-12">
-              <h2 className="text-4xl md:text-5xl font-display font-bold text-gray-900 mb-4">
+              <span className="text-kicker text-harvest-600">Reach Out</span>
+              <h2 className="text-hero text-gray-900 mt-3 mb-6">
                 Get in Touch
               </h2>
-              <p className="text-xl text-gray-700">
-                Have questions? Want to partner? We'd love to hear from you.
+              <p className="text-subtitle text-gray-600">
+                Have questions? Want to partner? <span className="text-gradient-accent font-bold">We'd love to hear from you</span>.
               </p>
             </div>
 
@@ -508,7 +457,7 @@ const GetInvolvedPage = () => {
                   <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    className="w-full gradient-primary text-white px-6 py-4 rounded-full font-semibold shadow-lg hover:shadow-xl transition-shadow"
+                    className="w-full bg-gradient-to-r from-harvest-600 via-clay-600 to-sage-700 text-white px-6 py-4 rounded-full font-semibold shadow-lg hover:shadow-xl transition-shadow"
                   >
                     Send Message
                   </motion.button>

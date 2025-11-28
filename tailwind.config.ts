@@ -107,8 +107,22 @@ const config: Config = {
         }
       },
       fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
+        sans: ['Arvo', 'Georgia', 'serif'],
         display: ['Poppins', 'system-ui', 'sans-serif'],
+        cursive: ['Dancing Script', 'Courgette', 'Pacifico', 'cursive'],
+      },
+      fontSize: {
+        xs: ['0.875rem', { lineHeight: '1.5' }],
+        sm: ['1rem', { lineHeight: '1.6' }],
+        base: ['1.125rem', { lineHeight: '1.7' }],
+        lg: ['1.25rem', { lineHeight: '1.7' }],
+        xl: ['1.375rem', { lineHeight: '1.6' }],
+        '2xl': ['1.625rem', { lineHeight: '1.5' }],
+        '3xl': ['2rem', { lineHeight: '1.4' }],
+        '4xl': ['2.5rem', { lineHeight: '1.3' }],
+        '5xl': ['3.25rem', { lineHeight: '1.2' }],
+        '6xl': ['4rem', { lineHeight: '1.1' }],
+        '7xl': ['5rem', { lineHeight: '1' }],
       },
     },
   },
