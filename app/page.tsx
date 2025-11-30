@@ -80,37 +80,28 @@ const HomePage = () => {
   return (
     <div className="bg-white">
       {/* Hero Section - Glassmorphism Style */}
-      <section className="relative min-h-[90vh] flex items-center bg-gradient-to-br from-earth-50 via-primary-50 to-harvest-50 pt-24 pb-16 overflow-hidden">
+      <section className="relative min-h-screen flex items-center bg-gradient-to-br from-earth-50 via-primary-50 to-harvest-50 pt-32 pb-20 md:pt-40 md:pb-24 overflow-hidden">
         {/* Decorative Glowing Orbs */}
         <div className="absolute top-20 left-10 w-96 h-96 bg-accent-500/20 rounded-full blur-3xl"></div>
         <div className="absolute bottom-20 right-10 w-96 h-96 bg-harvest-500/20 rounded-full blur-3xl"></div>
 
         <div className="container-custom relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 items-center">
-            {/* Left Side - Text Content (3/5) */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 xl:gap-20 items-center">
+            {/* Left Side - Text Content */}
             <motion.div
               initial="initial"
               animate="animate"
               variants={fadeInLeft}
-              className="lg:col-span-3 space-y-6"
+              className="space-y-8 md:space-y-10"
             >
-              {/* Overline Badge */}
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 }}
-              >
-                <span className="text-overline">IFOAM Ambassador • Food Systems Fellow • Master Trainer</span>
-              </motion.div>
-
               {/* Main Heading with Dynamic Sizing */}
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 }}
-                className="space-y-3"
+                className="space-y-4 md:space-y-6"
               >
-                <h1 className="text-display">
+                <h1 className="text-display leading-none">
                   Empowering
                   <br />
                   <span className="text-gradient-accent">Communities</span>
@@ -122,16 +113,16 @@ const HomePage = () => {
 
               {/* Description with Varied Sizing */}
               <motion.div
-                className="space-y-4"
+                className="space-y-5 md:space-y-6"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.3 }}
               >
                 <p className="text-body-lg max-w-2xl">
                   Growing more than food — we're growing{' '}
-                  <span className="text-highlight font-semibold">awareness</span>,{' '}
-                  <span className="text-highlight font-semibold">opportunity</span>, and a{' '}
-                  <span className="text-highlight font-semibold">healthier planet</span>.
+                  <span className="font-semibold text-accent-700">awareness</span>,{' '}
+                  <span className="font-semibold text-accent-700">opportunity</span>, and a{' '}
+                  <span className="font-semibold text-accent-700">healthier planet</span>.
                 </p>
                 <div className="flex flex-wrap gap-3">
                   <span className="text-pill">🌱 1,000+ Farmers Trained</span>
@@ -142,7 +133,7 @@ const HomePage = () => {
 
               {/* CTA Buttons */}
               <motion.div
-                className="flex flex-col sm:flex-row gap-4 pt-4"
+                className="flex flex-col sm:flex-row gap-4 pt-2"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.4 }}
@@ -151,7 +142,7 @@ const HomePage = () => {
                   <motion.button
                     whileHover={{ scale: 1.05, y: -2 }}
                     whileTap={{ scale: 0.98 }}
-                    className="bg-gradient-to-r from-accent-600 to-sage-600 hover:from-accent-700 hover:to-sage-700 text-white px-8 py-4 rounded-full font-semibold shadow-2xl hover:shadow-accent-500/50 transition-all flex items-center gap-2"
+                    className="bg-gradient-to-r from-accent-600 to-sage-600 hover:from-accent-700 hover:to-sage-700 text-white px-8 py-4 md:py-5 rounded-full font-semibold text-base md:text-lg shadow-2xl hover:shadow-accent-500/50 transition-all flex items-center justify-center gap-2 w-full sm:w-auto"
                   >
                     Discover Our Story
                     <FiArrowRight className="w-5 h-5" />
@@ -161,7 +152,7 @@ const HomePage = () => {
                   <motion.button
                     whileHover={{ scale: 1.05, y: -2 }}
                     whileTap={{ scale: 0.98 }}
-                    className="glass-card hover:bg-white/90 text-gray-900 px-8 py-4 rounded-full font-semibold shadow-xl hover:shadow-2xl transition-all flex items-center gap-2"
+                    className="glass-card hover:bg-white/90 text-gray-900 px-8 py-4 md:py-5 rounded-full font-semibold text-base md:text-lg shadow-xl hover:shadow-2xl transition-all flex items-center justify-center gap-2 w-full sm:w-auto"
                   >
                     <FiHeart className="w-5 h-5 text-accent-600" />
                     Get Involved
@@ -171,69 +162,73 @@ const HomePage = () => {
 
               {/* Stats Row with Gradients */}
               <motion.div
-                className="grid grid-cols-2 sm:grid-cols-4 gap-6 pt-8 mt-8"
+                className="grid grid-cols-2 sm:grid-cols-4 gap-6 md:gap-8 pt-8 border-t border-gray-200/50"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.5 }}
               >
                 <div>
-                  <div className="text-3xl font-bold bg-gradient-to-r from-accent-600 to-sage-600 bg-clip-text text-transparent">1,000+</div>
-                  <div className="text-sm text-gray-700 mt-1 font-medium">Farmers Trained</div>
+                  <div className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-accent-600 to-sage-600 bg-clip-text text-transparent">1,000+</div>
+                  <div className="text-sm md:text-base text-gray-700 mt-2 font-medium">Farmers Trained</div>
                 </div>
                 <div>
-                  <div className="text-3xl font-bold bg-gradient-to-r from-harvest-600 to-clay-600 bg-clip-text text-transparent">5+</div>
-                  <div className="text-sm text-gray-700 mt-1 font-medium">Tonnes Monthly</div>
+                  <div className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-harvest-600 to-clay-600 bg-clip-text text-transparent">5+</div>
+                  <div className="text-sm md:text-base text-gray-700 mt-2 font-medium">Tonnes Monthly</div>
                 </div>
                 <div>
-                  <div className="text-3xl font-bold bg-gradient-to-r from-primary-600 to-earth-600 bg-clip-text text-transparent">50+</div>
-                  <div className="text-sm text-gray-700 mt-1 font-medium">Partners</div>
+                  <div className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary-600 to-earth-600 bg-clip-text text-transparent">50+</div>
+                  <div className="text-sm md:text-base text-gray-700 mt-2 font-medium">Partners</div>
                 </div>
                 <div>
-                  <div className="text-3xl font-bold bg-gradient-to-r from-sage-600 to-accent-600 bg-clip-text text-transparent">2,000+</div>
-                  <div className="text-sm text-gray-700 mt-1 font-medium">Trees Planted</div>
+                  <div className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-sage-600 to-accent-600 bg-clip-text text-transparent">2,000+</div>
+                  <div className="text-sm md:text-base text-gray-700 mt-2 font-medium">Trees Planted</div>
                 </div>
               </motion.div>
             </motion.div>
 
-            {/* Right Side - Sylvia's Photo (2/5) */}
+            {/* Right Side - Sylvia's Photo */}
             <motion.div
               initial="initial"
               animate="animate"
               variants={fadeInRight}
-              className="lg:col-span-2 relative"
+              className="relative order-first lg:order-last"
             >
               {/* Main Image Card with Glassmorphism */}
-              <div className="relative h-[500px] lg:h-[600px] rounded-3xl overflow-hidden shadow-2xl ring-2 ring-white/20">
+              <div className="relative h-[550px] md:h-[650px] lg:h-[700px] rounded-3xl overflow-hidden shadow-2xl ring-2 ring-white/20">
                 {/* Sylvia's Photo with gradient overlay */}
                 <img
                   src="/images/sylvia-hero_1.jpg"
                   alt="Sylvia Kuria - Founder of Sylvia's Basket"
-                  className="w-full h-full object-cover object-center"
+                  className="w-full h-full object-cover object-top"
                 />
-                {/* Gradient overlay - bottom transparent, top slightly visible */}
-                <div className="absolute inset-0 bg-gradient-to-t from-white/0 via-gray-900/5 to-gray-900/20"></div>
+                {/* Gradient overlay - very subtle, only at bottom to help text readability */}
+                <div className="absolute inset-0 bg-gradient-to-t from-gray-900/30 via-transparent to-transparent"></div>
 
-                {/* Glass Info Card Overlay */}
+                {/* Glass Info Card Overlay - Minimal */}
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.7 }}
-                  className="absolute bottom-6 left-6 right-6 glass-card p-6 rounded-2xl shadow-2xl"
+                  className="absolute bottom-4 md:bottom-6 left-4 md:left-6 right-4 md:right-6 glass-card p-4 rounded-xl shadow-2xl"
                 >
-                  <h3 className="font-display font-bold text-xl text-gray-900 mb-1">
-                    Sylvia Kuria
-                  </h3>
-                  <p className="text-sm font-semibold mb-3 bg-gradient-to-r from-accent-600 to-sage-600 bg-clip-text text-transparent">
-                    Founder & CEO | Organic Farming Advocate
-                  </p>
-                  <p className="text-sm text-gray-800 italic leading-relaxed">
+                  <div className="flex items-center justify-between gap-3 mb-2">
+                    <div>
+                      <h3 className="font-display font-bold text-base md:text-lg text-gray-900">
+                        Sylvia Kuria
+                      </h3>
+                      <p className="text-xs font-semibold bg-gradient-to-r from-accent-600 to-sage-600 bg-clip-text text-transparent">
+                        Founder & CEO
+                      </p>
+                    </div>
+                  </div>
+                  <p className="text-xs md:text-sm text-gray-800 italic leading-snug">
                     "My vision is to train and support as many farmers as possible so we can leave a lasting legacy for our children."
                   </p>
                 </motion.div>
 
                 {/* Certified Glass Badge */}
-                <div className="absolute top-6 right-6 glass-card px-4 py-2 rounded-full shadow-xl">
-                  <span className="text-sm font-semibold bg-gradient-to-r from-accent-700 to-sage-700 bg-clip-text text-transparent">🌱 Organic Certified</span>
+                <div className="absolute top-6 md:top-8 right-6 md:right-8 glass-card px-4 py-2 rounded-full shadow-xl">
+                  <span className="text-xs md:text-sm font-semibold bg-gradient-to-r from-accent-700 to-sage-700 bg-clip-text text-transparent">🌱 Organic Certified</span>
                 </div>
               </div>
             </motion.div>
@@ -674,45 +669,169 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* CTA Section - Clean */}
-      <section className="py-20 bg-accent-50">
-        <div className="container-custom">
-          <motion.div
-            className="max-w-3xl mx-auto text-center"
-            initial="initial"
-            whileInView="animate"
-            viewport={{ once: true }}
-            variants={fadeInUp}
-          >
-            <h2 className="text-3xl md:text-4xl font-display font-bold text-gray-900 mb-4">
-              Be Part of the Change
-            </h2>
-            <p className="text-lg text-gray-600 mb-10">
-              Join us in making organic and agro-ecological farming the norm, not the exception.
-            </p>
-
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/get-involved">
-                <motion.button
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  className="bg-accent-600 hover:bg-accent-700 text-white px-8 py-4 rounded-lg font-semibold shadow-sm hover:shadow-md transition-all flex items-center gap-2"
-                >
-                  <FiHeart className="w-5 h-5" />
-                  Donate to Support Our Mission
-                </motion.button>
-              </Link>
-              <Link href="/farmers-stories">
-                <motion.button
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  className="bg-white hover:bg-gray-50 text-gray-900 px-8 py-4 rounded-lg font-semibold border-2 border-gray-300 hover:border-gray-400 transition-all"
-                >
-                  Read Farmers' Stories
-                </motion.button>
-              </Link>
+      {/* CTA Section - Creative Split Design */}
+      <section className="relative overflow-hidden bg-white">
+        <div className="grid grid-cols-1 lg:grid-cols-2 min-h-[600px]">
+          {/* Left Side - Image with Overlay Content */}
+          <div className="relative bg-gradient-to-br from-harvest-600 via-clay-600 to-sage-700 overflow-hidden">
+            {/* Background Pattern */}
+            <div className="absolute inset-0 opacity-20">
+              <img
+                src="/images/woman_planting.jpg"
+                alt="Farmer planting"
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-br from-harvest-600/80 to-sage-700/80"></div>
             </div>
-          </motion.div>
+
+            {/* Animated Circles */}
+            <div className="absolute top-20 left-20 w-64 h-64 bg-accent-400/30 rounded-full blur-3xl animate-pulse"></div>
+            <div className="absolute bottom-20 right-20 w-80 h-80 bg-harvest-300/30 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
+
+            {/* Content */}
+            <div className="relative z-10 h-full flex flex-col justify-center p-8 md:p-12 lg:p-16">
+              <motion.div
+                initial={{ opacity: 0, x: -40 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6 }}
+              >
+                <div className="inline-block px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full mb-6">
+                  <span className="text-sm font-bold text-white uppercase tracking-wider">Your Impact Matters</span>
+                </div>
+
+                <h2 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-white mb-6 leading-tight">
+                  Be Part of the{' '}
+                  <span className="font-cursive text-harvest-200 block mt-2">Revolution</span>
+                </h2>
+
+                <p className="text-xl text-white/90 mb-8 leading-relaxed max-w-xl">
+                  Every contribution helps us train more farmers, plant more trees, and build a sustainable food future for Africa.
+                </p>
+
+                {/* Impact Cards */}
+                <div className="grid grid-cols-2 gap-4 mb-8">
+                  <motion.div
+                    whileHover={{ scale: 1.05, rotate: 2 }}
+                    className="bg-white/10 backdrop-blur-md rounded-2xl p-4 border border-white/20"
+                  >
+                    <div className="text-3xl font-bold text-white">1,000+</div>
+                    <div className="text-sm text-white/80">Farmers Trained</div>
+                  </motion.div>
+                  <motion.div
+                    whileHover={{ scale: 1.05, rotate: -2 }}
+                    className="bg-white/10 backdrop-blur-md rounded-2xl p-4 border border-white/20"
+                  >
+                    <div className="text-3xl font-bold text-white">2,000+</div>
+                    <div className="text-sm text-white/80">Trees Planted</div>
+                  </motion.div>
+                </div>
+
+                <Link href="/get-involved">
+                  <motion.button
+                    whileHover={{ scale: 1.05, x: 5 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="bg-white text-harvest-700 px-8 py-4 rounded-full font-bold text-lg shadow-2xl hover:shadow-white/50 transition-all flex items-center gap-3 group"
+                  >
+                    <FiHeart className="w-6 h-6 group-hover:scale-110 transition-transform" />
+                    Support Our Mission
+                    <FiArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                  </motion.button>
+                </Link>
+              </motion.div>
+            </div>
+          </div>
+
+          {/* Right Side - Interactive Cards */}
+          <div className="bg-gradient-to-br from-accent-50 via-white to-sage-50 p-8 md:p-12 lg:p-16 flex flex-col justify-center">
+            <motion.div
+              initial={{ opacity: 0, x: 40 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="space-y-6"
+            >
+              <div className="mb-8">
+                <span className="text-kicker text-harvest-600">Get Involved Today</span>
+                <h3 className="text-3xl md:text-4xl font-display font-bold text-gray-900 mt-2 mb-4">
+                  Choose Your Impact
+                </h3>
+                <p className="text-lg text-gray-600">
+                  Multiple ways to make a difference in sustainable agriculture
+                </p>
+              </div>
+
+              {/* Interactive Option Cards */}
+              <motion.div
+                whileHover={{ x: 10 }}
+                className="group"
+              >
+                <Link href="/get-involved">
+                  <div className="glass-card p-6 rounded-2xl shadow-lg hover:shadow-2xl transition-all cursor-pointer border-l-4 border-accent-500">
+                    <div className="flex items-start justify-between mb-3">
+                      <div className="w-12 h-12 bg-gradient-to-br from-accent-500 to-sage-600 rounded-xl flex items-center justify-center text-white shadow-lg group-hover:scale-110 transition-transform">
+                        <FiHeart className="w-6 h-6" />
+                      </div>
+                      <FiArrowRight className="w-5 h-5 text-accent-600 opacity-0 group-hover:opacity-100 transition-opacity" />
+                    </div>
+                    <h4 className="text-xl font-bold text-gray-900 mb-2">Make a Donation</h4>
+                    <p className="text-gray-600 leading-relaxed">
+                      Directly support farmer training programs and organic agriculture initiatives across Kenya
+                    </p>
+                    <div className="mt-4 text-sm font-semibold text-accent-600">
+                      Learn More →
+                    </div>
+                  </div>
+                </Link>
+              </motion.div>
+
+              <motion.div
+                whileHover={{ x: 10 }}
+                className="group"
+              >
+                <Link href="/farmers-stories">
+                  <div className="glass-card p-6 rounded-2xl shadow-lg hover:shadow-2xl transition-all cursor-pointer border-l-4 border-harvest-500">
+                    <div className="flex items-start justify-between mb-3">
+                      <div className="w-12 h-12 bg-gradient-to-br from-harvest-500 to-clay-600 rounded-xl flex items-center justify-center text-white shadow-lg group-hover:scale-110 transition-transform">
+                        <FiUsers className="w-6 h-6" />
+                      </div>
+                      <FiArrowRight className="w-5 h-5 text-harvest-600 opacity-0 group-hover:opacity-100 transition-opacity" />
+                    </div>
+                    <h4 className="text-xl font-bold text-gray-900 mb-2">Read Success Stories</h4>
+                    <p className="text-gray-600 leading-relaxed">
+                      Discover how farmers are transforming their lives through organic farming practices
+                    </p>
+                    <div className="mt-4 text-sm font-semibold text-harvest-600">
+                      Explore Stories →
+                    </div>
+                  </div>
+                </Link>
+              </motion.div>
+
+              <motion.div
+                whileHover={{ x: 10 }}
+                className="group"
+              >
+                <Link href="/our-work">
+                  <div className="glass-card p-6 rounded-2xl shadow-lg hover:shadow-2xl transition-all cursor-pointer border-l-4 border-sage-500">
+                    <div className="flex items-start justify-between mb-3">
+                      <div className="w-12 h-12 bg-gradient-to-br from-sage-500 to-accent-600 rounded-xl flex items-center justify-center text-white shadow-lg group-hover:scale-110 transition-transform">
+                        <FiTarget className="w-6 h-6" />
+                      </div>
+                      <FiArrowRight className="w-5 h-5 text-sage-600 opacity-0 group-hover:opacity-100 transition-opacity" />
+                    </div>
+                    <h4 className="text-xl font-bold text-gray-900 mb-2">Explore Our Programs</h4>
+                    <p className="text-gray-600 leading-relaxed">
+                      See the full scope of our training, advocacy, and community development work
+                    </p>
+                    <div className="mt-4 text-sm font-semibold text-sage-600">
+                      View Programs →
+                    </div>
+                  </div>
+                </Link>
+              </motion.div>
+            </motion.div>
+          </div>
         </div>
       </section>
 

@@ -107,9 +107,9 @@ const config: Config = {
         }
       },
       fontFamily: {
-        sans: ['Arvo', 'Georgia', 'serif'],
-        display: ['Poppins', 'system-ui', 'sans-serif'],
-        cursive: ['Dancing Script', 'Courgette', 'Pacifico', 'cursive'],
+        sans: ['Inter', 'system-ui', 'sans-serif'],
+        display: ['Poppins', 'Inter', 'sans-serif'],
+        cursive: ['Caveat', 'cursive'],
       },
       fontSize: {
         xs: ['0.875rem', { lineHeight: '1.5' }],

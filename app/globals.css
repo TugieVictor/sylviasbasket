@@ -5,6 +5,9 @@
 @layer base {
   body {
     @apply bg-white text-gray-900 antialiased font-sans text-base;
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   h1 {
@@ -25,14 +28,17 @@
 
   p {
     @apply text-base leading-relaxed;
+    font-weight: 400;
   }
 
   .lead {
-    @apply text-xl md:text-2xl lg:text-3xl font-light leading-relaxed text-gray-700;
+    @apply text-xl md:text-2xl lg:text-3xl leading-relaxed text-gray-700;
+    font-weight: 300;
   }
 
   a {
     @apply font-sans;
+    font-weight: 500;
   }
 }
 
@@ -43,11 +49,11 @@
 
   /* Font Families */
   .font-cursive {
-    font-family: 'Dancing Script', 'Courgette', 'Pacifico', cursive !important;
+    font-family: 'Caveat', cursive !important;
   }
 
   .font-display {
-    font-family: 'Poppins', system-ui, sans-serif !important;
+    font-family: 'Poppins', 'Inter', sans-serif !important;
   }
 
   /* Typography Styles - Figma Inspired */
@@ -72,7 +78,8 @@
   }
 
   .text-subtitle {
-    @apply text-lg md:text-xl lg:text-2xl font-light leading-relaxed;
+    @apply text-lg md:text-xl lg:text-2xl leading-relaxed;
+    font-weight: 300;
   }
 
   .text-body-lg {

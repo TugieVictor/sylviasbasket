@@ -22,6 +22,7 @@ const Navigation = () => {
   const navLinks = [
     { href: '/about/', label: 'About' },
     { href: '/our-work/', label: 'Our Work' },
+    { href: '/advocacy/', label: 'Advocacy' },
     { href: '/markets/', label: 'Markets' },
     { href: '/farmers-stories/', label: 'Farmers Stories' },
     { href: '/news/', label: 'News & Blog' },
