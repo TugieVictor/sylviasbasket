@@ -22,76 +22,86 @@ const FarmersStoriesPage = () => {
 
   const stories = [
     {
-      name: 'Mary Wanjiku',
-      location: 'Kiambu County',
-      role: 'Organic Vegetable Farmer',
-      story: 'After joining Sylvia\'s training program, I learned how to grow vegetables without chemicals. Now my family eats healthy food, and I sell surplus produce at the local market. My income has tripled, and I\'m training other women in my community.',
-      impact: 'Income increased by 300%',
-      icon: <GiFarmer className="w-12 h-12" />,
-      color: 'from-primary-500 to-primary-600'
+      name: 'Joseph Kimani Njuguna',
+      location: 'Gathiriga-Gatundu South, Kiambu County',
+      farmName: 'Kimstle Organics Farm',
+      story: 'I started my journey into organic farming in 2003 when I joined the Kenya Institute of Organic Farming (KIOF) and in 2021, we officially launched the commercial side of my farm, Kimstle Organics Farm. We practice organic farming because we want our family, farm workers, and neighbors to eat safe and healthy food. We want our customers to enjoy the same, as it is important to us to avoid exposing anyone to harsh chemicals. Through our farm, we have been able to produce almost 70% of what our family consumes and have become a hub for organic tomatoes and other vegetables for neighborhood customers, institutions and other individual customers around Nairobi.',
+      image: '/images/farmers_stories/Joseph_kimani.jpg',
+      color: 'from-harvest-500 to-clay-600'
     },
     {
-      name: 'James Kamau',
-      location: 'Limuru',
-      role: 'Youth Farmer & Trainer',
-      story: 'I thought farming was for old people until I met Sylvia. She showed me that organic farming can be profitable and sustainable. Now I run my own 2-acre farm and mentor other young people interested in agriculture.',
-      impact: 'Mentoring 15 youth farmers',
-      icon: <FiUsers className="w-12 h-12" />,
-      color: 'from-harvest-500 to-harvest-600'
+      name: 'Ruth Oloo',
+      location: 'Near Bondo Town, Siaya County',
+      farmName: 'Pawpaw Farm',
+      story: 'I started growing pawpaw about three years ago, just behind my house, mainly for my family to enjoy. I grow the trees under rain fed conditions, using farm manure to keep the soil fertile. As the pawpaws began to yield more than we could eat, I started giving the extra fruit to friends and family. Through this little network, I was introduced to Sylvia\'s Basket—and it has been smiles ever since!',
+      image: '/images/farmers_stories/ruth_oloo.jpg',
+      color: 'from-accent-500 to-sage-600'
     },
     {
-      name: 'Grace Njeri',
-      location: 'Kiambu',
-      role: 'Community Leader',
-      story: 'Sylvia\'s Basket helped us form a women\'s farming group. We now aggregate our produce together and access better markets. What started with 5 women has grown to 30, and we\'re supporting each other beyond farming.',
-      impact: '30-member cooperative formed',
-      icon: <FiHeart className="w-12 h-12" />,
-      color: 'from-earth-600 to-earth-700'
+      name: 'Daniel Musimbi',
+      location: 'Shimba Hills, Kwale County',
+      farmName: 'Organic Fruit Farm',
+      story: 'I have been practicing organic farming for over five years, growing mainly fruits such as oranges, tangerines, coconuts, pawpaws, lemons, limes, mangoes and passions. For me, organic farming is more than a method—it is a way to care for the soil, improve fertility, and protect the health of my family and community by avoiding harmful chemicals.',
+      image: '/images/farmers_stories/daniel_musembi.jpg',
+      color: 'from-primary-500 to-earth-600'
     },
     {
-      name: 'Peter Kariuki',
-      location: 'Limuru',
-      role: 'Sustainable Farmer',
-      story: 'I was using expensive chemical fertilizers that were destroying my soil. Through Sylvia\'s training, I learned about composting and natural pest management. My soil is healthier, costs are down, and my yields are better than ever.',
-      impact: 'Reduced costs by 60%',
-      icon: <GiPlantSeed className="w-12 h-12" />,
-      color: 'from-primary-500 to-primary-600'
+      name: 'Fred Odhiambo',
+      location: 'Rongo, Migori County',
+      farmName: 'Diverse Organic Farm',
+      story: 'I have been practicing organic farming for several years and I grow a variety of crops including ginger, turmeric, pineapples, maize and other nutritious produce. All these are cultivated using natural compost, manure, and eco-friendly methods. I believe that healthy soil produces healthy food, which in turn creates healthy wealth for our families and community.',
+      image: '/images/farmers_stories/fred_odhiambo.jpg',
+      color: 'from-sage-500 to-accent-600'
     },
     {
-      name: 'Lucy Muthoni',
-      location: 'Kiambu County',
-      role: 'Organic Farmer',
-      story: 'As a single mother, I needed a reliable income. Sylvia taught me organic farming techniques and connected me with buyers. Now I support my three children through school with income from my farm, and I have hope for the future.',
-      impact: 'Supporting 3 children\'s education',
-      icon: <FiTrendingUp className="w-12 h-12" />,
-      color: 'from-harvest-500 to-harvest-600'
+      name: 'Eunice Kihago Gimode',
+      location: 'Mulundu-Sabatia, Vihiga County',
+      farmName: 'Organic Banana Farm',
+      story: 'We have been practicing organic farming mainly for health reasons. We want to avoid the adverse effects of chemicals and pesticides, ensuring that the food we grow is safe and nutritious for our family, our workers, and our customers. For the past ten years, the ripening bananas and matoke we supply to Sylvia\'s Basket have been fully organic, grown with care using natural compost and sustainable farming practices.',
+      image: '/images/farmers_stories/eunice_kihago.jpg',
+      color: 'from-harvest-600 to-clay-700'
     },
     {
-      name: 'David Mwangi',
-      location: 'Limuru',
-      role: 'Agroecology Advocate',
-      story: 'Sylvia inspired me to not just farm organically, but to advocate for sustainable agriculture in my community. I now serve on our local farmers\' committee and help shape policies that support small-scale organic farmers.',
-      impact: 'Influencing local policy',
-      icon: <FiUsers className="w-12 h-12" />,
-      color: 'from-earth-600 to-earth-700'
+      name: 'Harun Mwangi',
+      location: 'Githunguri, Kiambu County',
+      farmName: 'Sustainable Mixed Farm',
+      story: 'On our farm we grow a variety of crops—orange sweet potatoes, arrowroots, matoke, pumpkins and hass avocados. We chose to practice organic farming because it is not only better for the environment but also sustainable and cost-effective in the long run. By avoiding harmful chemicals and synthetic inputs, our farming methods are safe for both the farmers and the land. This ensures that our crops are grown in a healthy, toxin-free environment, producing food that is more nutritious for consumers.',
+      image: '/images/farmers_stories/harun_mwangi.jpg',
+      color: 'from-clay-500 to-harvest-600'
+    },
+    {
+      name: 'Harriet Ng\'ok',
+      location: 'Sotik, Bomet County',
+      farmName: 'Community Organic Farm',
+      story: 'We have been practicing organic farming for the past five years. We believe that organic farming is essential for providing high-value, nutritious food for our families and the wider community. On our farm, we grow a wide variety of produce including plantains, matoke, sweet bananas, vegetables, maize, onions, avocados, pumpkins, and even indigenous medicinal plants. All of our crops are cultivated using natural methods that maintain soil fertility and avoid harmful chemicals, ensuring that the food we provide is safe, healthy, and flavorful.',
+      image: '/images/farmers_stories/harriet_ngok.jpg',
+      color: 'from-accent-600 to-sage-700'
+    },
+    {
+      name: 'Jane Kiarie',
+      location: 'Lari, Kiambu County',
+      farmName: 'Regenerative Agriculture Farm',
+      story: 'I began practicing organic farming in 2019, and through the Ministry of Agriculture, I was introduced to SNV Netherlands Development Organisation and the World Vegetable Centre, where I received training in regenerative agriculture and Good Agricultural Practices (GAPs). I grow my vegetables organically because it improves soil health, supports crop rotation, and produces high-nutritional-value food for my family and community. Organic methods have also given me access to reliable markets, increased my income, and allowed me to meet the growing demand for safe, chemical-free food as more people become conscious of what they eat.',
+      image: '/images/farmers_stories/jane_kiarie.jpg',
+      color: 'from-primary-600 to-accent-700'
     },
   ]
 
   const testimonials = [
     {
-      quote: "Sylvia's training changed my life. I went from struggling to make ends meet to having a thriving organic farm that supports my entire family.",
-      author: "Mary Wanjiku",
-      role: "Organic Farmer"
+      quote: "We practice organic farming because we want our family, farm workers, and neighbors to eat safe and healthy food. Organic farming has enabled us to protect the environment by reducing chemical pollution.",
+      author: "Joseph Kimani Njuguna",
+      role: "Kimstle Organics Farm, Kiambu County"
     },
     {
-      quote: "The knowledge and support from Sylvia's Basket gave me confidence to pursue farming as a career. Now I'm proud to call myself a farmer.",
-      author: "James Kamau",
-      role: "Youth Farmer"
+      quote: "Through Sylvia's Basket—it has been smiles ever since! What started as pawpaws for my family has opened doors to markets I never imagined.",
+      author: "Ruth Oloo",
+      role: "Pawpaw Farm, Siaya County"
     },
     {
-      quote: "We're not just growing food anymore – we're growing a community, growing hope, and growing a better future for our children.",
-      author: "Grace Njeri",
-      role: "Community Leader"
+      quote: "I believe that healthy soil produces healthy food, which in turn creates healthy wealth for our families and community.",
+      author: "Fred Odhiambo",
+      role: "Diverse Organic Farm, Migori County"
     },
   ]
 
@@ -128,73 +138,135 @@ const FarmersStoriesPage = () => {
       </section>
 
       {/* Introduction */}
-      <section className="section-padding bg-white">
+      <section className="py-16 md:py-20 bg-gradient-to-b from-white to-harvest-50">
         <div className="container-custom">
           <motion.div
-            className="max-w-3xl mx-auto text-center"
+            className="max-w-4xl mx-auto"
             initial="initial"
             whileInView="animate"
             viewport={{ once: true }}
             variants={fadeInUp}
           >
-            <p className="text-body-lg mb-6">
-              <span className="text-highlight font-semibold">Every farmer has a story</span>. Behind each harvest is a journey of <span className="text-gradient-warm font-bold">learning, perseverance, and transformation</span>. Here are just a few of the incredible farmers who have been part of Sylvia's Basket community.
-            </p>
-            <p className="text-lg text-gray-600">
-              These stories demonstrate the power of organic farming to <span className="font-semibold text-accent-700">change lives</span>, <span className="font-semibold text-sage-700">strengthen communities</span>, and <span className="font-semibold text-harvest-700">build a more sustainable future</span>.
-            </p>
+            {/* Main Intro */}
+            <div className="text-center mb-12">
+              <p className="text-xl md:text-2xl text-gray-700 leading-relaxed mb-6">
+                <span className="text-highlight font-semibold">Every farmer has a story</span>. Behind each harvest is a journey of <span className="text-gradient-warm font-bold">learning, perseverance, and transformation</span>.
+              </p>
+              <p className="text-lg text-gray-600">
+                These stories demonstrate the power of organic farming to <span className="font-semibold text-accent-700">change lives</span>, <span className="font-semibold text-sage-700">strengthen communities</span>, and <span className="font-semibold text-harvest-700">build a more sustainable future</span>.
+              </p>
+            </div>
+
+            {/* Bridge Section */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
+              <div className="text-center p-6 bg-white rounded-xl shadow-sm border border-harvest-100">
+                <div className="text-3xl font-bold text-harvest-600 mb-2">8</div>
+                <p className="text-sm font-semibold text-gray-700">Farmers Featured</p>
+              </div>
+              <div className="text-center p-6 bg-white rounded-xl shadow-sm border border-sage-100">
+                <div className="text-3xl font-bold text-sage-600 mb-2">6</div>
+                <p className="text-sm font-semibold text-gray-700">Counties Represented</p>
+              </div>
+              <div className="text-center p-6 bg-white rounded-xl shadow-sm border border-accent-100">
+                <div className="text-3xl font-bold text-accent-600 mb-2">15+</div>
+                <p className="text-sm font-semibold text-gray-700">Years Experience</p>
+              </div>
+            </div>
+
+            {/* Intro to Stories */}
+            <div className="mt-12 text-center">
+              <h2 className="text-2xl md:text-3xl font-display font-bold text-gray-900 mb-4">
+                Meet the Farmers
+              </h2>
+              <p className="text-lg text-gray-600">
+                From Kiambu to Kwale, from Siaya to Bomet—discover the faces and voices behind Kenya's organic farming movement
+              </p>
+            </div>
           </motion.div>
         </div>
       </section>
 
-      {/* Farmer Stories Grid */}
-      <section className="section-padding gradient-earth">
-        <div className="container-custom">
-          <motion.div
-            className="grid grid-cols-1 md:grid-cols-2 gap-8"
-            variants={staggerContainer}
-            initial="initial"
-            whileInView="animate"
-            viewport={{ once: true }}
-          >
-            {stories.map((story, index) => (
-              <motion.div
-                key={index}
-                variants={fadeInUp}
-                whileHover={{ y: -10 }}
-                className="bg-white rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl transition-all"
-              >
-                <div className={`h-2 bg-gradient-to-r ${story.color}`}></div>
-                <div className="p-8">
-                  <div className="flex items-start justify-between mb-6">
-                    <div className="flex-1">
-                      <h3 className="text-2xl font-display font-bold text-gray-900 mb-1">
+      {/* Farmer Stories - Magazine Style */}
+      <section className="py-16 md:py-24 bg-white">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="space-y-20">
+            {stories.map((story, index) => {
+              const isEven = index % 2 === 0
+
+              return (
+                <motion.div
+                  key={index}
+                  initial="initial"
+                  whileInView="animate"
+                  viewport={{ once: true, margin: "-100px" }}
+                  variants={fadeInUp}
+                  className="relative"
+                >
+                  <div className={`grid grid-cols-1 lg:grid-cols-5 gap-8 items-start ${!isEven ? 'lg:flex-row-reverse' : ''}`}>
+                    {/* Image Side - Smaller for better quality */}
+                    <motion.div
+                      className={`lg:col-span-2 ${!isEven ? 'lg:order-2' : 'lg:order-1'}`}
+                      whileHover={{ scale: 1.03 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      <div className="relative w-full h-80 rounded-2xl overflow-hidden shadow-xl">
+                        <img
+                          src={story.image}
+                          alt={story.name}
+                          className="w-full h-full object-cover object-center"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-gray-900/40 via-transparent to-transparent"></div>
+
+                        {/* Farm Name Badge */}
+                        <div className="absolute bottom-4 left-4 right-4">
+                          <div className={`px-4 py-2 bg-gradient-to-r ${story.color} rounded-lg shadow-lg backdrop-blur-sm`}>
+                            <span className="text-xs font-bold text-white uppercase tracking-wider">{story.farmName}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </motion.div>
+
+                    {/* Content Side */}
+                    <div className={`lg:col-span-3 ${!isEven ? 'lg:order-1' : 'lg:order-2'} space-y-4`}>
+                      {/* Location Badge */}
+                      <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-gradient-to-r from-harvest-100 to-clay-100 rounded-full">
+                        <svg className="w-3.5 h-3.5 text-harvest-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
+                        <span className="text-xs font-semibold text-harvest-800">{story.location}</span>
+                      </div>
+
+                      {/* Name */}
+                      <h3 className="text-3xl md:text-4xl font-display font-bold text-gray-900 leading-tight">
                         {story.name}
                       </h3>
-                      <p className="text-sm text-gray-600">{story.location}</p>
-                      <p className="text-sm font-semibold text-primary-600 mt-1">
-                        {story.role}
-                      </p>
-                    </div>
-                    <div className={`w-16 h-16 bg-gradient-to-br ${story.color} rounded-full flex items-center justify-center text-white flex-shrink-0`}>
-                      {story.icon}
+
+                      {/* Divider */}
+                      <div className={`w-20 h-1 bg-gradient-to-r ${story.color} rounded-full`}></div>
+
+                      {/* Full Story */}
+                      <div className="flex items-start">
+                        <blockquote className="text-base md:text-lg text-gray-700 leading-relaxed italic border-l-4 border-harvest-300 pl-4">
+                          "{story.story}"
+                        </blockquote>
+                      </div>
+
+                      {/* Bottom accent */}
+                      <div className={`inline-block px-4 py-1.5 bg-gradient-to-r ${story.color} rounded-full`}>
+                        <span className="text-xs font-bold text-white uppercase tracking-wider">Organic Farmer</span>
+                      </div>
                     </div>
                   </div>
 
-                  <p className="text-gray-700 leading-relaxed mb-6 italic">
-                    "{story.story}"
-                  </p>
-
-                  <div className="pt-4 border-t border-gray-200">
-                    <div className="flex items-center gap-2">
-                      <FiTrendingUp className="w-5 h-5 text-primary-600" />
-                      <span className="font-semibold text-gray-900">{story.impact}</span>
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
+                  {/* Separator Line */}
+                  {index < stories.length - 1 && (
+                    <div className="mt-20 border-t border-gray-200"></div>
+                  )}
+                </motion.div>
+              )
+            })}
+          </div>
         </div>
       </section>
 
