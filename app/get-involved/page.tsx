@@ -1,10 +1,14 @@
 'use client'
 
+import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { FiHeart, FiUsers, FiGlobe, FiMail, FiPhone, FiMapPin, FiShare2, FiDollarSign, FiUserCheck } from 'react-icons/fi'
 import { GiFarmer } from 'react-icons/gi'
 
 const GetInvolvedPage = () => {
+  const [contactForm, setContactForm] = useState({ name: '', email: '', message: '' })
+  const [submitting, setSubmitting] = useState(false)
+  const [submitMessage, setSubmitMessage] = useState('')
   const fadeInUp = {
     initial: { opacity: 0, y: 60 },
     animate: { opacity: 1, y: 0 },
@@ -25,6 +29,35 @@ const GetInvolvedPage = () => {
     const contactSection = document.getElementById('contact-section')
     if (contactSection) {
       contactSection.scrollIntoView({ behavior: 'smooth' })
+    }
+  }
+
+  const handleContactSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setSubmitting(true)
+    setSubmitMessage('')
+
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(contactForm),
+      })
+
+      const data = await response.json()
+
+      if (response.ok) {
+        setSubmitMessage('Thank you! Your message has been sent successfully. We\'ll get back to you soon.')
+        setContactForm({ name: '', email: '', message: '' })
+      } else {
+        setSubmitMessage(data.error || 'Failed to send message. Please try again.')
+      }
+    } catch (error) {
+      setSubmitMessage('An error occurred. Please try emailing us directly at info@sylviasbasket.co.ke')
+    } finally {
+      setSubmitting(false)
     }
   }
 
@@ -153,15 +186,15 @@ const GetInvolvedPage = () => {
   return (
     <div className="overflow-hidden">
       {/* Hero Section - Glassmorphism */}
-      <section className="relative min-h-[60vh] flex items-center justify-center pt-32 pb-20 overflow-hidden">
+      <section className="relative min-h-[60vh] flex items-center justify-center pt-32 pb-20 overflow-hidden mt-20">
         {/* Background Image */}
-        <div className="absolute inset-0">
+        <div className="absolute inset-0 top-0">
           <img
             src="/images/happy_african_children.jpg"
             alt="Happy African children - the future we're building together"
             className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-harvest-900/90 via-clay-900/85 to-sage-900/90"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-accent-900/70 via-sage-900/65 to-accent-900/70"></div>
         </div>
         <div className="container-custom relative z-10">
           <motion.div
@@ -423,14 +456,18 @@ const GetInvolvedPage = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
               {/* Contact Form */}
               <div>
-                <form className="space-y-6">
+                <form onSubmit={handleContactSubmit} className="space-y-6">
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-2">
                       Your Name
                     </label>
                     <input
                       type="text"
-                      className="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary-500"
+                      value={contactForm.name}
+                      onChange={(e) => setContactForm({...contactForm, name: e.target.value})}
+                      required
+                      disabled={submitting}
+                      className="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary-500 disabled:opacity-50"
                       placeholder="John Doe"
                     />
                   </div>
@@ -440,7 +477,11 @@ const GetInvolvedPage = () => {
                     </label>
                     <input
                       type="email"
-                      className="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary-500"
+                      value={contactForm.email}
+                      onChange={(e) => setContactForm({...contactForm, email: e.target.value})}
+                      required
+                      disabled={submitting}
+                      className="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary-500 disabled:opacity-50"
                       placeholder="john@example.com"
                     />
                   </div>
@@ -450,16 +491,27 @@ const GetInvolvedPage = () => {
                     </label>
                     <textarea
                       rows={5}
-                      className="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary-500"
+                      value={contactForm.message}
+                      onChange={(e) => setContactForm({...contactForm, message: e.target.value})}
+                      required
+                      disabled={submitting}
+                      className="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary-500 disabled:opacity-50"
                       placeholder="Tell us how you'd like to get involved..."
                     ></textarea>
                   </div>
+                  {submitMessage && (
+                    <div className={`p-4 rounded-lg ${submitMessage.includes('successfully') || submitMessage.includes('Thank you') ? 'bg-green-50 text-green-700 border border-green-200' : 'bg-red-50 text-red-700 border border-red-200'}`}>
+                      {submitMessage}
+                    </div>
+                  )}
                   <motion.button
+                    type="submit"
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    className="w-full bg-gradient-to-r from-harvest-600 via-clay-600 to-sage-700 text-white px-6 py-4 rounded-full font-semibold shadow-lg hover:shadow-xl transition-shadow"
+                    disabled={submitting}
+                    className="w-full bg-gradient-to-r from-harvest-600 via-clay-600 to-sage-700 text-white px-6 py-4 rounded-full font-semibold shadow-lg hover:shadow-xl transition-shadow disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    Send Message
+                    {submitting ? 'Sending...' : 'Send Message'}
                   </motion.button>
                 </form>
               </div>
@@ -485,8 +537,8 @@ const GetInvolvedPage = () => {
                     </div>
                     <div>
                       <h3 className="font-semibold text-gray-900 mb-1">Email</h3>
-                      <a href="mailto:info@sylviasbasket.org" className="text-harvest-600 hover:text-harvest-700">
-                        info@sylviasbasket.org
+                      <a href="mailto:info@sylviasbasket.co.ke" className="text-harvest-600 hover:text-harvest-700">
+                        info@sylviasbasket.co.ke
                       </a>
                     </div>
                   </div>
@@ -499,8 +551,8 @@ const GetInvolvedPage = () => {
                     </div>
                     <div>
                       <h3 className="font-semibold text-gray-900 mb-1">Phone</h3>
-                      <a href="tel:+254700000000" className="text-earth-700 hover:text-earth-800">
-                        +254 700 000 000
+                      <a href="tel:+254738895395" className="text-earth-700 hover:text-earth-800">
+                        +254 738 895395
                       </a>
                     </div>
                   </div>

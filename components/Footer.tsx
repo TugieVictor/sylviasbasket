@@ -201,16 +201,16 @@ const Footer = () => {
                 <div className="w-10 h-10 bg-gradient-to-br from-harvest-500 to-clay-600 rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg group-hover:scale-110 transition-transform">
                   <FiMail className="w-5 h-5 text-white" />
                 </div>
-                <a href="mailto:info@sylviasbasket.org" className="hover:text-accent-600 transition-colors">
-                  info@sylviasbasket.org
+                <a href="mailto:info@sylviasbasket.co.ke" className="hover:text-accent-600 transition-colors">
+                  info@sylviasbasket.co.ke
                 </a>
               </li>
               <li className="flex items-center gap-3 text-gray-700 group">
                 <div className="w-10 h-10 bg-gradient-to-br from-sky-500 to-accent-600 rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg group-hover:scale-110 transition-transform">
                   <FiPhone className="w-5 h-5 text-white" />
                 </div>
-                <a href="tel:+254700000000" className="hover:text-accent-600 transition-colors">
-                  +254 700 000 000
+                <a href="tel:+254738895395" className="hover:text-accent-600 transition-colors">
+                  +254 738 895395
                 </a>
               </li>
             </ul>

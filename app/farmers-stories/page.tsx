@@ -108,15 +108,15 @@ const FarmersStoriesPage = () => {
   return (
     <div className="overflow-hidden">
       {/* Hero Section */}
-      <section className="relative min-h-[60vh] flex items-center justify-center pt-32 pb-20 overflow-hidden">
+      <section className="relative min-h-[60vh] flex items-center justify-center pt-32 pb-20 overflow-hidden mt-20">
         {/* Background Image */}
-        <div className="absolute inset-0">
+        <div className="absolute inset-0 top-0">
           <img
             src="/images/happy_african_child.jpg"
             alt="Happy African child - the future we're building"
             className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-harvest-900/90 via-clay-900/85 to-sage-900/90"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-accent-900/70 via-sage-900/65 to-accent-900/70"></div>
         </div>
         <div className="container-custom relative z-10">
           <motion.div

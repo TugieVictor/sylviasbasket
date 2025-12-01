@@ -87,15 +87,15 @@ const MarketsPage = () => {
   return (
     <div className="overflow-hidden">
       {/* Hero Section with Market Image */}
-      <section className="relative min-h-[70vh] flex items-center justify-center overflow-hidden">
+      <section className="relative min-h-[70vh] flex items-center justify-center overflow-hidden mt-20">
         {/* Background Image */}
-        <div className="absolute inset-0">
+        <div className="absolute inset-0 top-0">
           <img
             src="/images/market_place.jpg"
             alt="African marketplace with fresh organic produce"
             className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-accent-900/90 via-sage-900/85 to-accent-900/90"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-accent-900/70 via-sage-900/65 to-accent-900/70"></div>
         </div>
 
         {/* Content */}

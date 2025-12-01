@@ -33,41 +33,60 @@ const Navigation = () => {
     <motion.nav
       initial={{ y: -100 }}
       animate={{ y: 0 }}
-      className={`fixed w-full z-50 transition-all duration-300 ${
+      className={`fixed w-full z-50 transition-all duration-700 ease-in-out ${
         isScrolled
-          ? 'bg-white/95 backdrop-blur-md shadow-lg'
-          : 'bg-gray-900/80 backdrop-blur-md shadow-md'
+          ? 'bg-white/95 backdrop-blur-md shadow-lg border-b border-gray-200'
+          : 'bg-gradient-to-b from-black/50 via-black/30 to-transparent backdrop-blur-xl'
       }`}
     >
+      {/* Decorative gradient line at top */}
+      {!isScrolled && (
+        <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-accent-400/50 to-transparent" />
+      )}
+
       <div className="container-custom">
-        <div className="flex items-center justify-between h-20">
-          {/* Logo - African-inspired cursive */}
+        <div className={`flex items-center justify-between transition-all duration-700 ${
+          isScrolled ? 'h-20' : 'h-24'
+        }`}>
+          {/* Logo - Premium Badge Design */}
           <Link href="/" className="flex items-center group">
             <motion.div
-              whileHover={{ scale: 1.05 }}
-              className="flex flex-col"
-              style={{ filter: isScrolled ? 'none' : 'drop-shadow(0 2px 4px rgba(0,0,0,0.3))' }}
+              whileHover={{ scale: 1.05, y: -2 }}
+              whileTap={{ scale: 0.98 }}
+              className="transition-all duration-700 relative"
             >
-              <h1 className="text-3xl md:text-4xl font-cursive font-bold leading-tight">
-                <span className={`${
-                  isScrolled
-                    ? 'bg-gradient-to-r from-harvest-600 via-sage-700 to-accent-700 bg-clip-text text-transparent'
-                    : 'text-harvest-300'
-                }`}>
-                  Sylvia's
-                </span>
-                <br />
-                <span className={`text-2xl md:text-3xl font-bold tracking-wider ${
-                  isScrolled ? 'text-earth-700' : 'text-white'
-                }`}>
-                  BASKET
-                </span>
-              </h1>
+              {/* Logo Badge Container */}
+              <div className={`relative transition-all duration-700 ${
+                isScrolled
+                  ? 'px-3 py-2 rounded-xl bg-gradient-to-br from-accent-50 to-sage-50'
+                  : 'px-4 py-3 rounded-2xl bg-gradient-to-br from-white via-accent-50/80 to-sage-50/80 shadow-[0_8px_32px_rgba(0,0,0,0.4)] border-2 border-white/40'
+              }`}>
+                {/* Subtle inner glow when not scrolled */}
+                {!isScrolled && (
+                  <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-accent-400/20 via-transparent to-sage-400/20 blur-sm" />
+                )}
+
+                {/* Logo Image */}
+                <img
+                  src="/images/sylvias-logo.png"
+                  alt="Sylvia's Basket Logo"
+                  className={`relative z-10 transition-all duration-700 ${
+                    isScrolled
+                      ? 'h-10 md:h-12'
+                      : 'h-12 md:h-14'
+                  }`}
+                />
+
+                {/* Bottom accent bar when not scrolled */}
+                {!isScrolled && (
+                  <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2/3 h-1 bg-gradient-to-r from-transparent via-accent-500 to-transparent rounded-full opacity-60" />
+                )}
+              </div>
             </motion.div>
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center space-x-8">
+          <div className="hidden lg:flex items-center space-x-1">
             {navLinks.map((link) => {
               // Check if current page matches - handle both with and without trailing slash
               const isActive = pathname === link.href || pathname === link.href + '/' || pathname + '/' === link.href
@@ -75,48 +94,63 @@ const Navigation = () => {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className={`transition-all relative group font-display ${
+                  className="relative group"
+                >
+                  <div className={`px-3 py-2 rounded-lg transition-all duration-300 font-display text-sm whitespace-nowrap ${
                     isActive
                       ? isScrolled
-                        ? 'text-accent-600 font-bold'
-                        : 'text-harvest-300 font-bold'
+                        ? 'text-accent-600 font-bold bg-accent-50'
+                        : 'text-white font-bold bg-white/15 backdrop-blur-sm drop-shadow-[0_2px_6px_rgba(0,0,0,0.4)]'
                       : isScrolled
-                      ? 'text-gray-700 hover:text-accent-600 font-semibold'
-                      : 'text-white hover:text-harvest-300 font-semibold'
-                  }`}
-                  style={{ textShadow: isScrolled ? 'none' : '0 2px 4px rgba(0,0,0,0.3)' }}
-                >
-                  {link.label}
-                  <span className={`absolute bottom-0 left-0 transition-all ${
-                    isActive ? 'w-full h-1' : 'w-0 h-0.5 group-hover:w-full'
-                  } ${
-                    isScrolled ? 'bg-accent-600' : 'bg-harvest-300'
-                  } ${isActive ? 'rounded-full' : ''}`} />
+                      ? 'text-gray-700 hover:text-accent-600 font-semibold hover:bg-accent-50/50'
+                      : 'text-white/95 hover:text-white font-semibold hover:bg-white/10 backdrop-blur-sm drop-shadow-[0_2px_4px_rgba(0,0,0,0.3)]'
+                  }`}>
+                    {link.label}
+                  </div>
+
+                  {/* Active indicator dot */}
+                  {isActive && (
+                    <motion.div
+                      layoutId="activeDot"
+                      className={`absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full transition-colors duration-300 ${
+                        isScrolled
+                          ? 'bg-accent-600'
+                          : 'bg-white shadow-[0_0_8px_rgba(255,255,255,0.8)]'
+                      }`}
+                    />
+                  )}
                 </Link>
               )
             })}
-            <Link href="/get-involved/">
+            <Link href="/get-involved/" className="ml-2">
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="bg-gradient-to-r from-harvest-600 via-clay-600 to-sage-700 text-white px-6 py-2.5 rounded-full font-semibold shadow-lg hover:shadow-xl transition-shadow flex items-center gap-2"
+                className={`px-6 py-2.5 rounded-full font-semibold transition-all duration-300 flex items-center gap-2 ${
+                  isScrolled
+                    ? 'bg-gradient-to-r from-harvest-600 via-clay-600 to-sage-700 text-white shadow-lg hover:shadow-xl'
+                    : 'bg-white text-accent-700 shadow-[0_4px_16px_rgba(0,0,0,0.3)] hover:shadow-[0_6px_24px_rgba(0,0,0,0.4)]'
+                }`}
               >
                 <FiHeart className="w-4 h-4" />
-                Donate
+                <span>Donate</span>
               </motion.button>
             </Link>
           </div>
 
           {/* Mobile Menu Button */}
-          <button
+          <motion.button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className={`lg:hidden p-2 transition-colors ${
-              isScrolled ? 'text-gray-700' : 'text-white'
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className={`lg:hidden p-3 rounded-xl transition-all duration-300 ${
+              isScrolled
+                ? 'text-gray-700 bg-accent-50 hover:bg-accent-100'
+                : 'text-white bg-white/10 hover:bg-white/20 backdrop-blur-sm border border-white/20 shadow-[0_4px_16px_rgba(0,0,0,0.3)]'
             }`}
-            style={{ filter: isScrolled ? 'none' : 'drop-shadow(0 2px 4px rgba(0,0,0,0.3))' }}
           >
             {isMobileMenuOpen ? <FiX size={24} /> : <FiMenu size={24} />}
-          </button>
+          </motion.button>
         </div>
       </div>
 
@@ -127,9 +161,9 @@ const Navigation = () => {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="lg:hidden bg-white border-t border-gray-200"
+            className="lg:hidden bg-white/95 backdrop-blur-md border-t border-gray-200 shadow-lg"
           >
-            <div className="container-custom py-4 space-y-4">
+            <div className="container-custom py-6 space-y-2">
               {navLinks.map((link, index) => {
                 // Check if current page matches - handle both with and without trailing slash
                 const isActive = pathname === link.href || pathname === link.href + '/' || pathname + '/' === link.href
@@ -138,21 +172,23 @@ const Navigation = () => {
                     key={link.href}
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: index * 0.1 }}
+                    transition={{ delay: index * 0.05 }}
                   >
                     <Link
                       href={link.href}
                       onClick={() => setIsMobileMenuOpen(false)}
-                      className={`block py-2 font-display ${
+                      className={`block px-4 py-3 rounded-xl font-display transition-all duration-200 ${
                         isActive
-                          ? 'text-accent-600 font-bold'
-                          : 'text-gray-700 hover:text-accent-600 font-semibold'
+                          ? 'text-accent-600 font-bold bg-accent-50'
+                          : 'text-gray-700 hover:text-accent-600 font-semibold hover:bg-accent-50/50'
                       }`}
                     >
-                      {link.label}
-                      {isActive && (
-                        <span className="inline-block w-1.5 h-1.5 bg-accent-600 rounded-full ml-2" />
-                      )}
+                      <div className="flex items-center justify-between">
+                        <span>{link.label}</span>
+                        {isActive && (
+                          <span className="w-2 h-2 bg-accent-600 rounded-full" />
+                        )}
+                      </div>
                     </Link>
                   </motion.div>
                 )
@@ -160,12 +196,13 @@ const Navigation = () => {
               <motion.div
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: navLinks.length * 0.1 }}
+                transition={{ delay: navLinks.length * 0.05 }}
+                className="pt-4"
               >
                 <Link href="/get-involved/" onClick={() => setIsMobileMenuOpen(false)}>
-                  <button className="w-full bg-gradient-to-r from-harvest-600 via-clay-600 to-sage-700 text-white px-6 py-3 rounded-full font-semibold shadow-lg flex items-center justify-center gap-2">
-                    <FiHeart className="w-4 h-4" />
-                    Donate Now
+                  <button className="w-full bg-gradient-to-r from-harvest-600 via-clay-600 to-sage-700 text-white px-6 py-4 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2 group">
+                    <FiHeart className="w-5 h-5 group-hover:scale-110 transition-transform" />
+                    <span>Donate Now</span>
                   </button>
                 </Link>
               </motion.div>

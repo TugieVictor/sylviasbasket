@@ -197,7 +197,7 @@ const HomePage = () => {
               <div className="relative h-[550px] md:h-[650px] lg:h-[700px] rounded-3xl overflow-hidden shadow-2xl ring-2 ring-white/20">
                 {/* Sylvia's Photo with gradient overlay */}
                 <img
-                  src="/images/sylvia-hero_1.jpg"
+                  src="/images/sylvia-hero_3.jpg"
                   alt="Sylvia Kuria - Founder of Sylvia's Basket"
                   className="w-full h-full object-cover object-top"
                 />
@@ -488,10 +488,10 @@ const HomePage = () => {
                       />
                     </div>
                     {/* Gradient Overlay on Image */}
-                    <div className="absolute inset-0 bg-gradient-to-br from-harvest-500/90 via-harvest-600/85 to-clay-700/90"></div>
+                    <div className="absolute inset-0 bg-gradient-to-br from-accent-600/60 via-sage-600/65 to-accent-700/70"></div>
                     {/* Decorative Gradient Orbs */}
-                    <div className="absolute top-0 right-0 w-96 h-96 bg-harvest-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse"></div>
-                    <div className="absolute bottom-0 left-0 w-96 h-96 bg-clay-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse" style={{ animationDelay: '1s' }}></div>
+                    <div className="absolute top-0 right-0 w-96 h-96 bg-accent-400 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse"></div>
+                    <div className="absolute bottom-0 left-0 w-96 h-96 bg-sage-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse" style={{ animationDelay: '1s' }}></div>
                   </div>
 
                   {/* Content Layout - Asymmetric Design */}
@@ -543,7 +543,7 @@ const HomePage = () => {
                         className="flex items-center gap-3"
                       >
                         <div className="w-12 h-12 md:w-14 md:h-14 bg-white rounded-full flex items-center justify-center shadow-2xl group-hover:scale-110 transition-transform">
-                          <FiPlay className="w-6 h-6 md:w-7 md:h-7 text-harvest-600 ml-0.5" />
+                          <FiPlay className="w-6 h-6 md:w-7 md:h-7 text-accent-600 ml-0.5" />
                         </div>
                         <div>
                           <p className="text-sm md:text-base font-bold uppercase tracking-wider">Watch Now</p>
@@ -673,20 +673,20 @@ const HomePage = () => {
       <section className="relative overflow-hidden bg-white">
         <div className="grid grid-cols-1 lg:grid-cols-2 min-h-[600px]">
           {/* Left Side - Image with Overlay Content */}
-          <div className="relative bg-gradient-to-br from-harvest-600 via-clay-600 to-sage-700 overflow-hidden">
+          <div className="relative bg-gradient-to-br from-accent-600 via-sage-600 to-accent-700 overflow-hidden">
             {/* Background Pattern */}
-            <div className="absolute inset-0 opacity-20">
+            <div className="absolute inset-0 opacity-60">
               <img
                 src="/images/woman_planting.jpg"
                 alt="Farmer planting"
                 className="w-full h-full object-cover"
               />
-              <div className="absolute inset-0 bg-gradient-to-br from-harvest-600/80 to-sage-700/80"></div>
+              <div className="absolute inset-0 bg-gradient-to-br from-accent-700/30 to-sage-700/40"></div>
             </div>
 
             {/* Animated Circles */}
-            <div className="absolute top-20 left-20 w-64 h-64 bg-accent-400/30 rounded-full blur-3xl animate-pulse"></div>
-            <div className="absolute bottom-20 right-20 w-80 h-80 bg-harvest-300/30 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
+            <div className="absolute top-20 left-20 w-64 h-64 bg-accent-400/20 rounded-full blur-3xl animate-pulse"></div>
+            <div className="absolute bottom-20 right-20 w-80 h-80 bg-sage-400/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
 
             {/* Content */}
             <div className="relative z-10 h-full flex flex-col justify-center p-8 md:p-12 lg:p-16">
@@ -702,7 +702,7 @@ const HomePage = () => {
 
                 <h2 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-white mb-6 leading-tight">
                   Be Part of the{' '}
-                  <span className="font-cursive text-harvest-200 block mt-2">Revolution</span>
+                  <span className="font-cursive text-accent-200 block mt-2">Revolution</span>
                 </h2>
 
                 <p className="text-xl text-white/90 mb-8 leading-relaxed max-w-xl">
@@ -731,7 +731,7 @@ const HomePage = () => {
                   <motion.button
                     whileHover={{ scale: 1.05, x: 5 }}
                     whileTap={{ scale: 0.98 }}
-                    className="bg-white text-harvest-700 px-8 py-4 rounded-full font-bold text-lg shadow-2xl hover:shadow-white/50 transition-all flex items-center gap-3 group"
+                    className="bg-white text-accent-700 px-8 py-4 rounded-full font-bold text-lg shadow-2xl hover:shadow-white/50 transition-all flex items-center gap-3 group"
                   >
                     <FiHeart className="w-6 h-6 group-hover:scale-110 transition-transform" />
                     Support Our Mission
@@ -752,7 +752,7 @@ const HomePage = () => {
               className="space-y-6"
             >
               <div className="mb-8">
-                <span className="text-kicker text-harvest-600">Get Involved Today</span>
+                <span className="text-kicker text-accent-600">Get Involved Today</span>
                 <h3 className="text-3xl md:text-4xl font-display font-bold text-gray-900 mt-2 mb-4">
                   Choose Your Impact
                 </h3>
