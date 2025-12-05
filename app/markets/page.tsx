@@ -30,6 +30,22 @@ const MarketsPage = () => {
       color: 'from-accent-500 to-sage-600'
     },
     {
+      icon: <FiShoppingBag className="w-8 h-8" />,
+      title: 'Browns Cheese',
+      description: 'Premium artisan cheese and organic produce marketplace delivering quality products',
+      link: 'https://store.brownsfoodco.com/',
+      status: 'Active Partnership',
+      color: 'from-clay-500 to-earth-600'
+    },
+    {
+      icon: <FiShoppingBag className="w-8 h-8" />,
+      title: 'Farm to Feed',
+      description: 'Connecting farmers to consumers with fresh, locally-sourced organic produce',
+      link: 'https://www.farmtofeedkenya.com/',
+      status: 'Active Partnership',
+      color: 'from-sage-500 to-accent-600'
+    },
+    {
       icon: <GiTomato className="w-8 h-8" />,
       title: 'Kitchens & Restaurants',
       description: 'Direct supply to health-conscious restaurants and institutional kitchens',
@@ -39,8 +55,9 @@ const MarketsPage = () => {
     {
       icon: <FiUsers className="w-8 h-8" />,
       title: 'Informal Settlements',
-      description: 'Making organic food accessible to underserved communities across Kenya',
-      status: 'Coming Soon',
+      description: 'Pilot program at St. Barrack Learning Centre in Mukuru kwa njenga, bringing organic food to underserved communities',
+      status: 'Pilot Program',
+      link: '/gallery/informal-settlements',
       color: 'from-primary-600 to-earth-600'
     },
   ]
@@ -114,7 +131,7 @@ const MarketsPage = () => {
             <p className="text-subtitle text-white mb-8">
               Connecting <span className="font-bold">organic farmers to consumers</span> and creating <span className="font-bold">fair, sustainable food systems</span>
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center flex-wrap">
               <a
                 href="https://greenspoon.co.ke/product-tag/sylvia-basket/"
                 target="_blank"
@@ -127,6 +144,36 @@ const MarketsPage = () => {
                 >
                   <FiShoppingBag className="w-5 h-5" />
                   Shop on Greenspoon
+                  <FiExternalLink className="w-4 h-4" />
+                </motion.button>
+              </a>
+              <a
+                href="https://store.brownsfoodco.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="bg-white text-clay-700 px-8 py-4 rounded-full font-semibold shadow-2xl hover:shadow-white/50 transition-all flex items-center gap-2"
+                >
+                  <FiShoppingBag className="w-5 h-5" />
+                  Shop on Browns Cheese
+                  <FiExternalLink className="w-4 h-4" />
+                </motion.button>
+              </a>
+              <a
+                href="https://www.farmtofeedkenya.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="bg-white text-sage-700 px-8 py-4 rounded-full font-semibold shadow-2xl hover:shadow-white/50 transition-all flex items-center gap-2"
+                >
+                  <FiShoppingBag className="w-5 h-5" />
+                  Shop on Farm to Feed
                   <FiExternalLink className="w-4 h-4" />
                 </motion.button>
               </a>
@@ -180,20 +227,22 @@ const MarketsPage = () => {
                 <div className={`inline-block px-4 py-2 rounded-full text-sm font-semibold ${
                   channel.status === 'Coming Soon'
                     ? 'bg-harvest-100 text-harvest-700'
+                    : channel.status === 'Pilot Program'
+                    ? 'bg-primary-100 text-primary-700'
                     : 'bg-accent-100 text-accent-700'
                 }`}>
                   {channel.status}
                 </div>
                 {channel.link && (
-                  <a
+                  <Link
                     href={channel.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                    target={channel.link.startsWith('http') ? '_blank' : undefined}
+                    rel={channel.link.startsWith('http') ? 'noopener noreferrer' : undefined}
                     className="mt-4 text-accent-600 hover:text-accent-700 font-semibold flex items-center gap-2"
                   >
-                    Visit Website
+                    {channel.link.startsWith('http') ? 'Visit Website' : 'View Gallery'}
                     <FiExternalLink className="w-4 h-4" />
-                  </a>
+                  </Link>
                 )}
               </motion.div>
             ))}
@@ -318,21 +367,48 @@ const MarketsPage = () => {
             viewport={{ once: true }}
             variants={fadeInUp}
           >
-            <div className="inline-block px-4 py-2 bg-harvest-500 text-white rounded-full text-sm font-bold mb-6">
-              COMING SOON
+            <div className="inline-flex items-center gap-3 mb-6">
+              <div className="px-4 py-2 bg-harvest-500 text-white rounded-full text-sm font-bold">
+                PILOT PROGRAM
+              </div>
+              <div className="px-4 py-2 bg-primary-500 text-white rounded-full text-sm font-bold">
+                IN PROGRESS
+              </div>
             </div>
             <h2 className="text-hero text-gray-900 mb-6">
               Organic Food for Informal Settlements
             </h2>
-            <p className="text-body-lg mb-8 leading-relaxed">
-              We're working on an initiative to make <span className="text-gradient-accent font-bold">organic, nutritious food accessible and affordable</span> to communities in informal settlements across Kenya. <span className="text-highlight font-semibold">Everyone deserves access to healthy food</span>.
+            <p className="text-body-lg mb-6 leading-relaxed">
+              We've launched a pilot initiative to make <span className="text-gradient-accent font-bold">organic, nutritious food accessible and affordable</span> to communities in informal settlements across Kenya. <span className="text-highlight font-semibold">Everyone deserves access to healthy food</span>.
             </p>
+            <div className="glass-card p-6 rounded-2xl mb-8 border-l-4 border-accent-500">
+              <h3 className="text-xl font-bold text-gray-900 mb-3 flex items-center gap-2">
+                <FiUsers className="w-5 h-5 text-accent-600" />
+                St. Barrack Learning Centre Partnership
+              </h3>
+              <p className="text-gray-700 mb-2">
+                <span className="font-semibold">Location:</span> Mukuru kwa njenga, Nairobi
+              </p>
+              <p className="text-gray-700">
+                Our first pilot program is underway at St. Barrack Learning Centre, bringing fresh organic produce to school children and families in the Mukuru community. This is just the beginning of our mission to ensure nutritious food reaches underserved communities.
+              </p>
+            </div>
             <div className="flex flex-col sm:flex-row gap-4">
+              <Link href="/gallery/informal-settlements">
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="bg-gradient-to-r from-accent-600 to-sage-600 text-white px-8 py-4 rounded-full font-semibold shadow-2xl hover:shadow-accent-500/50 transition-all flex items-center gap-2"
+                >
+                  <FiUsers className="w-5 h-5" />
+                  View Gallery
+                </motion.button>
+              </Link>
               <Link href="/get-involved">
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className="bg-gradient-to-r from-accent-600 to-sage-600 text-white px-8 py-4 rounded-full font-semibold shadow-2xl hover:shadow-accent-500/50 transition-all"
+                  className="glass-card text-gray-900 px-8 py-4 rounded-full font-semibold shadow-xl hover:shadow-2xl transition-all border border-gray-200"
                 >
                   Support This Initiative
                 </motion.button>

@@ -52,6 +52,7 @@ const AdvocacyPage = () => {
     { icon: <FiShield className="w-6 h-6" />, practice: 'Biological (non-synthetic) pest control' },
     { icon: <FiDroplet className="w-6 h-6" />, practice: 'Crop rotation and diversification' },
     { icon: <FiActivity className="w-6 h-6" />, practice: 'Natural pest and disease management' },
+    { icon: <FiUsers className="w-6 h-6" />, practice: 'Participation' },
   ]
 
   const keyOutcomes = [
@@ -79,6 +80,11 @@ const AdvocacyPage = () => {
       icon: <FiCheckCircle className="w-8 h-8" />,
       title: 'Climate Mitigation',
       description: 'Long-term sustainability and climate resilience'
+    },
+    {
+      icon: <FiUsers className="w-8 h-8" />,
+      title: 'Co-creation of Knowledge',
+      description: 'Collaborative learning and knowledge sharing between farmers and communities'
     },
   ]
 

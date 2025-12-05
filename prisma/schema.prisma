@@ -1,0 +1,56 @@
+// Prisma Schema for Sylvia's Basket Donation System
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql" // or "mysql" or "sqlite" depending on your setup
+  url      = env("DATABASE_URL")
+}
+
+model Donation {
+  id              String   @id @default(cuid())
+  orderId         String   @unique
+  donorName       String
+  donorEmail      String
+  donorPhone      String
+  amount          Float
+  currency        String   @default("KES")
+  paymentMethod   String   // MPESA, CARD, BANK
+  donationType    String   // ONCE, MONTHLY
+  status          String   @default("PENDING") // PENDING, COMPLETED, FAILED, CANCELLED
+  transactionId   String?
+  message         String?  @db.Text
+
+  // Timestamps
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // Relations
+  recurringDonation RecurringDonation?
+
+  @@index([orderId])
+  @@index([donorEmail])
+  @@index([status])
+  @@index([createdAt])
+}
+
+model RecurringDonation {
+  id              String   @id @default(cuid())
+  donationId      String   @unique
+  donation        Donation @relation(fields: [donationId], references: [id], onDelete: Cascade)
+
+  subscriptionId  String?  // iPay subscription ID
+  frequency       String   @default("MONTHLY")
+  nextBillingDate DateTime
+  status          String   @default("ACTIVE") // ACTIVE, CANCELLED, PAUSED
+
+  // Timestamps
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([donationId])
+  @@index([status])
+  @@index([nextBillingDate])
+}

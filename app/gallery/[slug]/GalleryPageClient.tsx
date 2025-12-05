@@ -47,7 +47,16 @@ export default function GalleryPageClient({ slug }: { slug: string }) {
   return (
     <div className="overflow-hidden">
       {/* Hero Section */}
-      <section className="relative min-h-[50vh] flex items-center justify-center bg-gradient-to-br from-earth-50 via-primary-50 to-harvest-50 pt-32 pb-20 overflow-hidden">
+      <section className="relative min-h-[60vh] flex items-center justify-center pt-32 pb-20 overflow-hidden mt-20">
+        {/* Background Image */}
+        <div className="absolute inset-0 top-0">
+          <img
+            src="/images/gallery/galleryHero.jpg"
+            alt="Gallery - Sylvia's Basket organic farming"
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-accent-900/70 via-sage-900/65 to-accent-900/70"></div>
+        </div>
         {/* Decorative Glowing Orbs */}
         <div className="absolute top-20 left-10 w-96 h-96 bg-accent-500/20 rounded-full blur-3xl"></div>
         <div className="absolute bottom-20 right-10 w-96 h-96 bg-harvest-500/20 rounded-full blur-3xl"></div>
@@ -65,27 +74,27 @@ export default function GalleryPageClient({ slug }: { slug: string }) {
             </div>
 
             {/* Title */}
-            <h1 className="text-5xl md:text-6xl lg:text-7xl font-display font-bold text-gray-900 mb-6">
+            <h1 className="text-5xl md:text-6xl lg:text-7xl font-display font-bold text-white mb-6">
               {gallery.title}
             </h1>
 
             {/* Description */}
-            <p className="text-xl md:text-2xl text-gray-700 mb-8">
+            <p className="text-xl md:text-2xl text-white mb-8">
               {gallery.description}
             </p>
 
             {/* Navigation Breadcrumb */}
-            <div className="flex items-center justify-center gap-2 text-sm text-gray-600">
-              <Link href="/" className="hover:text-primary-600 transition-colors flex items-center gap-1">
+            <div className="flex items-center justify-center gap-2 text-sm text-white/90">
+              <Link href="/" className="hover:text-accent-300 transition-colors flex items-center gap-1">
                 <FiHome className="w-4 h-4" />
                 Home
               </Link>
               <span>/</span>
-              <Link href="/our-work" className="hover:text-primary-600 transition-colors">
+              <Link href="/our-work" className="hover:text-accent-300 transition-colors">
                 Our Work
               </Link>
               <span>/</span>
-              <span className="text-primary-600 font-semibold">{gallery.title}</span>
+              <span className="text-accent-300 font-semibold">{gallery.title}</span>
             </div>
           </motion.div>
         </div>

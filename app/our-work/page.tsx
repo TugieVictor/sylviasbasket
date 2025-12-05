@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion'
 import Link from 'next/link'
-import { FiUsers, FiBook, FiGlobe, FiAward, FiTrendingUp, FiTarget, FiArrowRight } from 'react-icons/fi'
+import { FiUsers, FiBook, FiGlobe, FiAward, FiTrendingUp, FiTarget, FiArrowRight, FiHeart } from 'react-icons/fi'
 import { GiFarmer, GiPlantSeed, GiWheat, GiTomato } from 'react-icons/gi'
 
 const OurWorkPage = () => {
@@ -59,7 +59,7 @@ const OurWorkPage = () => {
       type: 'NGO/Civil Society'
     },
     {
-      name: 'HPS',
+      name: 'HBS',
       description: 'Advocacy mainstreaming Agro-ecology',
       type: 'NGO/Civil Society'
     },
@@ -69,7 +69,7 @@ const OurWorkPage = () => {
       type: 'NGO/Civil Society'
     },
     {
-      name: 'ICRAF',
+      name: 'CIFOR-ICRAF',
       description: 'Agroforestry research and training',
       type: 'NGO/Civil Society'
     },
@@ -146,9 +146,15 @@ const OurWorkPage = () => {
     },
     {
       title: 'Advocacy',
-      description: 'Policy change for sustainable food systems',
+      description: 'Policy advocacy and change',
       icon: <FiTarget />,
       slug: 'advocacy'
+    },
+    {
+      title: 'Informal Settlements Initiative',
+      description: 'Bringing organic food to underserved communities',
+      icon: <FiHeart />,
+      slug: 'informal-settlements'
     },
   ]
 

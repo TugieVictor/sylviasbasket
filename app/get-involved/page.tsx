@@ -38,7 +38,13 @@ const GetInvolvedPage = () => {
     setSubmitMessage('')
 
     try {
-      const response = await fetch('/api/contact', {
+      // Use the PHP handler on the shared hosting
+      // TODO: Replace with your actual domain once deployed
+      const apiUrl = process.env.NODE_ENV === 'production'
+        ? 'https://sylviasbasket.co.ke/contact-handler.php'
+        : '/contact-handler.php'
+
+      const response = await fetch(apiUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

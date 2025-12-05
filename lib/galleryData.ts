@@ -1,4 +1,4 @@
-import { FiBook, FiUsers, FiTarget } from 'react-icons/fi'
+import { FiBook, FiUsers, FiTarget, FiGlobe, FiHeart } from 'react-icons/fi'
 import { GiFarmer, GiPlantSeed, GiTomato } from 'react-icons/gi'
 
 export interface GalleryImage {
@@ -25,29 +25,34 @@ export const galleryCategories: GalleryCategory[] = [
     description: 'Hands-on farmer education in the field',
     icon: FiBook,
     images: [
-      // Placeholder images - replace with actual images
       {
         id: 'training-1',
-        src: '/images/gallery/training-sessions/training-1.jpg',
+        src: '/images/gallery/training-sessions/Training.jpg',
         alt: 'Farmers learning organic farming techniques',
         title: 'Organic Farming Workshop',
         description: 'Farmers participating in hands-on training session'
       },
       {
         id: 'training-2',
-        src: '/images/gallery/training-sessions/training-2.jpg',
+        src: '/images/gallery/training-sessions/Training 2.jpg',
         alt: 'Field training session',
         title: 'Field Training',
         description: 'Practical demonstrations in the field'
       },
       {
         id: 'training-3',
-        src: '/images/gallery/training-sessions/training-3.jpg',
+        src: '/images/gallery/training-sessions/Training 3.jpg',
         alt: 'Group learning session',
         title: 'Community Learning',
         description: 'Group discussions and knowledge sharing'
       },
-      // Add more images as needed
+      {
+        id: 'training-4',
+        src: '/images/gallery/training-sessions/Training 4.jpg',
+        alt: 'Advanced training techniques',
+        title: 'Advanced Training',
+        description: 'In-depth training on sustainable practices'
+      },
     ]
   },
   {
@@ -58,24 +63,101 @@ export const galleryCategories: GalleryCategory[] = [
     images: [
       {
         id: 'harvest-1',
-        src: '/images/gallery/organic-harvest/harvest-1.jpg',
+        src: '/images/gallery/organic-harvest/Organic 1.jpg',
         alt: 'Fresh organic vegetables',
         title: 'Fresh Harvest',
         description: 'Organic vegetables ready for market'
       },
       {
         id: 'harvest-2',
-        src: '/images/gallery/organic-harvest/harvest-2.jpg',
+        src: '/images/gallery/organic-harvest/Organic2.jpg',
         alt: 'Farmers with harvested crops',
         title: 'Abundant Produce',
         description: 'Successful harvest from organic farming'
       },
       {
         id: 'harvest-3',
-        src: '/images/gallery/organic-harvest/harvest-3.jpg',
-        alt: 'Variety of organic crops',
-        title: 'Diverse Crops',
-        description: '10-15 seasonal crops grown organically'
+        src: '/images/gallery/organic-harvest/veg_harvesting.jpg',
+        alt: 'Harvesting vegetables',
+        title: 'Vegetable Harvesting',
+        description: 'Fresh vegetables being harvested'
+      },
+      {
+        id: 'harvest-4',
+        src: '/images/gallery/organic-harvest/Sorting tomatoes.jpg',
+        alt: 'Sorting tomatoes',
+        title: 'Sorting Tomatoes',
+        description: 'Preparing tomatoes for market'
+      },
+      {
+        id: 'harvest-5',
+        src: '/images/gallery/organic-harvest/Transporting_veggies.jpg',
+        alt: 'Transporting vegetables',
+        title: 'Transporting Produce',
+        description: 'Moving fresh produce to market'
+      },
+      {
+        id: 'harvest-6',
+        src: '/images/gallery/organic-harvest/Broccoli.jpg',
+        alt: 'Fresh broccoli',
+        title: 'Organic Broccoli',
+        description: 'Fresh organic broccoli harvest'
+      },
+      {
+        id: 'harvest-7',
+        src: '/images/gallery/organic-harvest/Bell peppers.jpg',
+        alt: 'Bell peppers',
+        title: 'Colorful Bell Peppers',
+        description: 'Organic bell peppers'
+      },
+      {
+        id: 'harvest-8',
+        src: '/images/gallery/organic-harvest/Beets.jpg',
+        alt: 'Fresh beets',
+        title: 'Organic Beets',
+        description: 'Freshly harvested beets'
+      },
+      {
+        id: 'harvest-9',
+        src: '/images/gallery/organic-harvest/Salad.jpg',
+        alt: 'Fresh salad greens',
+        title: 'Salad Greens',
+        description: 'Fresh organic salad vegetables'
+      },
+      {
+        id: 'harvest-10',
+        src: '/images/gallery/organic-harvest/Maize.jpg',
+        alt: 'Maize harvest',
+        title: 'Organic Maize',
+        description: 'Fresh maize from the farm'
+      },
+      {
+        id: 'harvest-11',
+        src: '/images/gallery/organic-harvest/Banana.jpg',
+        alt: 'Banana plantation',
+        title: 'Organic Bananas',
+        description: 'Banana plants on the farm'
+      },
+      {
+        id: 'harvest-12',
+        src: '/images/gallery/organic-harvest/ROOT TUBERS.jpg',
+        alt: 'Root tubers',
+        title: 'Root Tubers',
+        description: 'Fresh root vegetables'
+      },
+      {
+        id: 'harvest-13',
+        src: '/images/gallery/organic-harvest/Honey.jpg',
+        alt: 'Organic honey',
+        title: 'Farm Honey',
+        description: 'Natural honey from the farm'
+      },
+      {
+        id: 'harvest-14',
+        src: '/images/gallery/organic-harvest/Flowers.jpg',
+        alt: 'Farm flowers',
+        title: 'Farm Flowers',
+        description: 'Beautiful flowers from the farm'
       },
     ]
   },
@@ -87,111 +169,182 @@ export const galleryCategories: GalleryCategory[] = [
     images: [
       {
         id: 'event-1',
-        src: '/images/gallery/community-events/event-1.jpg',
+        src: '/images/gallery/community-events/Community.jpg',
         alt: 'Farmers gathering',
         title: 'Community Gathering',
         description: 'Farmers coming together to share experiences'
       },
       {
         id: 'event-2',
-        src: '/images/gallery/community-events/event-2.jpg',
+        src: '/images/gallery/community-events/Community 2.jpg',
         alt: 'Community celebration',
         title: 'Celebration Event',
         description: 'Celebrating successful harvests and milestones'
-      },
-      {
-        id: 'event-3',
-        src: '/images/gallery/community-events/event-3.jpg',
-        alt: 'Farmers meeting',
-        title: 'Farmers Meeting',
-        description: 'Regular meetups for knowledge exchange'
       },
     ]
   },
   {
     slug: 'indigenous-trees',
     title: 'Indigenous Trees',
-    description: 'Planting for the future',
+    description: 'Agroforestry for sustainability',
     icon: GiPlantSeed,
     images: [
       {
         id: 'trees-1',
-        src: '/images/gallery/indigenous-trees/trees-1.jpg',
-        alt: 'Tree planting activity',
-        title: 'Tree Planting',
-        description: 'Planting indigenous trees for sustainability'
+        src: '/images/gallery/indigenous-trees/Agroforestry.jpg',
+        alt: 'Agroforestry practices',
+        title: 'Agroforestry System',
+        description: 'Integrating trees with farming for sustainability'
       },
       {
         id: 'trees-2',
-        src: '/images/gallery/indigenous-trees/trees-2.jpg',
-        alt: 'Young indigenous trees',
-        title: 'Growing Trees',
-        description: 'Indigenous tree nursery and growth'
+        src: '/images/gallery/indigenous-trees/Agroforestry 2.jpg',
+        alt: 'Trees on farmland',
+        title: 'Farm with Trees',
+        description: 'Trees providing shade and enriching soil'
       },
       {
         id: 'trees-3',
-        src: '/images/gallery/indigenous-trees/trees-3.jpg',
-        alt: 'Mature indigenous trees',
-        title: 'Mature Trees',
-        description: 'Established indigenous trees on farmland'
+        src: '/images/gallery/indigenous-trees/Agroforestry 3.jpg',
+        alt: 'Agroforestry implementation',
+        title: 'Agroforestry in Action',
+        description: 'Trees integrated with crop production'
+      },
+      {
+        id: 'trees-4',
+        src: '/images/gallery/indigenous-trees/Agroforestry 4.jpg',
+        alt: 'Indigenous tree planting',
+        title: 'Indigenous Trees',
+        description: 'Planting native trees for biodiversity'
+      },
+      {
+        id: 'trees-5',
+        src: '/images/gallery/indigenous-trees/Windbreak trees.jpg',
+        alt: 'Windbreak trees',
+        title: 'Windbreak Protection',
+        description: 'Trees protecting crops from strong winds'
+      },
+      {
+        id: 'trees-6',
+        src: '/images/gallery/indigenous-trees/Papaya.jpg',
+        alt: 'Papaya trees',
+        title: 'Fruit Trees',
+        description: 'Productive fruit trees on the farm'
       },
     ]
   },
   {
-    slug: 'women-farmers',
-    title: 'Women Farmers',
-    description: 'Empowering women in agriculture',
-    icon: GiFarmer,
+    slug: 'voice-of-africa',
+    title: 'The Voice of Africa',
+    description: 'Representing African farmers globally',
+    icon: FiGlobe,
     images: [
       {
-        id: 'women-1',
-        src: '/images/gallery/women-farmers/women-1.jpg',
-        alt: 'Women farmers at work',
-        title: 'Women in Agriculture',
-        description: 'Women leading sustainable farming initiatives'
+        id: 'voice-1',
+        src: '/images/gallery/voice-of-Africa/Voice.jpg',
+        alt: 'Sylvia representing African farmers',
+        title: 'Voice of African Farmers',
+        description: 'Representing African farmers on global platforms'
       },
       {
-        id: 'women-2',
-        src: '/images/gallery/women-farmers/women-2.jpg',
-        alt: 'Women farmers training',
-        title: 'Empowerment Training',
-        description: 'Women-focused training and mentorship'
+        id: 'voice-2',
+        src: '/images/gallery/voice-of-Africa/Voice of africa 2.jpg',
+        alt: 'International representation',
+        title: 'Global Advocacy',
+        description: 'Speaking for African agriculture at international forums'
       },
       {
-        id: 'women-3',
-        src: '/images/gallery/women-farmers/women-3.jpg',
-        alt: 'Women farmers success',
-        title: 'Success Stories',
-        description: 'Women farmers celebrating achievements'
+        id: 'voice-3',
+        src: '/images/gallery/voice-of-Africa/Features.JPG',
+        alt: 'Featured voice of Africa',
+        title: 'Featured Speaker',
+        description: 'Sharing African farming perspectives worldwide'
       },
     ]
   },
   {
-    slug: 'youth-training',
-    title: 'Youth Training',
-    description: 'Next generation of farmers',
+    slug: 'advocacy',
+    title: 'Advocacy',
+    description: 'Policy change for sustainable food systems',
     icon: FiTarget,
     images: [
       {
-        id: 'youth-1',
-        src: '/images/gallery/youth-training/youth-1.jpg',
-        alt: 'Young farmers learning',
-        title: 'Youth Engagement',
-        description: 'Training the next generation of farmers'
+        id: 'advocacy-1',
+        src: '/images/gallery/advocacy/Advocacy 1.jpg',
+        alt: 'Policy advocacy work',
+        title: 'Policy Engagement',
+        description: 'Working to change policies for sustainable agriculture'
       },
       {
-        id: 'youth-2',
-        src: '/images/gallery/youth-training/youth-2.jpg',
-        alt: 'Youth in agriculture',
-        title: 'Youth Innovation',
-        description: 'Young people embracing modern organic farming'
+        id: 'advocacy-2',
+        src: '/images/gallery/advocacy/Advocacy3.jpg',
+        alt: 'Advocacy campaigns',
+        title: 'Advocacy Campaigns',
+        description: 'Campaigns for agroecology and food systems change'
       },
       {
-        id: 'youth-3',
-        src: '/images/gallery/youth-training/youth-3.jpg',
-        alt: 'Youth farmers at work',
-        title: 'Future Farmers',
-        description: 'Youth actively participating in agriculture'
+        id: 'advocacy-3',
+        src: '/images/gallery/advocacy/Advocacy 4.jpg',
+        alt: 'Community advocacy',
+        title: 'Community Advocacy',
+        description: 'Grassroots advocacy for sustainable food systems'
+      },
+    ]
+  },
+  {
+    slug: 'informal-settlements',
+    title: 'Informal Settlements Initiative',
+    description: 'Making organic food accessible to underserved communities',
+    icon: FiHeart,
+    images: [
+      {
+        id: 'informal-1',
+        src: '/images/gallery/informal_settlements/IMG_20251013_104847.jpg',
+        alt: 'St. Barrack Learning Centre, Mukuru kwa njenga',
+        title: 'St. Barrack Learning Centre',
+        description: 'Pilot program at St. Barrack Learning Centre in Mukuru kwa njenga, Nairobi'
+      },
+      {
+        id: 'informal-2',
+        src: '/images/gallery/informal_settlements/IMG_20251013_105506.jpg',
+        alt: 'Community engagement in Mukuru',
+        title: 'Community Outreach',
+        description: 'Building relationships with the Mukuru community'
+      },
+      {
+        id: 'informal-3',
+        src: '/images/gallery/informal_settlements/IMG_20251013_114735.jpg',
+        alt: 'School children at St. Barrack',
+        title: 'Reaching Children',
+        description: 'Bringing nutritious organic food to school children'
+      },
+      {
+        id: 'informal-4',
+        src: '/images/gallery/informal_settlements/IMG_20251013_114747.jpg',
+        alt: 'Organic food distribution',
+        title: 'Food Distribution',
+        description: 'Distributing fresh organic produce to the community'
+      },
+      {
+        id: 'informal-5',
+        src: '/images/gallery/informal_settlements/IMG_20251013_114822.jpg',
+        alt: 'Initiative in action',
+        title: 'Initiative Launch',
+        description: 'Early stages of the informal settlements program'
+      },
+      {
+        id: 'informal-6',
+        src: '/images/gallery/informal_settlements/IMG-20251021-WA0066.jpg',
+        alt: 'Community interaction',
+        title: 'Community Engagement',
+        description: 'Working together to improve food access'
+      },
+      {
+        id: 'informal-7',
+        src: '/images/gallery/informal_settlements/IMG-20251021-WA0067.jpg',
+        alt: 'Program development',
+        title: 'Building the Program',
+        description: 'Developing sustainable food access for informal settlements'
       },
     ]
   },

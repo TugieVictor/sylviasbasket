@@ -71,9 +71,9 @@ const HomePage = () => {
   const partnerships = [
     { name: 'IFOAM', description: 'Training & Advocacy ambassador' },
     { name: 'KOAN', description: 'Market for smallholder farmers' },
-    { name: 'HPS', description: 'Advocacy mainstreaming Agro-ecology' },
+    { name: 'HBS', description: 'Advocacy mainstreaming Agro-ecology' },
     { name: 'Biovision', description: 'Creating enabling environment for Agro-ecological entrepreneurs' },
-    { name: 'ICRAF', description: 'Agroforestry' },
+    { name: 'CIFOR-ICRAF', description: 'Agroforestry' },
     { name: 'Greenspoon', description: 'Organic produce marketing' },
   ]
 

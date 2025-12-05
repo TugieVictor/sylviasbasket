@@ -40,7 +40,7 @@ export async function POST(request: Request) {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        from: 'Website Contact Form <noreply@sylviasbasket.co.ke>',
+        from: 'Sylvias Basket Website <onboarding@resend.dev>',
         to: 'info@sylviasbasket.co.ke',
         reply_to: email,
         subject: `New Contact Form Submission from ${name}`,
