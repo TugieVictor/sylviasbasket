@@ -158,8 +158,15 @@ const DonatePage = () => {
     <div className="overflow-hidden bg-gradient-to-br from-sage-50 via-white to-accent-50 min-h-screen">
       {/* Hero Section */}
       <section className="relative pt-32 pb-12 overflow-hidden">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-harvest-500/10 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-accent-500/10 rounded-full blur-3xl"></div>
+        {/* Background Image */}
+        <div className="absolute inset-0 top-0">
+          <img
+            src="/images/supportHero.jpg"
+            alt="Support Sylvia's Basket"
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-accent-900/85 via-sage-900/80 to-accent-900/85"></div>
+        </div>
 
         <div className="container-custom relative z-10">
           <motion.div
@@ -168,14 +175,14 @@ const DonatePage = () => {
             animate="animate"
             variants={fadeInUp}
           >
-            <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-accent-500 to-sage-600 rounded-2xl shadow-xl mb-6">
+            <div className="inline-flex items-center justify-center w-20 h-20 bg-white/20 backdrop-blur-sm rounded-2xl shadow-xl mb-6 border border-white/30">
               <FiHeart className="w-10 h-10 text-white" />
             </div>
-            <h1 className="text-5xl md:text-6xl font-display font-bold text-gray-900 mb-6">
+            <h1 className="text-5xl md:text-6xl font-display font-bold text-white mb-6">
               Support Our{' '}
-              <span className="text-gradient-accent">Mission</span>
+              <span className="text-harvest-300">Mission</span>
             </h1>
-            <p className="text-xl text-gray-600 mb-4">
+            <p className="text-xl text-white mb-4">
               Your donation helps empower smallholder farmers, build sustainable food systems, and create lasting change across Kenya
             </p>
 
@@ -185,21 +192,21 @@ const DonatePage = () => {
                 <div key={s} className="flex items-center">
                   <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold ${
                     step >= s
-                      ? 'bg-gradient-to-br from-accent-500 to-sage-600 text-white'
-                      : 'bg-gray-200 text-gray-500'
+                      ? 'bg-white text-accent-700 shadow-xl'
+                      : 'bg-white/20 backdrop-blur-sm text-white border border-white/30'
                   }`}>
                     {step > s ? <FiCheck className="w-5 h-5" /> : s}
                   </div>
                   {s < 3 && (
-                    <div className={`w-12 h-1 ${step > s ? 'bg-accent-500' : 'bg-gray-200'}`}></div>
+                    <div className={`w-12 h-1 ${step > s ? 'bg-white' : 'bg-white/30'}`}></div>
                   )}
                 </div>
               ))}
             </div>
-            <div className="flex justify-center gap-12 mt-2 text-sm font-semibold text-gray-600">
-              <span className={step === 1 ? 'text-accent-600' : ''}>Amount</span>
-              <span className={step === 2 ? 'text-accent-600' : ''}>Details</span>
-              <span className={step === 3 ? 'text-accent-600' : ''}>Payment</span>
+            <div className="flex justify-center gap-12 mt-2 text-sm font-semibold text-white">
+              <span className={step === 1 ? 'text-harvest-300' : 'opacity-80'}>Amount</span>
+              <span className={step === 2 ? 'text-harvest-300' : 'opacity-80'}>Details</span>
+              <span className={step === 3 ? 'text-harvest-300' : 'opacity-80'}>Payment</span>
             </div>
           </motion.div>
         </div>

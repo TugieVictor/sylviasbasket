@@ -122,7 +122,7 @@ const Navigation = () => {
                 </Link>
               )
             })}
-            <Link href="/get-involved/" className="ml-2">
+            <Link href="/donate" className="ml-2">
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
@@ -199,7 +199,7 @@ const Navigation = () => {
                 transition={{ delay: navLinks.length * 0.05 }}
                 className="pt-4"
               >
-                <Link href="/get-involved/" onClick={() => setIsMobileMenuOpen(false)}>
+                <Link href="/donate" onClick={() => setIsMobileMenuOpen(false)}>
                   <button className="w-full bg-gradient-to-r from-harvest-600 via-clay-600 to-sage-700 text-white px-6 py-4 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2 group">
                     <FiHeart className="w-5 h-5 group-hover:scale-110 transition-transform" />
                     <span>Donate Now</span>

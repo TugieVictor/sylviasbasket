@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { FiHeart, FiUsers, FiGlobe, FiMail, FiPhone, FiMapPin, FiShare2, FiDollarSign, FiUserCheck } from 'react-icons/fi'
 import { GiFarmer } from 'react-icons/gi'
@@ -24,14 +25,6 @@ const GetInvolvedPage = () => {
   }
 
   // Handler functions for buttons
-  const handleDonate = () => {
-    // Scroll to contact section
-    const contactSection = document.getElementById('contact-section')
-    if (contactSection) {
-      contactSection.scrollIntoView({ behavior: 'smooth' })
-    }
-  }
-
   const handleContactSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setSubmitting(true)
@@ -277,14 +270,26 @@ const GetInvolvedPage = () => {
                       </div>
                     ))}
                   </div>
-                  <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={way.id === 'donate' ? handleDonate : way.id === 'partner' ? handlePartner : handleShare}
-                    className={`w-full bg-gradient-to-r ${way.color} text-white px-6 py-3 rounded-full font-semibold shadow-lg hover:shadow-xl transition-shadow`}
-                  >
-                    {way.cta}
-                  </motion.button>
+                  {way.id === 'donate' ? (
+                    <Link href="/donate">
+                      <motion.button
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        className={`w-full bg-gradient-to-r ${way.color} text-white px-6 py-3 rounded-full font-semibold shadow-lg hover:shadow-xl transition-shadow`}
+                      >
+                        {way.cta}
+                      </motion.button>
+                    </Link>
+                  ) : (
+                    <motion.button
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={way.id === 'partner' ? handlePartner : handleShare}
+                      className={`w-full bg-gradient-to-r ${way.color} text-white px-6 py-3 rounded-full font-semibold shadow-lg hover:shadow-xl transition-shadow`}
+                    >
+                      {way.cta}
+                    </motion.button>
+                  )}
                 </div>
               </motion.div>
             ))}
@@ -344,40 +349,23 @@ const GetInvolvedPage = () => {
                   Ready to Make a Difference?
                 </h3>
                 <p className="text-lg mb-8 opacity-90">
-                  Support our mission through secure donations
+                  Support our mission through secure online donations
                 </p>
 
-                {/* Donation Options */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl mx-auto">
-                  {/* PayPal Option */}
+                {/* Donation Button */}
+                <div className="max-w-md mx-auto">
                   <motion.a
-                    href="https://www.paypal.com/donate"
-                    target="_blank"
-                    rel="noopener noreferrer"
+                    href="/donate"
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    className="bg-white text-accent-700 px-8 py-5 rounded-xl font-semibold text-lg shadow-xl hover:shadow-2xl transition-all flex flex-col items-center gap-3 group"
+                    className="bg-white text-accent-700 px-10 py-6 rounded-xl font-semibold text-xl shadow-xl hover:shadow-2xl transition-all flex flex-col items-center gap-4 group"
                   >
-                    <FiGlobe className="w-8 h-8 group-hover:scale-110 transition-transform" />
+                    <FiHeart className="w-12 h-12 group-hover:scale-110 transition-transform" />
                     <div>
-                      <div className="font-bold">PayPal</div>
-                      <div className="text-sm text-gray-600">International Donations</div>
+                      <div className="font-bold text-2xl">Donate Now</div>
+                      <div className="text-sm text-gray-600 mt-2">M-Pesa • Card • Bank Transfer</div>
                     </div>
                   </motion.a>
-
-                  {/* M-Pesa / Bank Transfer */}
-                  <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={handleDonate}
-                    className="bg-white text-accent-700 px-8 py-5 rounded-xl font-semibold text-lg shadow-xl hover:shadow-2xl transition-all flex flex-col items-center gap-3 group"
-                  >
-                    <FiPhone className="w-8 h-8 group-hover:scale-110 transition-transform" />
-                    <div>
-                      <div className="font-bold">M-Pesa / Bank</div>
-                      <div className="text-sm text-gray-600">Contact for Details</div>
-                    </div>
-                  </motion.button>
                 </div>
 
                 <p className="text-sm mt-6 opacity-75">

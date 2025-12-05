@@ -766,7 +766,7 @@ const HomePage = () => {
                 whileHover={{ x: 10 }}
                 className="group"
               >
-                <Link href="/get-involved">
+                <Link href="/donate">
                   <div className="glass-card p-6 rounded-2xl shadow-lg hover:shadow-2xl transition-all cursor-pointer border-l-4 border-accent-500">
                     <div className="flex items-start justify-between mb-3">
                       <div className="w-12 h-12 bg-gradient-to-br from-accent-500 to-sage-600 rounded-xl flex items-center justify-center text-white shadow-lg group-hover:scale-110 transition-transform">
@@ -779,7 +779,7 @@ const HomePage = () => {
                       Directly support farmer training programs and organic agriculture initiatives across Kenya
                     </p>
                     <div className="mt-4 text-sm font-semibold text-accent-600">
-                      Learn More →
+                      Donate Now →
                     </div>
                   </div>
                 </Link>

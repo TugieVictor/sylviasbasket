@@ -1,16 +1,21 @@
 'use client'
 
 import { useState } from 'react'
+import { usePathname } from 'next/navigation'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { FiMail, FiPhone, FiMapPin, FiFacebook, FiTwitter, FiInstagram, FiLinkedin, FiArrowRight, FiHeart } from 'react-icons/fi'
 import { GiPlantSeed } from 'react-icons/gi'
 
 const Footer = () => {
+  const pathname = usePathname()
   const currentYear = new Date().getFullYear()
   const [email, setEmail] = useState('')
   const [subscribing, setSubscribing] = useState(false)
   const [subscribeMessage, setSubscribeMessage] = useState('')
+
+  // Hide newsletter on main donate page, but show on success/failure pages
+  const hideNewsletter = pathname === '/donate' || pathname === '/donate/'
 
   const handleSubscribe = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -55,64 +60,66 @@ const Footer = () => {
 
       <div className="container-custom relative z-10">
         {/* Newsletter Section - Glass Card with African Children */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="glass-card rounded-3xl overflow-hidden mb-16 shadow-2xl"
-        >
-          <div className="grid lg:grid-cols-2 gap-0">
-            {/* Left: Image */}
-            <div className="relative h-64 lg:h-auto min-h-[300px]">
-              <img
-                src="/images/happy_african_children.jpg"
-                alt="Happy African children - the future we're building together"
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-r from-accent-900/40 to-transparent"></div>
-            </div>
-
-            {/* Right: Newsletter Form */}
-            <div className="p-10 flex flex-col justify-center">
-              <div className="w-16 h-16 bg-gradient-to-br from-accent-500 to-sage-600 rounded-2xl flex items-center justify-center mb-6 shadow-xl">
-                <GiPlantSeed className="w-8 h-8 text-white" />
-              </div>
-              <h3 className="text-3xl font-cursive font-bold mb-4 bg-gradient-to-r from-harvest-600 via-sage-700 to-accent-700 bg-clip-text text-transparent">
-                Join Our Community
-              </h3>
-              <p className="text-gray-700 text-lg mb-8">
-                Get monthly updates on organic farming, training opportunities, and inspiring stories from our farmer network
-              </p>
-            <form onSubmit={handleSubscribe} className="max-w-md mx-auto">
-              <div className="flex flex-col sm:flex-row gap-4">
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Enter your email"
-                  className="flex-1 px-6 py-4 rounded-full glass-card focus:outline-none focus:ring-2 focus:ring-accent-500 text-gray-900 placeholder-gray-500"
-                  disabled={subscribing}
+        {!hideNewsletter && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="glass-card rounded-3xl overflow-hidden mb-16 shadow-2xl"
+          >
+            <div className="grid lg:grid-cols-2 gap-0">
+              {/* Left: Image */}
+              <div className="relative h-64 lg:h-auto min-h-[300px]">
+                <img
+                  src="/images/happy_african_children.jpg"
+                  alt="Happy African children - the future we're building together"
+                  className="w-full h-full object-cover"
                 />
-                <motion.button
-                  type="submit"
-                  whileHover={{ scale: 1.05, x: 5 }}
-                  whileTap={{ scale: 0.95 }}
-                  disabled={subscribing}
-                  className="bg-gradient-to-r from-accent-600 to-sage-600 text-white px-8 py-4 rounded-full font-semibold shadow-2xl hover:shadow-accent-500/50 transition-all flex items-center justify-center gap-2 whitespace-nowrap disabled:opacity-50"
-                >
-                  {subscribing ? 'Subscribing...' : 'Subscribe'}
-                  <FiArrowRight className="w-5 h-5" />
-                </motion.button>
+                <div className="absolute inset-0 bg-gradient-to-r from-accent-900/40 to-transparent"></div>
               </div>
-              {subscribeMessage && (
-                <p className={`text-sm mt-4 ${subscribeMessage.includes('Successfully') ? 'text-green-600' : 'text-red-600'}`}>
-                  {subscribeMessage}
+
+              {/* Right: Newsletter Form */}
+              <div className="p-10 flex flex-col justify-center">
+                <div className="w-16 h-16 bg-gradient-to-br from-accent-500 to-sage-600 rounded-2xl flex items-center justify-center mb-6 shadow-xl">
+                  <GiPlantSeed className="w-8 h-8 text-white" />
+                </div>
+                <h3 className="text-3xl font-cursive font-bold mb-4 bg-gradient-to-r from-harvest-600 via-sage-700 to-accent-700 bg-clip-text text-transparent">
+                  Join Our Community
+                </h3>
+                <p className="text-gray-700 text-lg mb-8">
+                  Get monthly updates on organic farming, training opportunities, and inspiring stories from our farmer network
                 </p>
-              )}
-            </form>
+              <form onSubmit={handleSubscribe} className="max-w-md mx-auto">
+                <div className="flex flex-col sm:flex-row gap-4">
+                  <input
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="Enter your email"
+                    className="flex-1 px-6 py-4 rounded-full glass-card focus:outline-none focus:ring-2 focus:ring-accent-500 text-gray-900 placeholder-gray-500"
+                    disabled={subscribing}
+                  />
+                  <motion.button
+                    type="submit"
+                    whileHover={{ scale: 1.05, x: 5 }}
+                    whileTap={{ scale: 0.95 }}
+                    disabled={subscribing}
+                    className="bg-gradient-to-r from-accent-600 to-sage-600 text-white px-8 py-4 rounded-full font-semibold shadow-2xl hover:shadow-accent-500/50 transition-all flex items-center justify-center gap-2 whitespace-nowrap disabled:opacity-50"
+                  >
+                    {subscribing ? 'Subscribing...' : 'Subscribe'}
+                    <FiArrowRight className="w-5 h-5" />
+                  </motion.button>
+                </div>
+                {subscribeMessage && (
+                  <p className={`text-sm mt-4 ${subscribeMessage.includes('Successfully') ? 'text-green-600' : 'text-red-600'}`}>
+                    {subscribeMessage}
+                  </p>
+                )}
+              </form>
+              </div>
             </div>
-          </div>
-        </motion.div>
+          </motion.div>
+        )}
 
         {/* Main Footer Content */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
@@ -180,7 +187,7 @@ const Footer = () => {
           <div>
             <h4 className="text-lg font-display font-semibold mb-4 text-gray-900">Get Involved</h4>
             <ul className="space-y-3">
-              <li><Link href="/get-involved#donate" className="text-gray-700 hover:text-accent-600 transition-colors flex items-center gap-2 group"><FiHeart className="w-4 h-4 group-hover:scale-110 transition-transform" />Donate</Link></li>
+              <li><Link href="/donate" className="text-gray-700 hover:text-accent-600 transition-colors flex items-center gap-2 group"><FiHeart className="w-4 h-4 group-hover:scale-110 transition-transform" />Donate</Link></li>
               <li><Link href="/get-involved#volunteer" className="text-gray-700 hover:text-accent-600 transition-colors flex items-center gap-2 group"><FiHeart className="w-4 h-4 group-hover:scale-110 transition-transform" />Volunteer</Link></li>
               <li><Link href="/get-involved#partner" className="text-gray-700 hover:text-accent-600 transition-colors flex items-center gap-2 group"><FiHeart className="w-4 h-4 group-hover:scale-110 transition-transform" />Partner With Us</Link></li>
               <li><Link href="/get-involved#newsletter" className="text-gray-700 hover:text-accent-600 transition-colors flex items-center gap-2 group"><FiMail className="w-4 h-4 group-hover:scale-110 transition-transform" />Newsletter</Link></li>
