@@ -57,8 +57,8 @@ const DonatePageContent = () => {
           setSelectedAmount(amount)
           setCustomAmount('')
         } else {
-          // Set as custom amount
-          setSelectedAmount(0)
+          // Set as custom amount - set both selectedAmount and customAmount
+          setSelectedAmount(amount)
           setCustomAmount(amount.toString())
         }
       }
