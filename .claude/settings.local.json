@@ -4,7 +4,8 @@
       "Bash(python -c \"from docx import Document; doc = Document(''Emit_Sylvia''\\''''s_Basket_Meeting2_Notes.docx''); print(''\\n''.join([p.text for p in doc.paragraphs]))\")",
       "Bash(unzip:*)",
       "WebSearch",
-      "WebFetch(domain:www.youtube.com)"
+      "WebFetch(domain:www.youtube.com)",
+      "Bash(npm run dev:*)"
     ],
     "deny": [],
     "ask": []

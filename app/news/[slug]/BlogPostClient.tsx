@@ -149,7 +149,7 @@ const BlogPostPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-accent-50 via-sage-50 to-sky-50 overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-accent-50 via-sage-50 to-sky-50">
       {/* Decorative orbs */}
       <div className="absolute top-20 left-10 w-96 h-96 bg-accent-500/10 rounded-full blur-3xl"></div>
       <div className="absolute bottom-20 right-10 w-96 h-96 bg-harvest-500/10 rounded-full blur-3xl"></div>
