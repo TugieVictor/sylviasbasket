@@ -135,24 +135,28 @@ const GetInvolvedPage = () => {
   const donationTiers = [
     {
       amount: 'KES 500',
+      numericAmount: 500,
       usd: '$5',
       impact: 'Provides seeds for one farmer',
       icon: <GiFarmer className="w-8 h-8" />
     },
     {
       amount: 'KES 2,500',
+      numericAmount: 2500,
       usd: '$25',
       impact: 'Funds one training session',
       icon: <FiUsers className="w-8 h-8" />
     },
     {
       amount: 'KES 5,000',
+      numericAmount: 5000,
       usd: '$50',
       impact: 'Supports a women\'s farming group',
       icon: <FiHeart className="w-8 h-8" />
     },
     {
       amount: 'KES 10,000',
+      numericAmount: 10000,
       usd: '$100',
       impact: 'Sponsors 5 farmers for a month',
       icon: <FiGlobe className="w-8 h-8" />
@@ -319,24 +323,28 @@ const GetInvolvedPage = () => {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {donationTiers.map((tier, index) => (
-                <motion.div
+                <Link
                   key={index}
-                  whileHover={{ scale: 1.05 }}
-                  className="bg-gradient-to-br from-primary-50 to-white p-6 rounded-xl border border-primary-200 shadow-md text-center"
+                  href={`/donate?amount=${tier.numericAmount}`}
                 >
-                  <div className="text-primary-600 mb-4 flex justify-center">
-                    {tier.icon}
-                  </div>
-                  <div className="text-3xl font-display font-bold text-gray-900 mb-1">
-                    {tier.amount}
-                  </div>
-                  <div className="text-sm text-gray-600 mb-4">
-                    ({tier.usd} USD)
-                  </div>
-                  <p className="text-sm text-gray-700">
-                    {tier.impact}
-                  </p>
-                </motion.div>
+                  <motion.div
+                    whileHover={{ scale: 1.05 }}
+                    className="bg-gradient-to-br from-primary-50 to-white p-6 rounded-xl border border-primary-200 shadow-md text-center cursor-pointer hover:shadow-xl transition-shadow"
+                  >
+                    <div className="text-primary-600 mb-4 flex justify-center">
+                      {tier.icon}
+                    </div>
+                    <div className="text-3xl font-display font-bold text-gray-900 mb-1">
+                      {tier.amount}
+                    </div>
+                    <div className="text-sm text-gray-600 mb-4">
+                      ({tier.usd} USD)
+                    </div>
+                    <p className="text-sm text-gray-700">
+                      {tier.impact}
+                    </p>
+                  </motion.div>
+                </Link>
               ))}
             </div>
 

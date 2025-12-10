@@ -1,6 +1,7 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useSearchParams } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
 import {
@@ -18,6 +19,8 @@ import {
 import { validateDonationForm, formatCurrency, sanitizeDonationData } from '@/lib/donations/utils'
 
 const DonatePage = () => {
+  const searchParams = useSearchParams()
+
   // Form state
   const [step, setStep] = useState(1)
   const [donationType, setDonationType] = useState<DonationType>('ONCE')
@@ -41,6 +44,26 @@ const DonatePage = () => {
     accountNumber: process.env.NEXT_PUBLIC_BANK_ACCOUNT_NUMBER || 'Pending Setup',
     branch: 'Limuru',
   }
+
+  // Pre-fill amount from URL parameter
+  useEffect(() => {
+    const amountParam = searchParams.get('amount')
+    if (amountParam) {
+      const amount = parseInt(amountParam)
+      if (!isNaN(amount) && amount > 0) {
+        // Check if it's a preset amount
+        const presetAmount = DONATION_AMOUNTS.find(a => a.value === amount)
+        if (presetAmount) {
+          setSelectedAmount(amount)
+          setCustomAmount('')
+        } else {
+          // Set as custom amount
+          setSelectedAmount(0)
+          setCustomAmount(amount.toString())
+        }
+      }
+    }
+  }, [searchParams])
 
   // Animation variants
   const fadeInUp = {
