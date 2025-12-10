@@ -51,11 +51,9 @@ export async function POST(request: Request) {
           donorName: donation.donorName,
           donorEmail: donation.donorEmail,
           amount: donation.amount,
-          currency: donation.currency,
           paymentMethod: donation.paymentMethod,
           donationType: donation.donationType,
           transactionId: donation.transactionId || undefined,
-          message: donation.message || undefined,
           createdAt: donation.createdAt,
         })
 
@@ -132,11 +130,9 @@ export async function POST(request: Request) {
         donorName: donation.donorName,
         donorEmail: donation.donorEmail,
         amount: donation.amount,
-        currency: donation.currency,
         paymentMethod: donation.paymentMethod,
         donationType: donation.donationType,
         transactionId: donation.transactionId || undefined,
-        message: donation.message || undefined,
         createdAt: donation.createdAt,
       })
       console.log('🟡 Receipt result:', receiptResult)
