@@ -258,7 +258,7 @@ const BlogPostPage = () => {
 
           {/* Sidebar */}
           <motion.aside
-            className="lg:col-span-1"
+            className="lg:col-span-1 sticky top-32 self-start"
             initial={{ opacity: 0, x: 60 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}

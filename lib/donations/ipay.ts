@@ -104,11 +104,10 @@ export async function initiateIPayPayment(request: IPayPaymentRequest): Promise<
   if (!IPAY_CONFIG.vendorId || !IPAY_CONFIG.hashKey) {
     console.warn('iPay not configured - credentials pending from client')
 
-    // PLACEHOLDER: Return mock success for development
-    // Remove this when iPay is configured
+    // Return failure so the process route will send emails instead
     return {
-      success: true,
-      redirectUrl: `/donate/success?orderId=${request.orderId}`,
+      success: false,
+      error: 'iPay not configured - using fallback email flow',
     }
   }
 

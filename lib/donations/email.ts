@@ -37,7 +37,9 @@ export async function sendDonationReceipt(donation: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        from: 'Sylvias Basket <donations@sylviasbasket.co.ke>',
+        // TEMPORARY: Using Resend default domain until sylviasbasket.co.ke is verified
+        // Change back to 'Sylvias Basket <donations@sylviasbasket.co.ke>' after domain verification
+        from: 'Sylvias Basket <onboarding@resend.dev>',
         to: donation.donorEmail,
         subject: `Thank you for your donation - ${donation.orderId}`,
         html: generateReceiptHTML(donation),
@@ -399,7 +401,9 @@ export async function sendAdminNotification(donation: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        from: 'Sylvias Basket <donations@sylviasbasket.co.ke>',
+        // TEMPORARY: Using Resend default domain until sylviasbasket.co.ke is verified
+        // Change back to 'Sylvias Basket <donations@sylviasbasket.co.ke>' after domain verification
+        from: 'Sylvias Basket <onboarding@resend.dev>',
         to: 'info@sylviasbasket.co.ke',
         subject: `New Donation: ${formatCurrency(donation.amount)} from ${donation.donorName}`,
         html: `

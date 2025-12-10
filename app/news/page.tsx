@@ -29,6 +29,14 @@ const NewsPage = () => {
   const [email, setEmail] = useState('')
   const [subscribing, setSubscribing] = useState(false)
   const [subscribeMessage, setSubscribeMessage] = useState('')
+  const [currentPage, setCurrentPage] = useState(1)
+
+  // Pagination settings
+  const postsPerPage = 3
+  const totalPages = Math.ceil(recentPosts.length / postsPerPage)
+  const startIndex = (currentPage - 1) * postsPerPage
+  const endIndex = startIndex + postsPerPage
+  const currentPosts = recentPosts.slice(startIndex, endIndex)
 
   useEffect(() => {
     async function loadPosts() {
@@ -39,15 +47,17 @@ const NewsPage = () => {
 
         if (featured.length > 0) {
           setFeaturedPost(featured[0] as BlogPost)
-          // Filter out featured post from recent posts
-          setRecentPosts(all.filter((p: any) => p.id !== featured[0].id).slice(0, 6) as BlogPost[])
+          // Filter out featured post from recent posts (get all, not just 6)
+          setRecentPosts(all.filter((p: any) => p.id !== featured[0].id) as BlogPost[])
         } else {
           // If no featured post, use first post as featured
           if (all.length > 0) {
             setFeaturedPost(all[0] as BlogPost)
-            setRecentPosts(all.slice(1, 7) as BlogPost[])
+            setRecentPosts(all.slice(1) as BlogPost[])
           }
         }
+        // Reset to page 1 when posts are loaded
+        setCurrentPage(1)
       } catch (error) {
         console.error('Error loading posts:', error)
       } finally {
@@ -337,14 +347,16 @@ const NewsPage = () => {
               ))}
             </div>
           ) : recentPosts.length > 0 ? (
-            <motion.div
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-              variants={staggerContainer}
-              initial="initial"
-              whileInView="animate"
-              viewport={{ once: true }}
-            >
-              {recentPosts.map((post) => (
+            <>
+              <motion.div
+                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+                variants={staggerContainer}
+                initial="initial"
+                whileInView="animate"
+                viewport={{ once: true }}
+                key={currentPage}
+              >
+                {currentPosts.map((post) => (
                 <motion.div
                   key={post.id}
                   variants={fadeInUp}
@@ -396,6 +408,52 @@ const NewsPage = () => {
                 </motion.div>
               ))}
             </motion.div>
+
+            {/* Pagination Controls */}
+            {totalPages > 1 && (
+              <motion.div
+                className="flex items-center justify-center gap-4 mt-12"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 }}
+              >
+                <button
+                  onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                  disabled={currentPage === 1}
+                  className="glass-card px-6 py-3 rounded-full font-semibold hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                >
+                  <FiArrowRight className="w-5 h-5 rotate-180" />
+                  Previous
+                </button>
+
+                {/* Page indicators */}
+                <div className="flex items-center gap-2">
+                  {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                    <button
+                      key={page}
+                      onClick={() => setCurrentPage(page)}
+                      className={`w-10 h-10 rounded-full font-semibold transition-all ${
+                        currentPage === page
+                          ? 'bg-gradient-to-r from-accent-600 to-sage-600 text-white shadow-lg'
+                          : 'glass-card hover:shadow-lg'
+                      }`}
+                    >
+                      {page}
+                    </button>
+                  ))}
+                </div>
+
+                <button
+                  onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                  disabled={currentPage === totalPages}
+                  className="glass-card px-6 py-3 rounded-full font-semibold hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                >
+                  Next
+                  <FiArrowRight className="w-5 h-5" />
+                </button>
+              </motion.div>
+            )}
+          </>
           ) : (
             <div className="text-center py-12">
               <p className="text-xl text-gray-600">No blog posts yet. Check back soon!</p>

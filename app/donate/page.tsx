@@ -68,6 +68,36 @@ const DonatePage = () => {
       return
     }
 
+    // Validate Step 2 (Donor Details) before moving to Step 3
+    if (step === 2) {
+      const newErrors: Record<string, string> = {}
+
+      if (!formData.donorName.trim()) {
+        newErrors.donorName = 'Name is required'
+      }
+
+      if (!formData.donorEmail.trim()) {
+        newErrors.donorEmail = 'Email is required'
+      } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.donorEmail)) {
+        newErrors.donorEmail = 'Please enter a valid email address'
+      }
+
+      if (!formData.donorPhone.trim()) {
+        newErrors.donorPhone = 'Phone number is required'
+      } else {
+        // Basic Kenyan phone validation
+        const cleaned = formData.donorPhone.replace(/\D/g, '')
+        if (cleaned.length < 9 || cleaned.length > 12) {
+          newErrors.donorPhone = 'Please enter a valid Kenyan phone number'
+        }
+      }
+
+      if (Object.keys(newErrors).length > 0) {
+        setErrors(newErrors)
+        return
+      }
+    }
+
     setErrors({})
     setStep(step + 1)
   }
@@ -78,6 +108,20 @@ const DonatePage = () => {
   }
 
   const handleSubmit = async () => {
+    // Check if payment method is selected
+    if (!paymentMethod) {
+      setErrors({ paymentMethod: 'Please select a payment method' })
+      return
+    }
+
+    // Double-check donor information is filled (shouldn't happen if validation works)
+    if (!formData.donorName || !formData.donorEmail || !formData.donorPhone) {
+      setErrors({
+        submit: 'Please go back and complete your information in Step 2'
+      })
+      return
+    }
+
     // Validate form
     const donationData: DonationFormData = {
       amount: selectedAmount,
@@ -92,6 +136,13 @@ const DonatePage = () => {
     const validation = validateDonationForm(donationData)
     if (!validation.valid) {
       setErrors(validation.errors)
+      // If validation fails, show user-friendly message
+      if (Object.keys(validation.errors).length > 0) {
+        setErrors({
+          ...validation.errors,
+          submit: 'Please check the information you entered and try again'
+        })
+      }
       return
     }
 
@@ -136,13 +187,30 @@ const DonatePage = () => {
             window.location.href = `/donate/success?orderId=${data.orderId}`
           }
         } else {
-          setErrors({ submit: paymentData.error || 'Payment processing failed' })
+          // Show more specific error based on payment method
+          let errorMessage = paymentData.error || 'Payment processing failed'
+
+          if (paymentMethod === 'MPESA' || paymentMethod === 'CARD') {
+            errorMessage = 'iPay payment gateway is not yet configured. Please use Bank Transfer or contact us at info@sylviasbasket.co.ke'
+          }
+
+          setErrors({ submit: errorMessage })
         }
       } else {
-        setErrors({ submit: data.error || 'Failed to create donation' })
+        // Show more specific error message
+        let errorMessage = data.error || 'Failed to create donation'
+
+        if (data.error && data.error.includes('database')) {
+          errorMessage = 'Database connection error. Please try again or contact us at info@sylviasbasket.co.ke'
+        }
+
+        setErrors({ submit: errorMessage })
       }
     } catch (error) {
-      setErrors({ submit: 'An error occurred. Please try again.' })
+      console.error('Donation error:', error)
+      setErrors({
+        submit: 'Network error. Please check your connection and try again, or contact us at info@sylviasbasket.co.ke'
+      })
     } finally {
       setSubmitting(false)
     }
@@ -342,13 +410,25 @@ const DonatePage = () => {
                         <input
                           type="text"
                           value={formData.donorName}
-                          onChange={(e) => setFormData({ ...formData, donorName: e.target.value })}
+                          onChange={(e) => {
+                            setFormData({ ...formData, donorName: e.target.value })
+                            // Clear error when user starts typing
+                            if (errors.donorName) {
+                              setErrors({ ...errors, donorName: '' })
+                            }
+                          }}
                           placeholder="John Doe"
-                          className="w-full pl-12 pr-4 py-3 rounded-lg border-2 border-gray-200 focus:border-accent-500 focus:outline-none"
+                          className={`w-full pl-12 pr-4 py-3 rounded-lg border-2 focus:outline-none transition-colors ${
+                            errors.donorName
+                              ? 'border-red-500 focus:border-red-500'
+                              : 'border-gray-200 focus:border-accent-500'
+                          }`}
                         />
                       </div>
                       {errors.donorName && (
-                        <p className="mt-1 text-sm text-red-600">{errors.donorName}</p>
+                        <p className="mt-1 text-sm text-red-600 flex items-center gap-1">
+                          <span>⚠</span> {errors.donorName}
+                        </p>
                       )}
                     </div>
 
@@ -362,13 +442,25 @@ const DonatePage = () => {
                         <input
                           type="email"
                           value={formData.donorEmail}
-                          onChange={(e) => setFormData({ ...formData, donorEmail: e.target.value })}
+                          onChange={(e) => {
+                            setFormData({ ...formData, donorEmail: e.target.value })
+                            // Clear error when user starts typing
+                            if (errors.donorEmail) {
+                              setErrors({ ...errors, donorEmail: '' })
+                            }
+                          }}
                           placeholder="john@example.com"
-                          className="w-full pl-12 pr-4 py-3 rounded-lg border-2 border-gray-200 focus:border-accent-500 focus:outline-none"
+                          className={`w-full pl-12 pr-4 py-3 rounded-lg border-2 focus:outline-none transition-colors ${
+                            errors.donorEmail
+                              ? 'border-red-500 focus:border-red-500'
+                              : 'border-gray-200 focus:border-accent-500'
+                          }`}
                         />
                       </div>
                       {errors.donorEmail && (
-                        <p className="mt-1 text-sm text-red-600">{errors.donorEmail}</p>
+                        <p className="mt-1 text-sm text-red-600 flex items-center gap-1">
+                          <span>⚠</span> {errors.donorEmail}
+                        </p>
                       )}
                     </div>
 
@@ -382,14 +474,29 @@ const DonatePage = () => {
                         <input
                           type="tel"
                           value={formData.donorPhone}
-                          onChange={(e) => setFormData({ ...formData, donorPhone: e.target.value })}
+                          onChange={(e) => {
+                            setFormData({ ...formData, donorPhone: e.target.value })
+                            // Clear error when user starts typing
+                            if (errors.donorPhone) {
+                              setErrors({ ...errors, donorPhone: '' })
+                            }
+                          }}
                           placeholder="0712345678 or 254712345678"
-                          className="w-full pl-12 pr-4 py-3 rounded-lg border-2 border-gray-200 focus:border-accent-500 focus:outline-none"
+                          className={`w-full pl-12 pr-4 py-3 rounded-lg border-2 focus:outline-none transition-colors ${
+                            errors.donorPhone
+                              ? 'border-red-500 focus:border-red-500'
+                              : 'border-gray-200 focus:border-accent-500'
+                          }`}
                         />
                       </div>
                       {errors.donorPhone && (
-                        <p className="mt-1 text-sm text-red-600">{errors.donorPhone}</p>
+                        <p className="mt-1 text-sm text-red-600 flex items-center gap-1">
+                          <span>⚠</span> {errors.donorPhone}
+                        </p>
                       )}
+                      <p className="mt-1 text-xs text-gray-500">
+                        Kenyan phone format: 0712345678 or 254712345678
+                      </p>
                     </div>
 
                     {/* Message (Optional) */}
