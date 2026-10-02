@@ -210,3 +210,25 @@
     @apply hover:bg-white/20 hover:border-white/30 transition-all duration-300;
   }
 }
+
+/* Homepage hero slider (components/HeroSlider.tsx) */
+.hero-slide-img {
+  object-position: var(--pos-mobile, center);
+}
+@media (min-width: 1024px) {
+  .hero-slide-img {
+    object-position: var(--pos-desktop, center);
+  }
+}
+@keyframes hero-kenburns {
+  from { transform: scale(1); }
+  to { transform: scale(1.08); }
+}
+.hero-kenburns {
+  animation-name: hero-kenburns;
+  animation-timing-function: ease-out;
+  animation-fill-mode: forwards;
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-kenburns { animation: none; }
+}

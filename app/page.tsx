@@ -4,8 +4,18 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
+import HeroSlider, { type HeroSlide } from '@/components/HeroSlider'
 import { FiArrowRight, FiUsers, FiTrendingUp, FiAward, FiHeart, FiTarget, FiGlobe, FiExternalLink, FiPlay } from 'react-icons/fi'
 import { GiFarmer, GiPlantSeed, GiWheat } from 'react-icons/gi'
+
+// Homepage hero photos (files in /public/images/hero, see version_2_plan.md)
+const heroSlides: HeroSlide[] = [
+  { name: 'hero-training', alt: 'Sylvia Kuria leads an agroecology training for farmers seated under trees', caption: 'Farmer training on the farm', position: { mobile: '24% center', desktop: '70% center' } },
+  { name: 'hero-field-visit', alt: 'A group of farmers on a field visit among crops and trees', caption: 'Learning in the field', position: { mobile: '55% center', desktop: 'center' } },
+  { name: 'hero-discussion', alt: 'Farmers in a group discussion in the shade of banana plants', caption: 'Farmer-to-farmer exchange', position: { mobile: '60% center', desktop: 'center 40%' } },
+  { name: 'hero-livestock', alt: 'A sheep and a calf on the farm, with young trees behind them', caption: 'Livestock on the farm', position: { mobile: '50% center', desktop: 'center 60%' } },
+  { name: 'hero-poultry', alt: 'Hens feeding together on the farm', caption: 'Poultry on the farm', position: { mobile: 'center', desktop: 'center' } },
+]
 
 const HomePage = () => {
   const [showVideo, setShowVideo] = useState(false)
@@ -79,133 +89,122 @@ const HomePage = () => {
 
   return (
     <div className="bg-white">
-      {/* Hero Section - full photo with colour overlay (version_2_plan.md, Option B) */}
+      {/* Hero Section - photo slider with colour overlay (version_2_plan.md) */}
       <section className="relative overflow-hidden bg-sage-900 lg:min-h-[100svh] lg:flex lg:items-center">
-        {/* Photo: Sylvia leading a farmer training. On phones it sits above the text; on large screens it fills the hero */}
+        {/* Photos. On phones they sit above the text; on large screens they fill the hero */}
         <div className="relative h-[56svh] min-h-[340px] lg:absolute lg:inset-0 lg:h-auto lg:min-h-0">
-        <picture>
-          <source
-            type="image/webp"
-            srcSet="/images/hero-training-800.webp 800w, /images/hero-training-1200.webp 1200w, /images/hero-training-1789.webp 1789w"
-            sizes="100vw"
-          />
-          <img
-            src="/images/hero-training-1200.jpg"
-            alt="Sylvia Kuria leads an agroecology training for farmers seated under trees"
-            width={1789}
-            height={879}
-            loading="eager"
-            className="absolute inset-0 w-full h-full object-cover object-[24%_center] lg:object-[22%_center]"
-          />
-        </picture>
+          <HeroSlider slides={heroSlides} />
           {/* Phones: fade the bottom of the photo into the green */}
           <div aria-hidden="true" className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-sage-900 via-sage-900/60 to-transparent lg:hidden"></div>
         </div>
 
-        {/* Colour overlay: strong behind the text, light over Sylvia */}
+        {/* Large screens: colour overlay, strongest behind the text on the left */}
         <div
           aria-hidden="true"
-          className="hidden lg:block absolute inset-0 bg-gradient-to-l from-sage-900/90 via-sage-900/65 to-sage-900/5"
+          className="hidden lg:block absolute inset-0 bg-gradient-to-r from-sage-900/95 via-sage-900/75 to-sage-900/35"
         ></div>
+        {/* Soft brand-colour glows, as used across the site */}
+        <div aria-hidden="true" className="absolute -top-20 -left-20 w-[28rem] h-[28rem] bg-accent-500/25 rounded-full blur-3xl"></div>
+        <div aria-hidden="true" className="absolute bottom-0 left-1/3 w-[24rem] h-[24rem] bg-harvest-500/20 rounded-full blur-3xl"></div>
         {/* Darker band at the top so the menu stays readable */}
         <div aria-hidden="true" className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-black/40 to-transparent"></div>
 
-        <div className="container-custom relative z-10 w-full -mt-20 pb-14 md:pb-20 lg:mt-0 lg:pt-40 lg:pb-32">
-          <div className="grid grid-cols-1 lg:grid-cols-2">
+        <div className="container-custom relative z-10 w-full -mt-20 pb-24 md:pb-28 lg:mt-0 lg:pt-40 lg:pb-44">
+          <motion.div
+            initial="initial"
+            animate="animate"
+            variants={fadeInLeft}
+            className="max-w-2xl space-y-6 md:space-y-8 text-white"
+          >
+            {/* Main Heading */}
             <motion.div
-              initial="initial"
-              animate="animate"
-              variants={fadeInRight}
-              className="lg:col-start-2 space-y-6 md:space-y-8 text-white"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="space-y-4 md:space-y-6"
             >
-              {/* Main Heading */}
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 }}
-                className="space-y-4 md:space-y-6"
-              >
-                <h1 className="text-display leading-none text-white">
-                  Empowering
-                  <br />
-                  <span className="bg-gradient-to-r from-accent-300 to-harvest-300 bg-clip-text text-transparent">Communities</span>
-                </h1>
-                <p className="text-subtitle max-w-2xl text-white/90">
-                  Through Organic Farming & Agroecology
-                </p>
-              </motion.div>
-
-              {/* Supporting line and pills */}
-              <motion.div
-                className="space-y-5 md:space-y-6"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.3 }}
-              >
-                <p className="text-body-lg max-w-2xl text-white/90">
-                  Growing more than food — we're growing{' '}
-                  <span className="font-semibold text-harvest-300">awareness</span>,{' '}
-                  <span className="font-semibold text-harvest-300">opportunity</span>, and a{' '}
-                  <span className="font-semibold text-harvest-300">healthier planet</span>.
-                </p>
-                <div className="flex flex-wrap gap-3">
-                  <span className="text-pill">📍 Kenya & Africa</span>
-                  <span className="text-pill">🏆 Since 2016</span>
-                </div>
-              </motion.div>
-
-              {/* CTA Buttons */}
-              <motion.div
-                className="flex flex-col sm:flex-row gap-4 pt-2"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.4 }}
-              >
-                <Link href="/about">
-                  <motion.button
-                    whileHover={{ scale: 1.05, y: -2 }}
-                    whileTap={{ scale: 0.98 }}
-                    className="bg-gradient-to-r from-accent-600 to-sage-600 hover:from-accent-700 hover:to-sage-700 text-white px-8 py-4 md:py-5 rounded-full font-semibold text-base md:text-lg shadow-2xl hover:shadow-accent-500/50 transition-all flex items-center justify-center gap-2 w-full sm:w-auto"
-                  >
-                    Discover Our Story
-                    <FiArrowRight className="w-5 h-5" />
-                  </motion.button>
-                </Link>
-                <Link href="/get-involved">
-                  <motion.button
-                    whileHover={{ scale: 1.05, y: -2 }}
-                    whileTap={{ scale: 0.98 }}
-                    className="bg-white/95 hover:bg-white text-gray-900 px-8 py-4 md:py-5 rounded-full font-semibold text-base md:text-lg shadow-xl hover:shadow-2xl transition-all flex items-center justify-center gap-2 w-full sm:w-auto"
-                  >
-                    <FiHeart className="w-5 h-5 text-accent-600" />
-                    Get Involved
-                  </motion.button>
-                </Link>
-              </motion.div>
+              <h1 className="text-display leading-none text-white drop-shadow-lg">
+                Empowering
+                <br />
+                <span className="bg-gradient-to-r from-accent-300 to-harvest-300 bg-clip-text text-transparent">Communities</span>
+              </h1>
+              <p className="text-subtitle max-w-2xl text-white/90">
+                Through Organic Farming & Agroecology
+              </p>
             </motion.div>
-          </div>
+
+            {/* Supporting line and pills */}
+            <motion.div
+              className="space-y-5 md:space-y-6"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.3 }}
+            >
+              <p className="text-body-lg max-w-2xl text-white/90">
+                Growing more than food — we're growing{' '}
+                <span className="font-semibold text-harvest-300">awareness</span>,{' '}
+                <span className="font-semibold text-harvest-300">opportunity</span>, and a{' '}
+                <span className="font-semibold text-harvest-300">healthier planet</span>.
+              </p>
+              <div className="flex flex-wrap gap-3">
+                <span className="text-pill">📍 Kenya & Africa</span>
+                <span className="text-pill">🏆 Since 2016</span>
+              </div>
+            </motion.div>
+
+            {/* CTA Buttons */}
+            <motion.div
+              className="flex flex-col sm:flex-row gap-4 pt-2"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.4 }}
+            >
+              <Link href="/about">
+                <motion.button
+                  whileHover={{ scale: 1.05, y: -2 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="bg-gradient-to-r from-accent-600 to-sage-600 hover:from-accent-700 hover:to-sage-700 text-white px-8 py-4 md:py-5 rounded-full font-semibold text-base md:text-lg shadow-2xl hover:shadow-accent-500/50 transition-all flex items-center justify-center gap-2 w-full sm:w-auto"
+                >
+                  Discover Our Story
+                  <FiArrowRight className="w-5 h-5" />
+                </motion.button>
+              </Link>
+              <Link href="/get-involved">
+                <motion.button
+                  whileHover={{ scale: 1.05, y: -2 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="glass-card hover:bg-white/90 text-gray-900 px-8 py-4 md:py-5 rounded-full font-semibold text-base md:text-lg shadow-xl hover:shadow-2xl transition-all flex items-center justify-center gap-2 w-full sm:w-auto"
+                >
+                  <FiHeart className="w-5 h-5 text-accent-600" />
+                  Get Involved
+                </motion.button>
+              </Link>
+            </motion.div>
+          </motion.div>
         </div>
       </section>
 
-      {/* Key numbers (moved out of the hero so the photo stays readable) */}
-      <section className="bg-white border-b border-gray-100">
-        <div className="container-custom py-10 md:py-12">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 text-center max-w-5xl mx-auto">
-            <div>
-              <div className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-accent-600 to-sage-600 bg-clip-text text-transparent">1,000+</div>
-              <div className="text-sm md:text-base text-gray-700 mt-2 font-medium">Farmers Trained</div>
-            </div>
-            <div>
-              <div className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-harvest-600 to-clay-600 bg-clip-text text-transparent">5+</div>
-              <div className="text-sm md:text-base text-gray-700 mt-2 font-medium">Tonnes Monthly</div>
-            </div>
-            <div>
-              <div className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary-600 to-earth-600 bg-clip-text text-transparent">50+</div>
-              <div className="text-sm md:text-base text-gray-700 mt-2 font-medium">Partners</div>
-            </div>
-            <div>
-              <div className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-sage-600 to-accent-600 bg-clip-text text-transparent">2,000+</div>
-              <div className="text-sm md:text-base text-gray-700 mt-2 font-medium">Trees Planted</div>
+      {/* Key numbers: a glass card that overlaps the bottom of the hero */}
+      <section className="relative z-20 -mt-14 md:-mt-16 pb-6 bg-transparent">
+        <div className="container-custom">
+          <div className="glass-card rounded-3xl shadow-2xl border border-white/60 px-6 py-8 md:px-10 md:py-10 max-w-5xl mx-auto">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 text-center md:divide-x md:divide-gray-200/70">
+              <div>
+                <div className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-accent-600 to-sage-600 bg-clip-text text-transparent">1,000+</div>
+                <div className="text-sm md:text-base text-gray-700 mt-2 font-medium">Farmers Trained</div>
+              </div>
+              <div>
+                <div className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-harvest-600 to-clay-600 bg-clip-text text-transparent">5+</div>
+                <div className="text-sm md:text-base text-gray-700 mt-2 font-medium">Tonnes Monthly</div>
+              </div>
+              <div>
+                <div className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary-600 to-earth-600 bg-clip-text text-transparent">50+</div>
+                <div className="text-sm md:text-base text-gray-700 mt-2 font-medium">Partners</div>
+              </div>
+              <div>
+                <div className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-sage-600 to-accent-600 bg-clip-text text-transparent">2,000+</div>
+                <div className="text-sm md:text-base text-gray-700 mt-2 font-medium">Trees Planted</div>
+              </div>
             </div>
           </div>
         </div>
