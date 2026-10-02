@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion'
 import Link from 'next/link'
-import { FiHeart, FiUsers, FiTrendingUp, FiShield, FiDroplet, FiGlobe, FiArrowRight, FiActivity, FiCheckCircle, FiTarget, FiAward, FiMapPin } from 'react-icons/fi'
+import { FiHeart, FiUsers, FiTrendingUp, FiShield, FiDroplet, FiGlobe, FiArrowRight, FiActivity, FiCheckCircle, FiTarget, FiAward, FiMapPin, FiRefreshCw, FiMinusCircle, FiLayers, FiFeather, FiLink, FiBookOpen, FiHome, FiShare2 } from 'react-icons/fi'
 
 const AdvocacyPage = () => {
   const fadeInUp = {
@@ -46,13 +46,40 @@ const AdvocacyPage = () => {
     },
   ]
 
-  const agroecologicalPractices = [
-    { icon: <FiTarget className="w-6 h-6" />, practice: 'Agroforestry' },
-    { icon: <FiCheckCircle className="w-6 h-6" />, practice: 'Composting and organic manure use' },
-    { icon: <FiShield className="w-6 h-6" />, practice: 'Biological (non-synthetic) pest control' },
-    { icon: <FiDroplet className="w-6 h-6" />, practice: 'Crop rotation and diversification' },
-    { icon: <FiActivity className="w-6 h-6" />, practice: 'Natural pest and disease management' },
-    { icon: <FiUsers className="w-6 h-6" />, practice: 'Participation' },
+  // The 13 principles of agroecology, as published by the HLPE (2019) for the
+  // UN Committee on World Food Security, in their official order and groups.
+  const agroecologyPrinciples = [
+    {
+      group: 'Improve resource efficiency',
+      color: 'from-accent-500 to-sage-600',
+      principles: [
+        { number: 1, icon: <FiRefreshCw className="w-6 h-6" />, name: 'Recycling', definition: 'Preferentially use local renewable resources and close as far as possible resource cycles of nutrients and biomass.' },
+        { number: 2, icon: <FiMinusCircle className="w-6 h-6" />, name: 'Input reduction', definition: 'Reduce or eliminate dependency on purchased inputs.' },
+      ],
+    },
+    {
+      group: 'Strengthen resilience',
+      color: 'from-harvest-500 to-clay-600',
+      principles: [
+        { number: 3, icon: <FiLayers className="w-6 h-6" />, name: 'Soil health', definition: 'Secure and enhance soil health and functioning for improved plant growth, particularly by managing organic matter and by enhancing soil biological activity.' },
+        { number: 4, icon: <FiHeart className="w-6 h-6" />, name: 'Animal health', definition: 'Ensure animal health and welfare.' },
+        { number: 5, icon: <FiFeather className="w-6 h-6" />, name: 'Biodiversity', definition: 'Maintain and enhance diversity of species, functional diversity and genetic resources and maintain biodiversity in the agroecosystem over time and space at field, farm and landscape scales.' },
+        { number: 6, icon: <FiLink className="w-6 h-6" />, name: 'Synergy', definition: 'Enhance positive ecological interaction, synergy, integration, and complementarity amongst the elements of agroecosystems (plants, animals, trees, soil, water).' },
+        { number: 7, icon: <FiTrendingUp className="w-6 h-6" />, name: 'Economic diversification', definition: 'Diversify on-farm incomes by ensuring small-scale farmers have greater financial independence and value addition opportunities while enabling them to respond to demand from consumers.' },
+      ],
+    },
+    {
+      group: 'Secure social equity and responsibility',
+      color: 'from-primary-500 to-earth-600',
+      principles: [
+        { number: 8, icon: <FiBookOpen className="w-6 h-6" />, name: 'Co-creation of knowledge', definition: 'Enhance co-creation and horizontal sharing of knowledge including local and scientific innovation, especially through farmer-to-farmer exchange.' },
+        { number: 9, icon: <FiHome className="w-6 h-6" />, name: 'Social values and diets', definition: 'Build food systems based on the culture, identity, tradition, social and gender equity of local communities that provide healthy, diversified, seasonally and culturally appropriate diets.' },
+        { number: 10, icon: <FiShield className="w-6 h-6" />, name: 'Fairness', definition: 'Support dignified and robust livelihoods for all actors engaged in food systems, especially small-scale food producers, based on fair trade, fair employment and fair treatment of intellectual property rights.' },
+        { number: 11, icon: <FiShare2 className="w-6 h-6" />, name: 'Connectivity', definition: 'Ensure proximity and confidence between producers and consumers through promotion of fair and short distribution networks and by re-embedding food systems into local economies.' },
+        { number: 12, icon: <FiMapPin className="w-6 h-6" />, name: 'Land and natural resource governance', definition: 'Recognize and support the needs and interests of family farmers, smallholders and peasant food producers as sustainable managers and guardians of natural and genetic resources.' },
+        { number: 13, icon: <FiUsers className="w-6 h-6" />, name: 'Participation', definition: 'Encourage social organization and greater participation in decision-making by food producers and consumers to support decentralized governance and local adaptive management of agricultural and food systems.' },
+      ],
+    },
   ]
 
   const keyOutcomes = [
@@ -234,7 +261,7 @@ const AdvocacyPage = () => {
         </div>
       </section>
 
-      {/* Agro-ecological Practices */}
+      {/* The 13 Principles of Agroecology (HLPE 2019) */}
       <section className="section-padding bg-gradient-to-br from-primary-50 via-white to-accent-50">
         <div className="container-custom">
           <motion.div
@@ -247,39 +274,65 @@ const AdvocacyPage = () => {
             <div className="text-center mb-12">
               <span className="text-kicker text-harvest-600">Farming Approach</span>
               <h2 className="text-hero text-gray-900 mt-3 mb-6">
-                Agro-Ecological Principles
+                The 13 Principles of Agroecology
               </h2>
               <p className="text-subtitle text-gray-600 max-w-3xl mx-auto">
                 Practices that <span className="text-gradient-warm font-bold">build soil health</span>, enhance biodiversity, and create <span className="text-gradient-accent font-bold">climate-resilient farms</span>
               </p>
             </div>
 
-            <motion.div
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-              variants={staggerContainer}
-              initial="initial"
-              whileInView="animate"
-              viewport={{ once: true }}
-            >
-              {agroecologicalPractices.map((item, index) => (
-                <motion.div
-                  key={index}
-                  variants={fadeInUp}
-                  whileHover={{ y: -5, scale: 1.02 }}
-                  className="group relative"
-                >
-                  <div className="absolute inset-0 bg-gradient-to-br from-accent-500 to-sage-600 rounded-2xl blur-lg opacity-0 group-hover:opacity-20 transition-opacity"></div>
-                  <div className="relative glass-card p-6 rounded-2xl border border-accent-200 shadow-lg hover:shadow-xl transition-all flex items-start gap-4">
-                    <div className="w-14 h-14 bg-gradient-to-br from-accent-500 to-sage-600 rounded-xl flex items-center justify-center text-white flex-shrink-0 shadow-lg group-hover:scale-110 transition-transform">
-                      {item.icon}
-                    </div>
-                    <div className="flex-1 pt-3">
-                      <p className="font-bold text-gray-900">{item.practice}</p>
-                    </div>
+            <div className="space-y-12">
+              {agroecologyPrinciples.map((group) => (
+                <div key={group.group}>
+                  <div className="flex items-center gap-4 mb-6">
+                    <span className={`h-1 w-10 rounded-full bg-gradient-to-r ${group.color}`}></span>
+                    <h3 className="text-xl md:text-2xl font-bold text-gray-900">{group.group}</h3>
                   </div>
-                </motion.div>
+                  <motion.div
+                    className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+                    variants={staggerContainer}
+                    initial="initial"
+                    whileInView="animate"
+                    viewport={{ once: true }}
+                  >
+                    {group.principles.map((item) => (
+                      <motion.div
+                        key={item.number}
+                        variants={fadeInUp}
+                        whileHover={{ y: -5 }}
+                        className="group relative h-full"
+                      >
+                        <div className="relative h-full glass-card p-6 rounded-2xl border border-accent-200 shadow-lg hover:shadow-xl transition-all">
+                          <div className="flex items-center gap-4 mb-4">
+                            <div className={`w-12 h-12 bg-gradient-to-br ${group.color} rounded-xl flex items-center justify-center text-white flex-shrink-0 shadow-lg`}>
+                              {item.icon}
+                            </div>
+                            <div>
+                              <p className="text-sm font-semibold text-gray-500">Principle {item.number}</p>
+                              <p className="font-bold text-gray-900 leading-snug">{item.name}</p>
+                            </div>
+                          </div>
+                          <p className="text-gray-600 text-sm leading-relaxed">{item.definition}</p>
+                        </div>
+                      </motion.div>
+                    ))}
+                  </motion.div>
+                </div>
               ))}
-            </motion.div>
+            </div>
+
+            <p className="text-center text-sm text-gray-500 mt-10">
+              Source:{' '}
+              <a
+                href="https://openknowledge.fao.org/server/api/core/bitstreams/ff385e60-0693-40fe-9a6b-79bbef05202c/content"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline hover:text-accent-700"
+              >
+                HLPE (2019), Agroecological and other innovative approaches
+              </a>
+              , High Level Panel of Experts on Food Security and Nutrition, UN Committee on World Food Security.
+            </p>
           </motion.div>
         </div>
       </section>
