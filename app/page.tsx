@@ -10,7 +10,7 @@ import { GiFarmer, GiPlantSeed, GiWheat } from 'react-icons/gi'
 
 // Homepage hero photos (files in /public/images/hero, see version_2_plan.md)
 const heroSlides: HeroSlide[] = [
-  { name: 'hero-training', alt: 'Sylvia Kuria leads an agroecology training for farmers seated under trees', caption: 'Farmer training on the farm', position: { mobile: '24% center', desktop: '70% center' } },
+  { name: 'hero-training', alt: 'Sylvia Kuria leads an agroecology training for farmers seated under trees', caption: 'Farmer training on the farm', position: { mobile: '24% center', desktop: 'center' } },
   { name: 'hero-field-visit', alt: 'A group of farmers on a field visit among crops and trees', caption: 'Learning in the field', position: { mobile: '55% center', desktop: 'center' } },
   { name: 'hero-discussion', alt: 'Farmers in a group discussion in the shade of banana plants', caption: 'Farmer-to-farmer exchange', position: { mobile: '60% center', desktop: 'center 40%' } },
   { name: 'hero-livestock', alt: 'A sheep and a calf on the farm, with young trees behind them', caption: 'Livestock on the farm', position: { mobile: '50% center', desktop: 'center 60%' } },
@@ -98,14 +98,16 @@ const HomePage = () => {
           <div aria-hidden="true" className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-sage-900 via-sage-900/60 to-transparent lg:hidden"></div>
         </div>
 
-        {/* Large screens: colour overlay, strongest behind the text on the left */}
+        {/* Large screens: colour overlay, strongest in the centre behind the text */}
+        <div aria-hidden="true" className="hidden lg:block absolute inset-0 bg-sage-900/55"></div>
         <div
           aria-hidden="true"
-          className="hidden lg:block absolute inset-0 bg-gradient-to-r from-sage-900/95 via-sage-900/75 to-sage-900/35"
+          className="hidden lg:block absolute inset-0"
+          style={{ background: 'radial-gradient(ellipse 55% 60% at 50% 50%, rgba(43,57,43,0.75) 0%, rgba(43,57,43,0.35) 60%, rgba(43,57,43,0) 100%)' }}
         ></div>
         {/* Soft brand-colour glows, as used across the site */}
         <div aria-hidden="true" className="absolute -top-20 -left-20 w-[28rem] h-[28rem] bg-accent-500/25 rounded-full blur-3xl"></div>
-        <div aria-hidden="true" className="absolute bottom-0 left-1/3 w-[24rem] h-[24rem] bg-harvest-500/20 rounded-full blur-3xl"></div>
+        <div aria-hidden="true" className="absolute -bottom-10 -right-10 w-[24rem] h-[24rem] bg-harvest-500/20 rounded-full blur-3xl"></div>
         {/* Darker band at the top so the menu stays readable */}
         <div aria-hidden="true" className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-black/40 to-transparent"></div>
 
@@ -113,8 +115,8 @@ const HomePage = () => {
           <motion.div
             initial="initial"
             animate="animate"
-            variants={fadeInLeft}
-            className="max-w-2xl space-y-6 md:space-y-8 text-white"
+            variants={fadeInUp}
+            className="max-w-3xl mx-auto text-center space-y-6 md:space-y-8 text-white"
           >
             {/* Main Heading */}
             <motion.div
@@ -128,7 +130,7 @@ const HomePage = () => {
                 <br />
                 <span className="bg-gradient-to-r from-accent-300 to-harvest-300 bg-clip-text text-transparent">Communities</span>
               </h1>
-              <p className="text-subtitle max-w-2xl text-white/90">
+              <p className="text-subtitle max-w-2xl mx-auto text-white/90">
                 Through Organic Farming & Agroecology
               </p>
             </motion.div>
@@ -140,13 +142,13 @@ const HomePage = () => {
               animate={{ opacity: 1 }}
               transition={{ delay: 0.3 }}
             >
-              <p className="text-body-lg max-w-2xl text-white/90">
+              <p className="text-body-lg max-w-2xl mx-auto text-white/90">
                 Growing more than food — we're growing{' '}
                 <span className="font-semibold text-harvest-300">awareness</span>,{' '}
                 <span className="font-semibold text-harvest-300">opportunity</span>, and a{' '}
                 <span className="font-semibold text-harvest-300">healthier planet</span>.
               </p>
-              <div className="flex flex-wrap gap-3">
+              <div className="flex flex-wrap justify-center gap-3">
                 <span className="text-pill">📍 Kenya & Africa</span>
                 <span className="text-pill">🏆 Since 2016</span>
               </div>
@@ -154,7 +156,7 @@ const HomePage = () => {
 
             {/* CTA Buttons */}
             <motion.div
-              className="flex flex-col sm:flex-row gap-4 pt-2"
+              className="flex flex-col sm:flex-row sm:justify-center gap-4 pt-2"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.4 }}

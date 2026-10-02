@@ -60,12 +60,12 @@ Evolve the existing site without rebuilding it:
 
 Names and short definitions are used as published. Source credited on the page.
 
-### Hero (Option B)
+### Hero (Option B, revised 2 October 2026)
 
-- New photo fills the whole hero section, with text over it.
-- Brand dark-green **gradient overlay**: strong behind the text, light over Sylvia.
-- **Text block on the right**, so it does not cover Sylvia (she stands left of centre).
-- Stats row (1,000+, 5+ tonnes, 50+, 2,000+) moves to a strip **directly below** the hero.
+- **Photo slider** fills the hero: training, field visit, farmer discussion, livestock, poultry (files in `public/images/hero`). Crossfade with slow zoom, 7 seconds per photo, glass caption with dots and pause. No movement for visitors who prefer reduced motion.
+- **Text on the left**, over a strong dark-green gradient, with the site's soft brand-colour glows.
+- Stats row (1,000+, 5+ tonnes, 50+, 2,000+) becomes a **glass card overlapping the bottom** of the hero.
+- To add or change hero photos: add the files to `public/images/hero` and edit the `heroSlides` list in `app/page.tsx`.
 - The first pill ("1,000+ Farmers Trained") is dropped because it repeats a stat.
 - Sylvia's portrait and quote move to a section lower on the homepage.
 - Mobile: portrait crop anchored on Sylvia; text on the lower half over a bottom-up gradient.
@@ -245,3 +245,4 @@ Facts to weigh when we decide:
 | Date | Change |
 | --- | --- |
 | 2026-10-02 | First version agreed |
+| 2026-10-02 | Hero revised: photo slider, text on the left, stats card overlapping the hero. Coming-soon pages agreed for Shop, Courses and Farm Visits until they are built |
