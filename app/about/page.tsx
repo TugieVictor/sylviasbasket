@@ -44,7 +44,7 @@ const AboutPage = () => {
     {
       icon: <FiAward className="w-8 h-8" />,
       title: 'Strategic Partnerships',
-      description: 'With IFOAM, KOAN, HBS, Biovision, CIFOR-ICRAF, Greenspoon, and more'
+      description: 'With IFOAM, KOAN, HBS, Biovision, Landscape Alliance, Greenspoon, and more'
     },
   ]
 
@@ -372,10 +372,6 @@ const AboutPage = () => {
                   <div className="flex items-start gap-3">
                     <div className="w-2 h-2 bg-accent-300 rounded-full mt-2 flex-shrink-0"></div>
                     <p><span className="font-semibold">Alumni</span> of the IFOAM Organic Leadership Course</p>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <div className="w-2 h-2 bg-accent-300 rounded-full mt-2 flex-shrink-0"></div>
-                    <p><span className="font-semibold">Partner</span> with CIFOR-ICRAF on smallholder agroecology training</p>
                   </div>
                   <div className="flex items-start gap-3">
                     <div className="w-2 h-2 bg-accent-300 rounded-full mt-2 flex-shrink-0"></div>

@@ -152,7 +152,7 @@ const NewsPage = () => {
           >
             <span className="text-overline text-white">Latest Updates</span>
             <h1 className="text-display text-white mt-3 mb-6">
-              News & <span className="text-harvest-300">Insights</span>
+              News & <span className="text-harvest-300">Publications</span>
             </h1>
             <p className="text-subtitle text-white">
               Stories, updates, and advocacy from the <span className="font-bold">frontlines of organic farming</span> in Kenya
@@ -325,7 +325,7 @@ const NewsPage = () => {
             viewport={{ once: true }}
             variants={fadeInUp}
           >
-            <span className="text-kicker text-harvest-600">From the Blog</span>
+            <span className="text-kicker text-harvest-600">Latest Articles</span>
             <h2 className="text-hero text-gray-900 mt-3 mb-6">
               Recent Articles
             </h2>
@@ -456,7 +456,7 @@ const NewsPage = () => {
             </div>
           ) : (
             <div className="text-center py-12">
-              <p className="text-xl text-gray-600">No blog posts yet. Check back soon!</p>
+              <p className="text-xl text-gray-600">No articles yet. Check back soon!</p>
             </div>
           )}
         </div>

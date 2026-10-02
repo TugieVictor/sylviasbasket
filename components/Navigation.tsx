@@ -25,7 +25,7 @@ const Navigation = () => {
     { href: '/advocacy/', label: 'Advocacy' },
     { href: '/markets/', label: 'Markets' },
     { href: '/farmers-stories/', label: 'Farmers Stories' },
-    { href: '/news/', label: 'News & Blog' },
+    { href: '/news/', label: 'News & Publications' },
     { href: '/get-involved/', label: 'Get Involved' },
   ]
 

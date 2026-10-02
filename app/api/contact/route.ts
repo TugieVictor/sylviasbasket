@@ -62,7 +62,7 @@ export async function POST(request: Request) {
       },
       body: JSON.stringify({
         from: 'Sylvias Basket Website <onboarding@resend.dev>',
-        to: 'info@sylviasbasket.co.ke',
+        to: process.env.ADMIN_EMAIL || 'info@sylviasbasket.co.ke',
         reply_to: email,
         subject: `New Contact Form Submission from ${name.replace(/[\r\n]/g, ' ')}`,
         html: `

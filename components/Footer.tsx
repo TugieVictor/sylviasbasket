@@ -178,7 +178,7 @@ const Footer = () => {
               <li><Link href="/about" className="text-gray-700 hover:text-accent-600 transition-colors flex items-center gap-2 group"><FiArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />About Us</Link></li>
               <li><Link href="/our-work" className="text-gray-700 hover:text-accent-600 transition-colors flex items-center gap-2 group"><FiArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />Our Work</Link></li>
               <li><Link href="/farmers-stories" className="text-gray-700 hover:text-accent-600 transition-colors flex items-center gap-2 group"><FiArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />Farmers Stories</Link></li>
-              <li><Link href="/news" className="text-gray-700 hover:text-accent-600 transition-colors flex items-center gap-2 group"><FiArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />News & Blog</Link></li>
+              <li><Link href="/news" className="text-gray-700 hover:text-accent-600 transition-colors flex items-center gap-2 group"><FiArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />News & Publications</Link></li>
               <li><Link href="/get-involved" className="text-gray-700 hover:text-accent-600 transition-colors flex items-center gap-2 group"><FiArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />Get Involved</Link></li>
             </ul>
           </div>

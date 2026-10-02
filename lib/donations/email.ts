@@ -404,7 +404,7 @@ export async function sendAdminNotification(donation: {
         // TEMPORARY: Using Resend default domain until sylviasbasket.co.ke is verified
         // Change back to 'Sylvias Basket <donations@sylviasbasket.co.ke>' after domain verification
         from: 'Sylvias Basket <onboarding@resend.dev>',
-        to: 'info@sylviasbasket.co.ke',
+        to: process.env.ADMIN_EMAIL || 'info@sylviasbasket.co.ke',
         subject: `New Donation: ${formatCurrency(donation.amount)} from ${donation.donorName}`,
         html: `
           <h2>New Donation Received!</h2>

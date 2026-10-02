@@ -73,7 +73,7 @@ const HomePage = () => {
     { name: 'KOAN', description: 'Market for smallholder farmers' },
     { name: 'HBS', description: 'Advocacy mainstreaming Agro-ecology' },
     { name: 'Biovision', description: 'Creating enabling environment for Agro-ecological entrepreneurs' },
-    { name: 'CIFOR-ICRAF', description: 'Agroforestry' },
+    { name: 'Landscape Alliance', description: 'Agroforestry' },
     { name: 'Greenspoon', description: 'Organic produce marketing' },
   ]
 
@@ -107,7 +107,7 @@ const HomePage = () => {
                   <span className="text-gradient-accent">Communities</span>
                 </h1>
                 <p className="text-subtitle max-w-2xl">
-                  Through Organic Farming & Sustainable Agriculture
+                  Through Organic Farming & Agroecology
                 </p>
               </motion.div>
 

@@ -69,7 +69,7 @@ const OurWorkPage = () => {
       type: 'NGO/Civil Society'
     },
     {
-      name: 'CIFOR-ICRAF',
+      name: 'Landscape Alliance',
       description: 'Agroforestry research and training',
       type: 'NGO/Civil Society'
     },
