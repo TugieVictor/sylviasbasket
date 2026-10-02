@@ -2,6 +2,7 @@
 
 import { useCallback, useMemo, useState } from 'react'
 import Turnstile from '@/components/Turnstile'
+import { EMAIL_ERROR, PHONE_ERROR, isValidEmail, normaliseKenyanPhone } from '@/lib/validation'
 
 type VisitTypeOption = {
   id: string
@@ -52,8 +53,27 @@ export default function VisitRequestForm({ types }: { types: VisitTypeOption[] }
   const set = (key: keyof typeof form) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) =>
     setForm((f) => ({ ...f, [key]: e.target.value }))
 
+  // Check phone and email in the browser too, so mistakes show before sending
+  const checkContact = (key: 'phone' | 'email', value: string) => {
+    const problem =
+      key === 'phone' ? (normaliseKenyanPhone(value) ? '' : PHONE_ERROR) : isValidEmail(value) ? '' : EMAIL_ERROR
+    setErrors((current) => {
+      const next = { ...current }
+      if (problem) next[key] = problem
+      else delete next[key]
+      return next
+    })
+    return !problem
+  }
+
   const submit = async (e: React.FormEvent) => {
     e.preventDefault()
+    const phoneOk = checkContact('phone', form.phone)
+    const emailOk = checkContact('email', form.email)
+    if (!phoneOk || !emailOk) {
+      setFormError('Please check the highlighted fields.')
+      return
+    }
     setSubmitting(true)
     setErrors({})
     setFormError('')
@@ -86,7 +106,7 @@ export default function VisitRequestForm({ types }: { types: VisitTypeOption[] }
           Thank you. Sylvia will get back to you to confirm your visit. Your reference is{' '}
           <span className="font-semibold">{doneReference}</span>.
         </p>
-        {form.email && <p className="text-gray-600 text-sm mt-2">We have sent a copy to {form.email}.</p>}
+        <p className="text-gray-600 text-sm mt-2">We have sent a copy to {form.email}.</p>
       </div>
     )
   }
@@ -116,11 +136,11 @@ export default function VisitRequestForm({ types }: { types: VisitTypeOption[] }
         <Field id="name" label="Your name" error={errors.name}>
           <input id="name" value={form.name} onChange={set('name')} autoComplete="name" className={inputClass} aria-invalid={!!errors.name} />
         </Field>
-        <Field id="phone" label="Phone number" error={errors.phone} hint="For example 0712 345 678">
-          <input id="phone" type="tel" value={form.phone} onChange={set('phone')} autoComplete="tel" className={inputClass} aria-invalid={!!errors.phone} />
+        <Field id="phone" label="Kenyan mobile number" error={errors.phone} hint="For example 0712 345 678 or +254 712 345 678">
+          <input id="phone" type="tel" inputMode="tel" required value={form.phone} onChange={set('phone')} onBlur={(e) => e.target.value && checkContact('phone', e.target.value)} autoComplete="tel" className={inputClass} aria-invalid={!!errors.phone} />
         </Field>
-        <Field id="email" label="Email (recommended)" error={errors.email} hint="We send the confirmation and payment link here">
-          <input id="email" type="email" value={form.email} onChange={set('email')} autoComplete="email" className={inputClass} aria-invalid={!!errors.email} />
+        <Field id="email" label="Email" error={errors.email} hint="We send the confirmation and payment link here">
+          <input id="email" type="email" inputMode="email" required value={form.email} onChange={set('email')} onBlur={(e) => e.target.value && checkContact('email', e.target.value)} autoComplete="email" className={inputClass} aria-invalid={!!errors.email} />
         </Field>
         <Field id="groupSize" label="Number of people" error={errors.groupSize} hint={selected ? `Up to ${selected.maxGroupSize}` : undefined}>
           <input id="groupSize" type="number" min={1} max={selected?.maxGroupSize} value={form.groupSize} onChange={set('groupSize')} className={inputClass} aria-invalid={!!errors.groupSize} />

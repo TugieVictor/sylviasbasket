@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { startPayment } from '@/lib/payments'
 import { getIPayConfig } from '@/lib/payments/ipay'
+import { EMAIL_ERROR, PHONE_ERROR, isValidEmail, normaliseKenyanPhone } from '@/lib/validation'
 import { clientIp, isRateLimited } from '@/lib/security/rateLimit'
 
 export const dynamic = 'force-dynamic'
@@ -26,15 +27,15 @@ export async function POST(request: Request) {
   }
 
   const email = String(body.email || visit.email || '').trim()
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-    return NextResponse.json({ error: 'Please enter a valid email address for your receipt.' }, { status: 400 })
-  }
+  if (!isValidEmail(email)) return NextResponse.json({ error: EMAIL_ERROR }, { status: 400 })
+  const phone = normaliseKenyanPhone(String(body.phone || visit.phone))
+  if (!phone) return NextResponse.json({ error: PHONE_ERROR }, { status: 400 })
 
   try {
     const { form } = await startPayment({
       purpose: 'VISIT',
       amountKes: visit.feeKes,
-      phone: String(body.phone || visit.phone),
+      phone,
       email,
       siteOrigin: new URL(request.url).origin,
       link: { visitRequestId: visit.id },

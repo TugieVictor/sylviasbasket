@@ -33,15 +33,8 @@ export function getIPayConfig() {
   return { vendorId: '', hashKey: '', live: false, demo: false, enabled: false }
 }
 
-/** Kenyan phone numbers in the 2547XXXXXXXX form iPay expects. Returns null if invalid. */
-export function normaliseKenyanPhone(input: string): string | null {
-  const digits = String(input || '').replace(/\D/g, '')
-  let local = digits
-  if (local.startsWith('254')) local = local.slice(3)
-  else if (local.startsWith('0')) local = local.slice(1)
-  if (!/^[17]\d{8}$/.test(local)) return null
-  return `254${local}`
-}
+/** Kenyan phone numbers in the 2547XXXXXXXX form iPay expects (shared rule in lib/validation). */
+export { normaliseKenyanPhone } from '@/lib/validation'
 
 export type CheckoutRequest = {
   reference: string // our payment reference (iPay "oid")

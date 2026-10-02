@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { newReference } from '@/lib/payments'
-import { normaliseKenyanPhone } from '@/lib/payments/ipay'
+import { EMAIL_ERROR, PHONE_ERROR, isValidEmail, normaliseKenyanPhone } from '@/lib/validation'
 import { verifyTurnstile } from '@/lib/security/turnstile'
 import { clientIp, isRateLimited } from '@/lib/security/rateLimit'
 import { checkVisitDate, parseDateOnly } from '@/lib/visits'
@@ -41,8 +41,8 @@ export async function POST(request: Request) {
 
   if (!visitType) errors.visitTypeId = 'Please choose a type of visit.'
   if (!name) errors.name = 'Please enter your name.'
-  if (!phone) errors.phone = 'Please enter a valid Kenyan phone number, for example 0712 345 678.'
-  if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) errors.email = 'Please enter a valid email address.'
+  if (!phone) errors.phone = PHONE_ERROR
+  if (!isValidEmail(email)) errors.email = EMAIL_ERROR
   if (!Number.isInteger(groupSize) || groupSize < 1) errors.groupSize = 'Please enter how many people will come.'
   else if (visitType && groupSize > visitType.maxGroupSize) {
     errors.groupSize = `This type of visit is for up to ${visitType.maxGroupSize} people.`
@@ -69,7 +69,7 @@ export async function POST(request: Request) {
       visitTypeName: visitType.name,
       name,
       phone,
-      email: email || null,
+      email,
       organisation: organisation || null,
       groupSize,
       preferredDate1: date1,

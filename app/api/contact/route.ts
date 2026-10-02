@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { verifyTurnstile } from '@/lib/security/turnstile'
 import { clientIp, isRateLimited } from '@/lib/security/rateLimit'
+import { EMAIL_ERROR, PHONE_ERROR, isValidEmail, normaliseKenyanPhone } from '@/lib/validation'
 
 const escapeHtml = (value: string) =>
   value
@@ -37,22 +38,23 @@ export async function POST(request: Request) {
     const name = typeof body.name === 'string' ? body.name.trim().slice(0, 100) : ''
     const email = typeof body.email === 'string' ? body.email.trim().slice(0, 200) : ''
     const message = typeof body.message === 'string' ? body.message.trim().slice(0, 5000) : ''
+    const phoneInput = typeof body.phone === 'string' ? body.phone.trim().slice(0, 20) : ''
+    const phone = phoneInput ? normaliseKenyanPhone(phoneInput) : ''
 
     // Validate inputs
     if (!name || !email || !message) {
       return NextResponse.json(
-        { error: 'All fields are required' },
+        { error: 'Please fill in your name, email and message.' },
         { status: 400 }
       )
     }
 
-    // Email validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    if (!emailRegex.test(email)) {
-      return NextResponse.json(
-        { error: 'Invalid email address' },
-        { status: 400 }
-      )
+    // Email must be valid; phone is optional but must be a Kenyan mobile number if given
+    const errors: Record<string, string> = {}
+    if (!isValidEmail(email)) errors.email = EMAIL_ERROR
+    if (phone === null) errors.phone = PHONE_ERROR
+    if (Object.keys(errors).length > 0) {
+      return NextResponse.json({ error: 'Please check the highlighted fields.', errors }, { status: 400 })
     }
 
     // Get Resend API key from environment
@@ -68,6 +70,7 @@ export async function POST(request: Request) {
 
     const safeName = escapeHtml(name)
     const safeEmail = escapeHtml(email)
+    const safePhone = phone ? `+${phone}` : ''
     const safeMessage = escapeHtml(message)
 
     // Send email using Resend API
@@ -93,6 +96,7 @@ export async function POST(request: Request) {
                 <h2 style="color: #374151; margin-top: 0; font-size: 18px; border-bottom: 2px solid #22c55e; padding-bottom: 10px;">Contact Details</h2>
                 <p style="margin: 10px 0;"><strong>Name:</strong> ${safeName}</p>
                 <p style="margin: 10px 0;"><strong>Email:</strong> <a href="mailto:${safeEmail}" style="color: #22c55e;">${safeEmail}</a></p>
+                ${safePhone ? `<p style="margin: 10px 0;"><strong>Phone:</strong> <a href="tel:${safePhone}" style="color: #22c55e;">${safePhone}</a></p>` : ''}
               </div>
 
               <div style="background: white; padding: 20px; border-radius: 8px;">
