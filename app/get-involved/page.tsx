@@ -431,7 +431,7 @@ const GetInvolvedPage = () => {
       </section>
 
       {/* Contact Section */}
-      <section id="contact-section" className="section-padding bg-white">
+      <section id="contact-section" className="scroll-mt-24 section-padding bg-white">
         <div className="container-custom">
           <motion.div
             className="max-w-5xl mx-auto"
