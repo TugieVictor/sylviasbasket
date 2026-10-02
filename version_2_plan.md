@@ -63,7 +63,7 @@ Names and short definitions are used as published. Source credited on the page.
 ### Hero (Option B, revised 2 October 2026)
 
 - **Photo slider** fills the hero: training, field visit, farmer discussion, livestock, poultry (files in `public/images/hero`). Crossfade with slow zoom, 7 seconds per photo, glass caption with dots and pause. No movement for visitors who prefer reduced motion.
-- **Text on the left**, over a strong dark-green gradient, with the site's soft brand-colour glows.
+- **Text centred**, over an even dark-green tint with a darker centre behind the text, plus the site's soft brand-colour glows.
 - Stats row (1,000+, 5+ tonnes, 50+, 2,000+) becomes a **glass card overlapping the bottom** of the hero.
 - To add or change hero photos: add the files to `public/images/hero` and edit the `heroSlides` list in `app/page.tsx`.
 - The first pill ("1,000+ Farmers Trained") is dropped because it repeats a stat.

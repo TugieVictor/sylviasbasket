@@ -116,7 +116,7 @@ const HomePage = () => {
             initial="initial"
             animate="animate"
             variants={fadeInUp}
-            className="max-w-3xl mx-auto text-center space-y-6 md:space-y-8 text-white"
+            className="max-w-5xl mx-auto text-center space-y-6 md:space-y-8 text-white"
           >
             {/* Main Heading */}
             <motion.div
@@ -125,9 +125,9 @@ const HomePage = () => {
               transition={{ delay: 0.2 }}
               className="space-y-4 md:space-y-6"
             >
-              <h1 className="text-display leading-none text-white drop-shadow-lg">
-                Empowering
-                <br />
+              <h1 className="text-display leading-none text-white drop-shadow-lg lg:whitespace-nowrap lg:text-6xl xl:text-7xl">
+                Empowering{' '}
+                <br className="lg:hidden" />
                 <span className="bg-gradient-to-r from-accent-300 to-harvest-300 bg-clip-text text-transparent">Communities</span>
               </h1>
               <p className="text-subtitle max-w-2xl mx-auto text-white/90">
