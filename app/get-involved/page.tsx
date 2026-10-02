@@ -1,14 +1,18 @@
 'use client'
 
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { FiHeart, FiUsers, FiGlobe, FiMail, FiPhone, FiMapPin, FiShare2, FiDollarSign, FiUserCheck } from 'react-icons/fi'
 import { GiFarmer } from 'react-icons/gi'
+import Turnstile from '@/components/Turnstile'
 
 const GetInvolvedPage = () => {
   const [contactForm, setContactForm] = useState({ name: '', email: '', message: '' })
   const [honeypot, setHoneypot] = useState('')
+  const [turnstileToken, setTurnstileToken] = useState('')
+  const [turnstileReset, setTurnstileReset] = useState(0)
+  const onTurnstileToken = useCallback((token: string) => setTurnstileToken(token), [])
   const [submitting, setSubmitting] = useState(false)
   const [submitMessage, setSubmitMessage] = useState('')
   const fadeInUp = {
@@ -37,7 +41,7 @@ const GetInvolvedPage = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ ...contactForm, website: honeypot }),
+        body: JSON.stringify({ ...contactForm, website: honeypot, turnstileToken }),
       })
 
       const data = await response.json()
@@ -52,6 +56,7 @@ const GetInvolvedPage = () => {
       setSubmitMessage('An error occurred. Please try emailing us directly at info@sylviasbasket.co.ke')
     } finally {
       setSubmitting(false)
+      setTurnstileReset((n) => n + 1)
     }
   }
 
@@ -501,6 +506,7 @@ const GetInvolvedPage = () => {
                       placeholder="Tell us how you'd like to get involved..."
                     ></textarea>
                   </div>
+                  <Turnstile onToken={onTurnstileToken} resetKey={turnstileReset} />
                   {submitMessage && (
                     <div className={`p-4 rounded-lg ${submitMessage.includes('successfully') || submitMessage.includes('Thank you') ? 'bg-green-50 text-green-700 border border-green-200' : 'bg-red-50 text-red-700 border border-red-200'}`}>
                       {submitMessage}

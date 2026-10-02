@@ -1,4 +1,6 @@
 import { NextResponse } from 'next/server'
+import { verifyTurnstile } from '@/lib/security/turnstile'
+import { clientIp, isRateLimited } from '@/lib/security/rateLimit'
 
 const escapeHtml = (value: string) =>
   value
@@ -10,11 +12,26 @@ const escapeHtml = (value: string) =>
 
 export async function POST(request: Request) {
   try {
+    const ip = clientIp(request)
+    if (isRateLimited(`contact:${ip}`)) {
+      return NextResponse.json(
+        { error: 'Too many messages in a short time. Please wait a few minutes and try again.' },
+        { status: 429 }
+      )
+    }
+
     const body = await request.json()
 
     // Hidden field that people never see; bots that fill it are ignored
     if (body.website) {
       return NextResponse.json({ success: true, message: 'Message sent successfully!' }, { status: 200 })
+    }
+
+    if (!(await verifyTurnstile(body.turnstileToken, ip))) {
+      return NextResponse.json(
+        { error: 'We could not confirm you are human. Please refresh the page and try again.' },
+        { status: 400 }
+      )
     }
 
     const name = typeof body.name === 'string' ? body.name.trim().slice(0, 100) : ''
