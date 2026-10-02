@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import { FiMenu, FiX, FiHeart, FiChevronDown, FiShoppingBag } from 'react-icons/fi'
+import { cartCount, useCart } from '@/lib/cart'
 
 type NavItem = { label: string; href: string; description?: string }
 type NavGroup = { label: string; href?: string; items?: NavItem[] }
@@ -53,6 +54,7 @@ const Navigation = () => {
   const [openMenu, setOpenMenu] = useState<string | null>(null)
   const [openMobileGroup, setOpenMobileGroup] = useState<string | null>(null)
   const pathname = usePathname()
+  const itemsInCart = cartCount(useCart())
   const navRef = useRef<HTMLElement>(null)
   // When a mouse hover opened a dropdown, the click that follows should not close it again
   const hoverOpenedAt = useRef(0)
@@ -268,6 +270,11 @@ const Navigation = () => {
               >
                 <FiShoppingBag className="w-4 h-4" />
                 <span>Shop</span>
+                {itemsInCart > 0 && (
+                  <span aria-label={`${itemsInCart} in your cart`} className="min-w-[1.25rem] h-5 px-1 rounded-full bg-harvest-500 text-white text-xs font-bold flex items-center justify-center">
+                    {itemsInCart}
+                  </span>
+                )}
               </motion.span>
             </Link>
 
@@ -291,14 +298,19 @@ const Navigation = () => {
           <div className="lg:hidden flex items-center gap-2">
             <Link
               href="/shop/"
-              aria-label="Shop"
-              className={`p-3 rounded-xl transition-all duration-300 ${
+              aria-label={itemsInCart > 0 ? `Shop, ${itemsInCart} in your cart` : 'Shop'}
+              className={`relative p-3 rounded-xl transition-all duration-300 ${
                 isScrolled || isMobileMenuOpen
                   ? 'text-accent-700 bg-accent-50 hover:bg-accent-100'
                   : 'text-white bg-white/10 hover:bg-white/20 backdrop-blur-sm border border-white/20'
               }`}
             >
               <FiShoppingBag size={22} />
+              {itemsInCart > 0 && (
+                <span aria-hidden="true" className="absolute -top-1 -right-1 min-w-[1.25rem] h-5 px-1 rounded-full bg-harvest-500 text-white text-xs font-bold flex items-center justify-center">
+                  {itemsInCart}
+                </span>
+              )}
             </Link>
             <motion.button
               type="button"
