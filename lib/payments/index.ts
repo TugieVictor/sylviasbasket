@@ -121,9 +121,16 @@ async function onPaymentCompleted(paymentId: string) {
     })
   }
   if (payment.visitRequestId) {
-    await prisma.visitRequest.updateMany({
+    const moved = await prisma.visitRequest.updateMany({
       where: { id: payment.visitRequestId, status: 'CONFIRMED' },
       data: { status: 'PAID' },
     })
+    if (moved.count === 1) {
+      const visit = await prisma.visitRequest.findUnique({ where: { id: payment.visitRequestId } })
+      if (visit) {
+        const { emailVisitPaid } = await import('@/lib/email/visits')
+        await emailVisitPaid(visit).catch((error) => console.error('Visit paid emails failed:', error))
+      }
+    }
   }
 }
