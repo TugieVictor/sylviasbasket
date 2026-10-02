@@ -29,6 +29,7 @@ model Donation {
 
   // Relations
   recurringDonation RecurringDonation?
+  payments          Payment[]
 
   @@index([orderId])
   @@index([donorEmail])
@@ -53,4 +54,300 @@ model RecurringDonation {
   @@index([donationId])
   @@index([status])
   @@index([nextBillingDate])
+}
+
+// ---------------------------------------------------------------------------
+// Version 2 (version_2_plan.md, section 6). Money is stored as whole Kenyan
+// shillings (Int). Order lines copy names and prices at the time of the order.
+// ---------------------------------------------------------------------------
+
+// Admin -----------------------------------------------------------------------
+
+model AdminUser {
+  id           String         @id @default(cuid())
+  email        String         @unique
+  name         String
+  passwordHash String
+  role         String         @default("ADMIN")
+  active       Boolean        @default(true)
+  lastLoginAt  DateTime?
+  sessions     AdminSession[]
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+}
+
+model AdminSession {
+  id        String    @id @default(cuid())
+  tokenHash String    @unique // SHA-256 of the cookie value; the token itself is never stored
+  userId    String
+  user      AdminUser @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  createdAt DateTime  @default(now())
+
+  @@index([userId])
+  @@index([expiresAt])
+}
+
+// Shop ------------------------------------------------------------------------
+
+enum ProductCategory {
+  MERCHANDISE
+  PRODUCE
+}
+
+model Product {
+  id                String           @id @default(cuid())
+  slug              String           @unique
+  name              String
+  category          ProductCategory
+  summary           String?
+  description       String?          @db.Text
+  images            Json             @default("[]") // [{ url, alt }]
+  active            Boolean          @default(true) // hidden from the shop when false
+  availableThisWeek Boolean          @default(true) // for produce
+  sortOrder         Int              @default(0)
+  variants          ProductVariant[]
+  createdAt         DateTime         @default(now())
+  updatedAt         DateTime         @updatedAt
+
+  @@index([category, active])
+}
+
+model ProductVariant {
+  id         String      @id @default(cuid())
+  productId  String
+  product    Product     @relation(fields: [productId], references: [id], onDelete: Cascade)
+  label      String // e.g. "Medium", "1 kg"; "Standard" when a product has no options
+  priceKes   Int
+  stock      Int         @default(0)
+  active     Boolean     @default(true)
+  sortOrder  Int         @default(0)
+  orderItems OrderItem[]
+
+  @@index([productId])
+}
+
+model DeliveryZone {
+  id        String  @id @default(cuid())
+  name      String
+  feeKes    Int
+  isPickup  Boolean @default(false) // collection from the farm
+  active    Boolean @default(true)
+  sortOrder Int     @default(0)
+  orders    Order[]
+}
+
+enum OrderStatus {
+  AWAITING_PAYMENT
+  PAID
+  PACKED
+  OUT_FOR_DELIVERY
+  DELIVERED
+  CANCELLED
+  EXPIRED
+}
+
+model Order {
+  id               String        @id @default(cuid())
+  reference        String        @unique // shown to the customer, e.g. SB-K7Q2M9
+  customerName     String
+  customerPhone    String
+  customerEmail    String?
+  deliveryZoneId   String?
+  deliveryZone     DeliveryZone? @relation(fields: [deliveryZoneId], references: [id], onDelete: SetNull)
+  deliveryZoneName String // copied so the order stays readable if the zone changes
+  isPickup         Boolean       @default(false)
+  address          String?       @db.Text
+  notes            String?       @db.Text
+  subtotalKes      Int
+  deliveryFeeKes   Int
+  totalKes         Int
+  status           OrderStatus   @default(AWAITING_PAYMENT)
+  stockHeldUntil   DateTime? // unpaid orders release their stock after this time
+  adminNotes       String?       @db.Text
+  items            OrderItem[]
+  payments         Payment[]
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+
+  @@index([status])
+  @@index([createdAt])
+}
+
+model OrderItem {
+  id           String          @id @default(cuid())
+  orderId      String
+  order        Order           @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  variantId    String?
+  variant      ProductVariant? @relation(fields: [variantId], references: [id], onDelete: SetNull)
+  productName  String
+  variantLabel String
+  unitPriceKes Int
+  quantity     Int
+  lineTotalKes Int
+
+  @@index([orderId])
+}
+
+// Payments (all money in: orders, courses, visits, donations) -----------------
+
+enum PaymentPurpose {
+  ORDER
+  COURSE
+  VISIT
+  DONATION
+}
+
+enum PaymentStatus {
+  PENDING
+  COMPLETED
+  FAILED
+  CANCELLED
+  REVIEW // e.g. amount mismatch; never confirmed automatically
+}
+
+model Payment {
+  id             String         @id @default(cuid())
+  reference      String         @unique // the order ID sent to iPay (oid)
+  purpose        PaymentPurpose
+  amountKes      Int
+  status         PaymentStatus  @default(PENDING)
+  provider       String         @default("IPAY")
+  providerTxnId  String?
+  providerCode   String? // last status code returned by iPay
+  rawCallback    Json?
+  orderId        String?
+  order          Order?         @relation(fields: [orderId], references: [id], onDelete: SetNull)
+  registrationId String?
+  registration   Registration?  @relation(fields: [registrationId], references: [id], onDelete: SetNull)
+  visitRequestId String?
+  visitRequest   VisitRequest?  @relation(fields: [visitRequestId], references: [id], onDelete: SetNull)
+  donationId     String?
+  donation       Donation?      @relation(fields: [donationId], references: [id], onDelete: SetNull)
+  lastCheckedAt  DateTime?
+  completedAt    DateTime?
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+
+  @@index([status])
+  @@index([purpose, status])
+}
+
+// Courses ---------------------------------------------------------------------
+
+model Course {
+  id              String          @id @default(cuid())
+  slug            String          @unique
+  title           String
+  summary         String?
+  description     String?         @db.Text
+  learnings       String?         @db.Text // what participants will learn
+  audience        String? // who it is for
+  duration        String? // e.g. "3 days"
+  completionRules String?         @db.Text // what earns the certificate
+  image           String?
+  active          Boolean         @default(true)
+  sortOrder       Int             @default(0)
+  sessions        CourseSession[]
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+}
+
+enum SessionStatus {
+  OPEN
+  CLOSED
+  CANCELLED
+}
+
+model CourseSession {
+  id            String         @id @default(cuid())
+  courseId      String
+  course        Course         @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  startDate     DateTime
+  endDate       DateTime?
+  location      String
+  priceKes      Int
+  capacity      Int
+  status        SessionStatus  @default(OPEN)
+  registrations Registration[]
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+
+  @@index([courseId, startDate])
+}
+
+enum RegistrationStatus {
+  AWAITING_PAYMENT
+  CONFIRMED
+  WAITLISTED
+  CANCELLED
+  COMPLETED
+}
+
+model Registration {
+  id              String             @id @default(cuid())
+  reference       String             @unique
+  sessionId       String
+  session         CourseSession      @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  name            String
+  phone           String
+  email           String
+  status          RegistrationStatus @default(AWAITING_PAYMENT)
+  completedAt     DateTime?
+  certificateCode String?            @unique
+  adminNotes      String?            @db.Text
+  payments        Payment[]
+  createdAt       DateTime           @default(now())
+  updatedAt       DateTime           @updatedAt
+
+  @@index([sessionId, status])
+}
+
+// Farm visits -----------------------------------------------------------------
+
+model VisitType {
+  id            String         @id @default(cuid())
+  name          String // e.g. Individual, Group, School
+  description   String?
+  feeKes        Int
+  maxGroupSize  Int
+  weekdays      String         @default("1,2,3,4,5") // 0 = Sunday ... 6 = Saturday
+  minNoticeDays Int            @default(7)
+  active        Boolean        @default(true)
+  sortOrder     Int            @default(0)
+  requests      VisitRequest[]
+}
+
+enum VisitStatus {
+  REQUESTED
+  CONFIRMED
+  DECLINED
+  PAID
+  COMPLETED
+  CANCELLED
+}
+
+model VisitRequest {
+  id             String      @id @default(cuid())
+  reference      String      @unique
+  visitTypeId    String?
+  visitType      VisitType?  @relation(fields: [visitTypeId], references: [id], onDelete: SetNull)
+  visitTypeName  String
+  name           String
+  phone          String
+  email          String?
+  organisation   String?
+  groupSize      Int
+  preferredDate1 DateTime
+  preferredDate2 DateTime?
+  message        String?     @db.Text
+  status         VisitStatus @default(REQUESTED)
+  confirmedDate  DateTime?
+  feeKes         Int?
+  adminNotes     String?     @db.Text
+  payments       Payment[]
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+
+  @@index([status])
 }
