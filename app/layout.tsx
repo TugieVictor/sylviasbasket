@@ -4,7 +4,10 @@ import Navigation from '@/components/Navigation'
 import Footer from '@/components/Footer'
 
 export const metadata: Metadata = {
-  title: "Sylvia's Basket - Empowering Communities Through Organic Farming",
+  title: {
+    default: "Sylvia's Basket - Empowering Communities Through Organic Farming",
+    template: "%s | Sylvia's Basket",
+  },
   description: 'Growing more than food – growing awareness, opportunity, and a healthier planet. Join us in making organic and agro-ecological farming the norm.',
 }
 

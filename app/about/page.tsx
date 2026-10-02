@@ -44,7 +44,7 @@ const AboutPage = () => {
     {
       icon: <FiAward className="w-8 h-8" />,
       title: 'Strategic Partnerships',
-      description: 'With IFOAM, KOAN, HBS, Biovision, CIFOR-ICRAF, Greenspoon, and more'
+      description: 'With IFOAM, KOAN, HBS, Biovision, Landscape Alliance, Greenspoon, and more'
     },
   ]
 
@@ -308,7 +308,7 @@ const AboutPage = () => {
       </section>
 
       {/* Founder Section - Glassmorphism */}
-      <section className="section-padding bg-gradient-to-br from-harvest-600 via-clay-600 to-sage-700 text-white relative overflow-hidden">
+      <section id="meet-sylvia" className="scroll-mt-24 section-padding bg-gradient-to-br from-harvest-600 via-clay-600 to-sage-700 text-white relative overflow-hidden">
         {/* Decorative Glowing Orbs */}
         <div className="absolute top-10 left-10 w-96 h-96 bg-accent-500/20 rounded-full blur-3xl"></div>
         <div className="absolute bottom-10 right-10 w-96 h-96 bg-sage-500/20 rounded-full blur-3xl"></div>
@@ -372,10 +372,6 @@ const AboutPage = () => {
                   <div className="flex items-start gap-3">
                     <div className="w-2 h-2 bg-accent-300 rounded-full mt-2 flex-shrink-0"></div>
                     <p><span className="font-semibold">Alumni</span> of the IFOAM Organic Leadership Course</p>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <div className="w-2 h-2 bg-accent-300 rounded-full mt-2 flex-shrink-0"></div>
-                    <p><span className="font-semibold">Partner</span> with CIFOR-ICRAF on smallholder agroecology training</p>
                   </div>
                   <div className="flex items-start gap-3">
                     <div className="w-2 h-2 bg-accent-300 rounded-full mt-2 flex-shrink-0"></div>
