@@ -109,6 +109,9 @@ const Navigation = () => {
         : 'text-white/95 hover:text-white font-semibold hover:bg-white/10 backdrop-blur-sm drop-shadow-[0_2px_4px_rgba(0,0,0,0.3)]'
     }`
 
+  // The admin area has its own header
+  if (pathname?.startsWith('/admin')) return null
+
   return (
     <motion.nav
       ref={navRef}

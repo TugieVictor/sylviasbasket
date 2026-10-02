@@ -52,6 +52,9 @@ const Footer = () => {
     }
   }
 
+  // The admin area has its own header
+  if (pathname?.startsWith('/admin')) return null
+
   return (
     <footer className="bg-gradient-to-br from-accent-50 via-sage-50 to-sky-50 text-gray-900 relative overflow-hidden pt-20 pb-8">
       {/* Decorative Glowing Orbs */}

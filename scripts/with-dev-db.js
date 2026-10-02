@@ -47,10 +47,9 @@ if (!command) {
 }
 
 console.log(`Using development database: ${hostOf(devUrl)}`)
-const result = spawnSync('npx', [command, ...args], {
-  cwd: root,
-  stdio: 'inherit',
-  shell: true,
-  env: { ...process.env, DATABASE_URL: devUrl },
-})
+// Run plain Node scripts with this same Node; everything else (prisma) through npx
+const result =
+  command === 'node'
+    ? spawnSync(process.execPath, args, { cwd: root, stdio: 'inherit', env: { ...process.env, DATABASE_URL: devUrl } })
+    : spawnSync('npx', [command, ...args], { cwd: root, stdio: 'inherit', shell: true, env: { ...process.env, DATABASE_URL: devUrl } })
 process.exit(result.status ?? 1)
