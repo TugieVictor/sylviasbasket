@@ -31,6 +31,9 @@
 import crypto from 'crypto'
 import type { IPayPaymentRequest, IPayCallbackData } from './types'
 
+// Set to true only once the iPay checkout request is fully implemented and tested
+const IPAY_CHECKOUT_ENABLED = false
+
 // iPay Configuration
 const IPAY_CONFIG = {
   vendorId: process.env.IPAY_VENDOR_ID || '',
@@ -100,8 +103,9 @@ export async function initiateIPayPayment(request: IPayPaymentRequest): Promise<
   redirectUrl?: string
   error?: string
 }> {
-  // Check if iPay is configured
-  if (!IPAY_CONFIG.vendorId || !IPAY_CONFIG.hashKey) {
+  // Online payment stays disabled until the real iPay checkout (hash and
+  // field names) is implemented and tested in Stage 5 of version_2_plan.md.
+  if (!IPAY_CHECKOUT_ENABLED || !isIPayConfigured()) {
     console.warn('iPay not configured - credentials pending from client')
 
     // Return failure so the process route will send emails instead
@@ -183,9 +187,9 @@ export function verifyIPayCallback(callbackData: IPayCallbackData): {
   error?: string
 } {
   // PLACEHOLDER - Implement when credentials arrive
-  if (!IPAY_CONFIG.hashKey) {
-    console.warn('iPay hash key not configured - skipping verification')
-    return { valid: true } // Allow for development
+  // Never accept a callback without verification
+  if (!isIPayConfigured()) {
+    return { valid: false, error: 'iPay not configured' }
   }
 
   try {
@@ -205,7 +209,8 @@ export function verifyIPayCallback(callbackData: IPayCallbackData): {
     }
     */
 
-    return { valid: true }
+    // Hash checking is not implemented; use verifyIPayTransaction instead
+    return { valid: false, error: 'Use verifyIPayTransaction (IPN query)' }
 
   } catch (error) {
     console.error('Callback verification error:', error)
@@ -329,9 +334,9 @@ export async function cancelRecurringPayment(subscriptionId: string): Promise<{
   }
 }
 
-// Export configuration checker for debugging
+// Real credentials are long strings; short placeholder values do not count
 export function isIPayConfigured(): boolean {
-  return !!(IPAY_CONFIG.vendorId && IPAY_CONFIG.hashKey)
+  return IPAY_CONFIG.vendorId.length >= 3 && IPAY_CONFIG.hashKey.length >= 8
 }
 
 export function getIPayConfig() {
@@ -340,5 +345,56 @@ export function getIPayConfig() {
     mode: IPAY_CONFIG.mode,
     vendorId: IPAY_CONFIG.vendorId ? 'SET' : 'MISSING',
     hashKey: IPAY_CONFIG.hashKey ? 'SET' : 'MISSING',
+  }
+}
+
+
+/**
+ * Confirm a transaction directly with iPay (IPN query).
+ *
+ * iPay appends id, ivm, qwh, afd, poi, uyt and ifd to the callback URL.
+ * Sending these back to iPay's IPN endpoint returns the true status code
+ * for the transaction, so the callback parameters cannot be faked.
+ * Docs: https://dev.ipayafrica.com/C2B.html
+ */
+const IPAY_STATUS = {
+  SUCCESS: 'aei7p7yrx4ae34',
+  PENDING: 'bdi6p2yy76etrs',
+  FAILED: 'fe2707etr5s4wq',
+  USED: 'cr5i3pgy9867e1',
+  AMOUNT_TOO_LOW: 'dtfi4p7yty45wq',
+  AMOUNT_TOO_HIGH: 'eq3i7p5yt7645e',
+} as const
+
+export async function verifyIPayTransaction(params: URLSearchParams): Promise<{
+  status: 'COMPLETED' | 'PENDING' | 'FAILED'
+  code: string
+}> {
+  if (!isIPayConfigured()) {
+    return { status: 'FAILED', code: 'not-configured' }
+  }
+
+  const query = new URLSearchParams({ vendor: IPAY_CONFIG.vendorId })
+  for (const key of ['id', 'ivm', 'qwh', 'afd', 'poi', 'uyt', 'ifd']) {
+    const value = params.get(key)
+    if (!value) {
+      return { status: 'FAILED', code: `missing-${key}` }
+    }
+    query.set(key, value)
+  }
+
+  try {
+    const response = await fetch(`https://www.ipayafrica.com/ipn/?${query.toString()}`, {
+      cache: 'no-store',
+    })
+    const code = (await response.text()).trim()
+
+    if (code === IPAY_STATUS.SUCCESS) return { status: 'COMPLETED', code }
+    if (code === IPAY_STATUS.PENDING) return { status: 'PENDING', code }
+    return { status: 'FAILED', code }
+  } catch (error) {
+    console.error('iPay IPN query failed:', error)
+    // Unknown result: treat as pending so it can be checked again
+    return { status: 'PENDING', code: 'ipn-unreachable' }
   }
 }

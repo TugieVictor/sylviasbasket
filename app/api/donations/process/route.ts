@@ -107,63 +107,16 @@ export async function POST(request: Request) {
       })
     }
 
-    // If iPay not configured, mark as completed for testing and send emails
-    console.log('🟡 iPay not configured - marking as completed and sending emails')
-    // Update donation status to COMPLETED (for testing only - remove when iPay is live)
-    await prisma.donation.update({
-      where: { orderId },
-      data: { status: 'COMPLETED' },
-    })
-    console.log('🟡 Donation marked as COMPLETED')
-
-    // Send email receipts (for testing - in production this happens in callback)
-    console.log('🟡 About to send emails...')
-    try {
-      console.log('🟡 Importing email functions...')
-      const { sendDonationReceipt, sendAdminNotification } = await import('@/lib/donations/email')
-      console.log('🟡 Email functions imported successfully')
-
-      // Send donor receipt
-      console.log('🟡 Sending donor receipt to:', donation.donorEmail)
-      const receiptResult = await sendDonationReceipt({
-        orderId: donation.orderId,
-        donorName: donation.donorName,
-        donorEmail: donation.donorEmail,
-        amount: donation.amount,
-        paymentMethod: donation.paymentMethod,
-        donationType: donation.donationType,
-        transactionId: donation.transactionId || undefined,
-        createdAt: donation.createdAt,
-      })
-      console.log('🟡 Receipt result:', receiptResult)
-
-      // Send admin notification
-      console.log('🟡 Sending admin notification...')
-      const adminResult = await sendAdminNotification({
-        orderId: donation.orderId,
-        donorName: donation.donorName,
-        donorEmail: donation.donorEmail,
-        donorPhone: donation.donorPhone,
-        amount: donation.amount,
-        paymentMethod: donation.paymentMethod,
-        donationType: donation.donationType,
-        message: donation.message || undefined,
-      })
-      console.log('🟡 Admin notification result:', adminResult)
-
-      console.log(`✅ Emails sent for donation: ${orderId}`)
-    } catch (emailError) {
-      console.error('Email sending error:', emailError)
-      // Don't fail the request if email fails
-    }
-
-    return NextResponse.json({
-      success: true,
-      message: 'Payment gateway integration pending',
-      orderId,
-      // For now, redirect to success page (remove when iPay is configured)
-      redirectUrl: `/donate/success?orderId=${orderId}`,
-    })
+    // Online payment is not available yet. The donation stays PENDING and is
+    // never marked as completed without a confirmed payment.
+    return NextResponse.json(
+      {
+        success: false,
+        error: 'Online payment is not available yet. Please use Bank Transfer or contact us at info@sylviasbasket.co.ke',
+        orderId,
+      },
+      { status: 503 }
+    )
 
   } catch (error) {
     console.error('Payment processing error:', error)

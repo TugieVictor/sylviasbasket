@@ -1,126 +1,127 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
-import { verifyIPayCallback, handleIPayResponse } from '@/lib/donations/ipay'
+import { isIPayConfigured, verifyIPayTransaction } from '@/lib/donations/ipay'
+
+export const dynamic = 'force-dynamic'
 
 /**
- * iPay Webhook Callback Handler
- * This endpoint receives payment notifications from iPay Africa
+ * iPay callback for donations.
+ *
+ * iPay sends the customer back here (GET) with transaction parameters.
+ * We never trust those parameters on their own: the transaction is confirmed
+ * with iPay's IPN endpoint, and the paid amount is checked against the
+ * donation, before anything is marked as completed.
  */
-export async function POST(request: Request) {
+async function handleCallback(request: Request, params: URLSearchParams) {
+  const redirectTo = (path: string) => NextResponse.redirect(new URL(path, request.url), 303)
+  const orderId = params.get('id') || ''
+
+  if (!orderId) {
+    return redirectTo('/donate/failure/')
+  }
+
+  const failurePath = `/donate/failure/?orderId=${encodeURIComponent(orderId)}`
+  const successPath = `/donate/success/?orderId=${encodeURIComponent(orderId)}`
+
+  if (!isIPayConfigured()) {
+    console.error('iPay callback received but iPay is not configured. Ignoring.')
+    return redirectTo(failurePath)
+  }
+
   try {
-    const body = await request.json()
-
-    console.log('iPay callback received:', body)
-
-    // Verify iPay callback authenticity
-    const verification = verifyIPayCallback(body)
-    if (!verification.valid) {
-      console.error('Invalid iPay callback:', verification.error)
-      return NextResponse.json(
-        { success: false, error: 'Invalid callback' },
-        { status: 400 }
-      )
+    const donation = await prisma.donation.findUnique({ where: { orderId } })
+    if (!donation) {
+      return redirectTo('/donate/failure/')
     }
 
-    // Process the payment response
-    const result = await handleIPayResponse(body)
-
-    if (!result.success) {
-      console.error('Failed to handle iPay response:', result.error)
-      return NextResponse.json(
-        { success: false, error: result.error },
-        { status: 500 }
-      )
+    // Already confirmed earlier: nothing to do (repeat callbacks are ignored)
+    if (donation.status === 'COMPLETED') {
+      return redirectTo(successPath)
     }
 
-    // Update donation status in database
-    const { orderId, status, transactionId } = result
+    const verification = await verifyIPayTransaction(params)
 
-    const donation = await prisma.donation.update({
-      where: { orderId },
-      data: {
-        status: status as 'PENDING' | 'COMPLETED' | 'FAILED' | 'CANCELLED',
-        transactionId,
-        updatedAt: new Date(),
-      },
+    if (verification.status === 'COMPLETED') {
+      const amountPaid = Number(params.get('mc'))
+      if (!Number.isFinite(amountPaid) || amountPaid + 0.001 < donation.amount) {
+        console.error('iPay amount mismatch, donation left pending for review', {
+          orderId,
+          expected: donation.amount,
+          received: params.get('mc'),
+        })
+        return redirectTo(failurePath)
+      }
+
+      // Only the first confirmation updates the record and sends emails
+      const updated = await prisma.donation.updateMany({
+        where: { orderId, status: { not: 'COMPLETED' } },
+        data: {
+          status: 'COMPLETED',
+          transactionId: params.get('txncd') || undefined,
+        },
+      })
+
+      if (updated.count === 1) {
+        const { sendDonationReceipt, sendAdminNotification } = await import('@/lib/donations/email')
+        sendDonationReceipt({
+          orderId: donation.orderId,
+          donorName: donation.donorName,
+          donorEmail: donation.donorEmail,
+          amount: donation.amount,
+          donationType: donation.donationType,
+          paymentMethod: donation.paymentMethod,
+          transactionId: params.get('txncd') || undefined,
+          createdAt: donation.createdAt,
+        }).catch(err => console.error('Failed to send receipt:', err))
+
+        sendAdminNotification({
+          orderId: donation.orderId,
+          donorName: donation.donorName,
+          donorEmail: donation.donorEmail,
+          donorPhone: donation.donorPhone,
+          amount: donation.amount,
+          donationType: donation.donationType,
+          paymentMethod: donation.paymentMethod,
+          message: donation.message || undefined,
+        }).catch(err => console.error('Failed to send admin notification:', err))
+      }
+
+      return redirectTo(successPath)
+    }
+
+    if (verification.status === 'PENDING') {
+      // Leave as pending; it can be re-checked later
+      return redirectTo(successPath)
+    }
+
+    // Only a definite answer from iPay marks the donation as failed.
+    // Incomplete callbacks (possibly fake) change nothing.
+    if (verification.code.startsWith('missing-')) {
+      return redirectTo(failurePath)
+    }
+
+    await prisma.donation.updateMany({
+      where: { orderId, status: 'PENDING' },
+      data: { status: 'FAILED' },
     })
-
-    // Send email receipt when donation is completed
-    if (status === 'COMPLETED') {
-      const { sendDonationReceipt, sendAdminNotification } = await import('@/lib/donations/email')
-
-      // Send receipt to donor (don't block on email failures)
-      sendDonationReceipt({
-        orderId: donation.orderId,
-        donorName: donation.donorName,
-        donorEmail: donation.donorEmail,
-        amount: donation.amount,
-        donationType: donation.donationType,
-        paymentMethod: donation.paymentMethod,
-        transactionId: donation.transactionId || undefined,
-        createdAt: donation.createdAt,
-      }).catch(err => console.error('Failed to send receipt:', err))
-
-      // Send notification to admin
-      sendAdminNotification({
-        orderId: donation.orderId,
-        donorName: donation.donorName,
-        donorEmail: donation.donorEmail,
-        donorPhone: donation.donorPhone,
-        amount: donation.amount,
-        donationType: donation.donationType,
-        paymentMethod: donation.paymentMethod,
-        message: donation.message || undefined,
-      }).catch(err => console.error('Failed to send admin notification:', err))
-    }
-
-    return NextResponse.json({
-      success: true,
-      message: 'Callback processed successfully',
-    })
-
+    return redirectTo(failurePath)
   } catch (error) {
-    console.error('Callback processing error:', error)
-    return NextResponse.json(
-      { success: false, error: 'Failed to process callback' },
-      { status: 500 }
-    )
+    console.error('iPay callback error:', error)
+    return redirectTo(failurePath)
   }
 }
 
-/**
- * Handle GET requests (iPay may send some callbacks as GET)
- */
 export async function GET(request: Request) {
-  const { searchParams } = new URL(request.url)
-  const orderId = searchParams.get('orderId')
-  const status = searchParams.get('status')
-  const transactionId = searchParams.get('transactionId')
+  return handleCallback(request, new URL(request.url).searchParams)
+}
 
-  if (!orderId) {
-    return NextResponse.redirect('/donate/failure')
-  }
-
+export async function POST(request: Request) {
+  const params = new URLSearchParams(new URL(request.url).search)
   try {
-    // Update donation status
-    await prisma.donation.update({
-      where: { orderId },
-      data: {
-        status: status === 'success' ? 'COMPLETED' : 'FAILED',
-        transactionId: transactionId || undefined,
-        updatedAt: new Date(),
-      },
-    })
-
-    // Redirect to appropriate page
-    if (status === 'success') {
-      return NextResponse.redirect(`/donate/success?orderId=${orderId}`)
-    } else {
-      return NextResponse.redirect(`/donate/failure?orderId=${orderId}`)
-    }
-
-  } catch (error) {
-    console.error('Callback GET error:', error)
-    return NextResponse.redirect('/donate/failure')
+    const form = await request.formData()
+    form.forEach((value, key) => params.set(key, String(value)))
+  } catch {
+    // Body was not form data; query parameters only
   }
+  return handleCallback(request, params)
 }

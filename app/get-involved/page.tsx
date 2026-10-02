@@ -8,6 +8,7 @@ import { GiFarmer } from 'react-icons/gi'
 
 const GetInvolvedPage = () => {
   const [contactForm, setContactForm] = useState({ name: '', email: '', message: '' })
+  const [honeypot, setHoneypot] = useState('')
   const [submitting, setSubmitting] = useState(false)
   const [submitMessage, setSubmitMessage] = useState('')
   const fadeInUp = {
@@ -31,18 +32,12 @@ const GetInvolvedPage = () => {
     setSubmitMessage('')
 
     try {
-      // Use the PHP handler on the shared hosting
-      // TODO: Replace with your actual domain once deployed
-      const apiUrl = process.env.NODE_ENV === 'production'
-        ? 'https://sylviasbasket.co.ke/contact-handler.php'
-        : '/contact-handler.php'
-
-      const response = await fetch(apiUrl, {
+      const response = await fetch('/api/contact', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(contactForm),
+        body: JSON.stringify({ ...contactForm, website: honeypot }),
       })
 
       const data = await response.json()
@@ -459,6 +454,11 @@ const GetInvolvedPage = () => {
               {/* Contact Form */}
               <div>
                 <form onSubmit={handleContactSubmit} className="space-y-6">
+                  {/* Hidden from people; catches spam bots */}
+                  <div aria-hidden="true" style={{ position: 'absolute', left: '-10000px', width: 1, height: 1, overflow: 'hidden' }}>
+                    <label htmlFor="website">Website</label>
+                    <input id="website" name="website" type="text" tabIndex={-1} autoComplete="off" value={honeypot} onChange={(e) => setHoneypot(e.target.value)} />
+                  </div>
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-2">
                       Your Name
