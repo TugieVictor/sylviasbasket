@@ -32,12 +32,47 @@ async function main() {
   ]
   for (const { name, ...data } of visitTypes) await upsertByName('visitType', name, data)
 
-  // Sample products
+  // Shop sections (Sylvia can change these in the admin)
+  const shopCategories = [
+    { slug: 'honey', name: 'Honey', description: 'Pure, natural honey.', sortOrder: 1 },
+    { slug: 'fresh-produce', name: 'Fresh produce', description: 'Organic vegetables and fruit from the farm.', sortOrder: 2 },
+    { slug: 'merchandise', name: 'Merchandise', description: "Sylvia's Basket bags, clothing and more.", sortOrder: 3 },
+  ]
+  const categoryIds = {}
+  for (const category of shopCategories) {
+    const saved = await prisma.shopCategory.upsert({ where: { slug: category.slug }, update: {}, create: category })
+    categoryIds[category.slug] = saved.id
+  }
+
+  // Products. Honey is the first real product (prices to be confirmed by Sylvia); the others are samples
   const products = [
+    {
+      slug: 'pure-honey',
+      name: 'Pure honey',
+      category: 'PRODUCE',
+      shop: 'honey',
+      sortOrder: 1,
+      summary: 'Pure, natural honey, packed in glass jars.',
+      description:
+        'Golden, pure honey with nothing added. Enjoy it in tea, on bread, in porridge or straight from the spoon.\n\nStore in a cool, dry place. Natural honey can thicken or crystallise over time; stand the jar in warm water to soften it.',
+      images: [
+        { url: '/images/shop/honey-jar-1200.webp', alt: 'A glass jar of golden honey on a wooden table' },
+        { url: '/images/shop/honey-dipper-1200.webp', alt: 'Honey dripping from a wooden dipper into a jar' },
+        { url: '/images/shop/honey-glass-jar-1200.webp', alt: 'Honey being poured into a glass jar' },
+        { url: '/images/shop/honeycomb-1200.webp', alt: 'Close-up of honeycomb filled with honey' },
+      ],
+      variants: [
+        { label: '250 g', priceKes: 500, stock: 20, sortOrder: 1 },
+        { label: '500 g', priceKes: 900, stock: 20, sortOrder: 2 },
+        { label: '1 kg', priceKes: 1700, stock: 10, sortOrder: 3 },
+      ],
+    },
     {
       slug: 'sample-sukuma-wiki',
       name: 'Sukuma wiki (sample)',
       category: 'PRODUCE',
+      shop: 'fresh-produce',
+      sortOrder: 10,
       summary: 'Freshly harvested organic kale.',
       variants: [{ label: '1 bunch', priceKes: 50, stock: 40 }],
     },
@@ -45,6 +80,8 @@ async function main() {
       slug: 'sample-tote-bag',
       name: "Sylvia's Basket tote bag (sample)",
       category: 'MERCHANDISE',
+      shop: 'merchandise',
+      sortOrder: 11,
       summary: 'Reusable cotton tote bag.',
       variants: [{ label: 'Standard', priceKes: 800, stock: 25 }],
     },
@@ -52,6 +89,8 @@ async function main() {
       slug: 'sample-t-shirt',
       name: "Sylvia's Basket T-shirt (sample)",
       category: 'MERCHANDISE',
+      shop: 'merchandise',
+      sortOrder: 12,
       summary: 'Cotton T-shirt with the Sylvia\'s Basket logo.',
       variants: [
         { label: 'Small', priceKes: 1500, stock: 10, sortOrder: 1 },
@@ -60,7 +99,8 @@ async function main() {
       ],
     },
   ]
-  for (const { variants, ...product } of products) {
+  for (const { variants, shop, ...fields } of products) {
+    const product = { ...fields, shopCategoryId: categoryIds[shop] }
     const saved = await prisma.product.upsert({ where: { slug: product.slug }, update: product, create: product })
     const count = await prisma.productVariant.count({ where: { productId: saved.id } })
     if (count === 0) {

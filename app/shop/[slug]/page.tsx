@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { prisma } from '@/lib/prisma'
-import ProductPhoto from '@/components/shop/ProductPhoto'
+import ProductGallery from '@/components/shop/ProductGallery'
 import ShopClosed from '@/components/shop/ShopClosed'
 import ShopHeader from '@/components/shop/ShopHeader'
 import { CATEGORY_LABELS, MAX_PER_ITEM, productAvailability, productImages, shopEnabled } from '@/lib/shop'
@@ -12,7 +12,7 @@ export const dynamic = 'force-dynamic'
 const getProduct = (slug: string) =>
   prisma.product.findFirst({
     where: { slug, active: true },
-    include: { variants: { orderBy: { sortOrder: 'asc' } } },
+    include: { variants: { orderBy: { sortOrder: 'asc' } }, shopCategory: true },
   })
 
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
@@ -32,24 +32,19 @@ export default async function ProductPage({ params }: { params: { slug: string }
 
   return (
     <>
-      <ShopHeader kicker={CATEGORY_LABELS[product.category]} title={product.name} back={{ label: 'Back to the shop', href: '/shop/' }} />
+      <ShopHeader
+        kicker={product.shopCategory?.name || CATEGORY_LABELS[product.category]}
+        title={product.name}
+        back={
+          product.shopCategory
+            ? { label: `Back to ${product.shopCategory.name}`, href: `/shop/?category=${product.shopCategory.slug}#products` }
+            : { label: 'Back to the shop', href: '/shop/' }
+        }
+      />
 
       <section className="section-padding bg-gradient-to-br from-earth-50 via-white to-harvest-50">
         <div className="container-custom grid grid-cols-1 lg:grid-cols-2 gap-10 max-w-6xl mx-auto">
-          <div className="space-y-3">
-            <div className="aspect-square rounded-3xl overflow-hidden shadow-xl bg-white">
-              <ProductPhoto image={images[0] || null} category={product.category} sizes="large" />
-            </div>
-            {images.length > 1 && (
-              <div className="grid grid-cols-4 gap-3">
-                {images.slice(1, 5).map((image) => (
-                  <div key={image.url} className="aspect-square rounded-xl overflow-hidden bg-white shadow">
-                    <ProductPhoto image={image} category={product.category} />
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
+          <ProductGallery images={images} category={product.category} />
 
           <div>
             {product.summary && <p className="text-body-lg text-gray-700">{product.summary}</p>}

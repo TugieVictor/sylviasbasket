@@ -90,9 +90,24 @@ model AdminSession {
 
 // Shop ------------------------------------------------------------------------
 
+// What kind of item it is. Produce can be switched to "not available this week".
 enum ProductCategory {
   MERCHANDISE
   PRODUCE
+}
+
+// Shop sections shown on the left of the shop, e.g. Honey, Fresh produce, Merchandise.
+// Sylvia can add, rename and reorder them in the admin.
+model ShopCategory {
+  id          String    @id @default(cuid())
+  slug        String    @unique
+  name        String
+  description String?
+  active      Boolean   @default(true)
+  sortOrder   Int       @default(0)
+  products    Product[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
 }
 
 model Product {
@@ -100,6 +115,8 @@ model Product {
   slug              String           @unique
   name              String
   category          ProductCategory
+  shopCategoryId    String?
+  shopCategory      ShopCategory?    @relation(fields: [shopCategoryId], references: [id], onDelete: SetNull)
   summary           String?
   description       String?          @db.Text
   images            Json             @default("[]") // [{ url, alt }]
@@ -111,6 +128,7 @@ model Product {
   updatedAt         DateTime         @updatedAt
 
   @@index([category, active])
+  @@index([shopCategoryId])
 }
 
 model ProductVariant {

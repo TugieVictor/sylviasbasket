@@ -1,3 +1,5 @@
+import fs from 'fs'
+import path from 'path'
 import type { Product, ProductVariant } from '@prisma/client'
 import { prisma } from '@/lib/prisma'
 
@@ -14,10 +16,21 @@ export const MAX_PER_ITEM = 20
 
 export type ProductImage = { url: string; alt?: string }
 
+// Remembers which local photo files exist, so a missing file never shows as a broken image
+const fileChecks = new Map<string, boolean>()
+export function localFileExists(url: string) {
+  if (!url.startsWith('/')) return true // photos hosted elsewhere
+  if (!fileChecks.has(url) || process.env.NODE_ENV !== 'production') {
+    fileChecks.set(url, fs.existsSync(path.join(process.cwd(), 'public', decodeURIComponent(url.split('?')[0]))))
+  }
+  return fileChecks.get(url)!
+}
+
 export function productImages(product: Pick<Product, 'images' | 'name'>): ProductImage[] {
   const list = Array.isArray(product.images) ? (product.images as unknown[]) : []
   return list
     .filter((item): item is ProductImage => !!item && typeof (item as ProductImage).url === 'string')
+    .filter((item) => localFileExists(item.url))
     .map((item) => ({ url: item.url, alt: item.alt || product.name }))
 }
 
@@ -45,9 +58,19 @@ export function priceLabel(min: number, max: number) {
   return min === max ? kes(min) : `${kes(min)} to ${kes(max)}`
 }
 
-export async function getShopProducts(category?: 'PRODUCE' | 'MERCHANDISE') {
+/** Shop sections for the left-hand menu, with how many products each has. */
+export async function getShopCategories() {
+  const categories = await prisma.shopCategory.findMany({
+    where: { active: true },
+    orderBy: [{ sortOrder: 'asc' }, { name: 'asc' }],
+    include: { _count: { select: { products: { where: { active: true } } } } },
+  })
+  return categories.map(({ _count, ...c }) => ({ ...c, productCount: _count.products }))
+}
+
+export async function getShopProducts(shopCategoryId?: string) {
   return prisma.product.findMany({
-    where: { active: true, ...(category ? { category } : {}) },
+    where: { active: true, ...(shopCategoryId ? { shopCategoryId } : {}) },
     include: { variants: { orderBy: { sortOrder: 'asc' } } },
     orderBy: [{ sortOrder: 'asc' }, { name: 'asc' }],
   })
