@@ -6,10 +6,10 @@ export const dynamic = 'force-dynamic'
 
 export default async function AdminOverviewPage() {
   const admin = await getCurrentAdmin()
-  const [ordersToHandle, products, upcomingSessions, visitRequests, pendingPayments] = await Promise.all([
+  const [ordersToHandle, products, courseRequests, visitRequests, pendingPayments] = await Promise.all([
     prisma.order.count({ where: { status: { in: ['PAID', 'PACKED', 'OUT_FOR_DELIVERY'] } } }),
     prisma.product.count({ where: { active: true } }),
-    prisma.courseSession.count({ where: { status: 'OPEN', startDate: { gte: new Date() } } }),
+    prisma.courseRequest.count({ where: { status: 'NEW' } }),
     prisma.visitRequest.count({ where: { status: 'REQUESTED' } }),
     prisma.payment.count({ where: { status: { in: ['PENDING', 'REVIEW'] } } }),
   ])
@@ -17,7 +17,7 @@ export default async function AdminOverviewPage() {
   const cards = [
     { label: 'Orders to handle', value: ordersToHandle, href: '/admin/orders/' },
     { label: 'Products in the shop', value: products, href: '/admin/products/' },
-    { label: 'Upcoming course dates', value: upcomingSessions, href: '/admin/courses/' },
+    { label: 'New course requests', value: courseRequests, href: '/admin/courses/' },
     { label: 'New visit requests', value: visitRequests, href: '/admin/visits/' },
     { label: 'Payments to check', value: pendingPayments, href: '/admin/orders/' },
   ]
