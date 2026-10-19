@@ -19,7 +19,7 @@ export type ProductImage = { url: string; alt?: string }
 // Remembers which local photo files exist, so a missing file never shows as a broken image
 const fileChecks = new Map<string, boolean>()
 export function localFileExists(url: string) {
-  if (!url.startsWith('/')) return true // photos hosted elsewhere
+  if (!url.startsWith('/images/')) return true // uploaded in the admin, or hosted elsewhere
   if (!fileChecks.has(url) || process.env.NODE_ENV !== 'production') {
     fileChecks.set(url, fs.existsSync(path.join(process.cwd(), 'public', decodeURIComponent(url.split('?')[0]))))
   }

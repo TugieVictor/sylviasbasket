@@ -181,3 +181,28 @@ export async function markOrderPaid(orderId: string) {
   }
   return null
 }
+
+export const orderStatusBadge = (status: string) => {
+  const colours: Record<string, string> = {
+    AWAITING_PAYMENT: 'bg-harvest-100 text-harvest-800',
+    PAID: 'bg-accent-100 text-accent-800',
+    PACKED: 'bg-sky-100 text-sky-800',
+    OUT_FOR_DELIVERY: 'bg-violet-100 text-violet-800',
+    DELIVERED: 'bg-gray-100 text-gray-700',
+    CANCELLED: 'bg-red-100 text-red-800',
+    EXPIRED: 'bg-gray-100 text-gray-500',
+  }
+  return `inline-block px-2.5 py-1 rounded-full text-xs font-semibold ${colours[status] || 'bg-gray-100'}`
+}
+
+/** Cancels an order and puts its items back in stock (unless already cancelled, expired or delivered). */
+export async function cancelOrder(orderId: string) {
+  return prisma.$transaction(async (tx) => {
+    const order = await tx.order.findUnique({ where: { id: orderId }, select: { status: true } })
+    if (!order || ['CANCELLED', 'EXPIRED', 'DELIVERED'].includes(order.status)) return false
+    const moved = await tx.order.updateMany({ where: { id: orderId, status: order.status }, data: { status: 'CANCELLED', stockHeldUntil: null } })
+    if (moved.count !== 1) return false
+    await returnStock(tx, orderId)
+    return true
+  })
+}

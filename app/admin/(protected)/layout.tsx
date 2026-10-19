@@ -8,6 +8,7 @@ const sections = [
   { href: '/admin/', label: 'Overview' },
   { href: '/admin/orders/', label: 'Orders' },
   { href: '/admin/products/', label: 'Products' },
+  { href: '/admin/delivery/', label: 'Delivery' },
   { href: '/admin/courses/', label: 'Courses' },
   { href: '/admin/visits/', label: 'Farm visits' },
   { href: '/admin/settings/', label: 'Settings' },

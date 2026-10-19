@@ -369,3 +369,15 @@ model VisitRequest {
 
   @@index([status])
 }
+
+// Photos Sylvia uploads in the admin (product photos), stored in the database
+// so no extra file service is needed. Resized to at most 1600 px before upload.
+model StoredImage {
+  id          String   @id @default(cuid())
+  contentType String // image/webp or image/jpeg
+  data        Bytes
+  width       Int
+  height      Int
+  bytes       Int
+  createdAt   DateTime @default(now())
+}

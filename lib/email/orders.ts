@@ -69,3 +69,26 @@ export async function emailOrderPaid(order: Order & { items: OrderItem[] }, stoc
   }
   await Promise.all(jobs)
 }
+
+/** Tells the customer their order is on the way, ready to collect, or delivered. */
+export async function emailOrderUpdate(order: Order, status: 'OUT_FOR_DELIVERY' | 'DELIVERED', note?: string) {
+  if (!order.customerEmail) return
+  const onTheWay = status === 'OUT_FOR_DELIVERY'
+  const title = onTheWay ? (order.isPickup ? 'Your order is ready to collect' : 'Your order is on the way') : order.isPickup ? 'Thank you for collecting your order' : 'Your order has been delivered'
+  const text = onTheWay
+    ? order.isPickup
+      ? 'Your order is packed and ready. You can collect it from the farm in Limuru.'
+      : 'Your order has left the farm and is on its way to you.'
+    : 'We hope you enjoy it. Thank you for supporting Sylvia’s Basket and organic farming.'
+  await sendEmail({
+    to: order.customerEmail,
+    subject: `${title} (${order.reference})`,
+    html: renderEmail({
+      title,
+      intro: `Hello ${order.customerName},`,
+      paragraphs: [text, ...(note ? [note] : [])],
+      details: [{ label: 'Order', value: order.reference }],
+      footerNote: 'Questions about your order? Reply to this email or call us.',
+    }),
+  })
+}
