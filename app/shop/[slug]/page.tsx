@@ -6,6 +6,7 @@ import ShopClosed from '@/components/shop/ShopClosed'
 import ShopHeader from '@/components/shop/ShopHeader'
 import { CATEGORY_LABELS, MAX_PER_ITEM, productAvailability, productImages, shopEnabled } from '@/lib/shop'
 import AddToCart from './AddToCart'
+import { releaseExpiredOrders } from '@/lib/orders'
 
 export const dynamic = 'force-dynamic'
 
@@ -23,6 +24,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
 
 export default async function ProductPage({ params }: { params: { slug: string } }) {
   if (!shopEnabled()) return <ShopClosed />
+  await releaseExpiredOrders()
   const product = await getProduct(params.slug)
   if (!product) notFound()
 

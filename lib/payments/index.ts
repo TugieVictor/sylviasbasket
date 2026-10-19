@@ -53,7 +53,7 @@ export async function startPayment({ purpose, amountKes, phone, email, siteOrigi
  * Handles iPay's callback. Returns the payment (or null) after verifying
  * with iPay. Safe to call many times for the same payment.
  */
-export async function handleIPayCallback(params: URLSearchParams) {
+export async function handleIPayCallback(params: URLSearchParams, siteOrigin?: string) {
   const reference = params.get('id') || ''
   if (!reference) return null
 
@@ -82,7 +82,7 @@ export async function handleIPayCallback(params: URLSearchParams) {
         providerTxnId: params.get('txncd') || undefined,
       },
     })
-    if (moved.count === 1) await onPaymentCompleted(payment.id)
+    if (moved.count === 1) await onPaymentCompleted(payment.id, siteOrigin)
     return prisma.payment.findUnique({ where: { id: payment.id } })
   }
 
@@ -98,7 +98,7 @@ export async function handleIPayCallback(params: URLSearchParams) {
  * What happens once money is confirmed. Each feature adds its step here as
  * it is built (orders in Stage 8, courses in Stage 9, visits in Stage 7).
  */
-async function onPaymentCompleted(paymentId: string) {
+async function onPaymentCompleted(paymentId: string, siteOrigin?: string) {
   const payment = await prisma.payment.findUnique({ where: { id: paymentId } })
   if (!payment) return
 
@@ -109,10 +109,12 @@ async function onPaymentCompleted(paymentId: string) {
     })
   }
   if (payment.orderId) {
-    await prisma.order.updateMany({
-      where: { id: payment.orderId, status: 'AWAITING_PAYMENT' },
-      data: { status: 'PAID', stockHeldUntil: null },
-    })
+    const { markOrderPaid } = await import('@/lib/orders')
+    const result = await markOrderPaid(payment.orderId)
+    if (result) {
+      const { emailOrderPaid } = await import('@/lib/email/orders')
+      await emailOrderPaid(result.order, result.stockWarning, siteOrigin).catch((error) => console.error('Order paid emails failed:', error))
+    }
   }
   if (payment.registrationId) {
     await prisma.registration.updateMany({

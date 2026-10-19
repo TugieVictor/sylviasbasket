@@ -7,7 +7,7 @@ export const dynamic = 'force-dynamic'
 async function handle(request: Request, params: URLSearchParams) {
   const reference = params.get('id') || ''
   try {
-    await handleIPayCallback(params)
+    await handleIPayCallback(params, new URL(request.url).origin)
   } catch (error) {
     console.error('iPay callback error:', error)
   }

@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { describeCart, shopEnabled } from '@/lib/shop'
+import { releaseExpiredOrders } from '@/lib/orders'
 import { clientIp, isRateLimited } from '@/lib/security/rateLimit'
 
 export const dynamic = 'force-dynamic'
@@ -16,5 +17,6 @@ export async function POST(request: Request) {
         .filter((i: unknown) => i && typeof (i as { variantId: unknown }).variantId === 'string')
         .map((i: { variantId: string; quantity: unknown }) => ({ variantId: i.variantId.slice(0, 50), quantity: Number(i.quantity) }))
     : []
+  await releaseExpiredOrders()
   return NextResponse.json({ items: await describeCart(items) })
 }

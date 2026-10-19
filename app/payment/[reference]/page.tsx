@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import { redirect } from 'next/navigation'
 import { prisma } from '@/lib/prisma'
 
 export const dynamic = 'force-dynamic'
@@ -16,8 +17,10 @@ const messages = {
 export default async function PaymentStatusPage({ params }: { params: { reference: string } }) {
   const payment = await prisma.payment.findUnique({
     where: { reference: params.reference },
-    select: { reference: true, status: true, amountKes: true, purpose: true },
+    select: { reference: true, status: true, amountKes: true, purpose: true, order: { select: { reference: true } } },
   })
+  // Shop orders have their own page showing the order and its payment
+  if (payment?.order) redirect(`/shop/order/${payment.order.reference}/`)
   const message = payment ? messages[payment.status] : null
 
   return (

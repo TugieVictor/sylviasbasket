@@ -11,6 +11,7 @@ import { prisma } from '@/lib/prisma'
 import ShopHeroSlider from '@/components/shop/ShopHeroSlider'
 import { getShopCategories, getShopProducts, priceLabel, productAvailability, productImages, shopEnabled } from '@/lib/shop'
 import { shopSlides } from '@/lib/shopSlides'
+import { releaseExpiredOrders } from '@/lib/orders'
 
 export const dynamic = 'force-dynamic'
 
@@ -28,6 +29,7 @@ const promises = [
 export default async function ShopPage({ searchParams }: { searchParams: { category?: string } }) {
   if (!shopEnabled()) return <ShopClosed />
 
+  await releaseExpiredOrders()
   const categories = await getShopCategories()
   const current = categories.find((c) => c.slug === searchParams.category)
   const products = await getShopProducts(current?.id)
