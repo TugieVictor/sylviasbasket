@@ -1,7 +1,8 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { FiArrowRight, FiCalendar, FiClock, FiExternalLink, FiMapPin, FiUsers } from 'react-icons/fi'
-import { describeSessionDates, getPublicCourses, toLines } from '@/lib/courses'
+import { FiArrowRight } from 'react-icons/fi'
+import CourseCard from '@/components/courses/CourseCard'
+import { describeSessionDates, getPublicCourses, registrationStatus } from '@/lib/courses'
 import { nairobiToday, parseDateOnly, toDateOnly } from '@/lib/visits'
 import CourseRequestForm from './CourseRequestForm'
 
@@ -12,13 +13,10 @@ export const metadata: Metadata = {
   description: "Hands-on courses in organic farming and agroecology at Sylvia's Basket farm in Limuru. Ask to join the next course.",
 }
 
-const kes = (n: number) => `KES ${n.toLocaleString('en-KE')}`
-
 export default async function CoursesPage({ searchParams }: { searchParams: { course?: string } }) {
   const courses = await getPublicCourses()
   const preselected = courses.find((c) => c.slug === searchParams.course)?.id || ''
   const today = parseDateOnly(nairobiToday())!
-  const deadline = (d: Date) => d.toLocaleDateString('en-GB', { timeZone: 'UTC', weekday: 'long', day: 'numeric', month: 'long' })
 
   return (
     <>
@@ -29,7 +27,7 @@ export default async function CoursesPage({ searchParams }: { searchParams: { co
           <p className="text-kicker text-white/70">Learn &amp; Visit</p>
           <h1 className="text-hero text-white mt-3">Courses on the farm</h1>
           <p className="text-body-lg text-white/85 mt-6 max-w-2xl mx-auto">
-            Learn organic farming and agroecology hands-on, on the farm. Choose a course below and register your place.
+            Learn organic farming and agroecology hands-on, on the farm. Choose a course to see the details and register your place.
           </p>
         </div>
       </section>
@@ -41,76 +39,22 @@ export default async function CoursesPage({ searchParams }: { searchParams: { co
             {courses.length === 0 ? (
               <p className="text-gray-700 mt-4">New course dates are being planned. Send a request below and we will tell you about the next one.</p>
             ) : (
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 mt-6">
                 {courses.map((course) => {
-                  const learnings = toLines(course.learnings)
-                  const registrationOpen = !course.registrationEnds || course.registrationEnds >= today
+                  const status = registrationStatus(course, today)
+                  const next = course.sessions[0]
                   return (
-                    <article key={course.id} className="bg-white rounded-3xl shadow-xl border border-gray-100 p-6 md:p-8 flex flex-col">
-                      {course.image && (
-                        <a href={course.image} target="_blank" rel="noreferrer" className="block -mx-6 -mt-6 md:-mx-8 md:-mt-8 mb-6 rounded-t-3xl overflow-hidden bg-earth-50" aria-label={`Open the ${course.title} poster`}>
-                          {/* eslint-disable-next-line @next/next/no-img-element */}
-                          <img src={course.image} alt={`Poster: ${course.title}`} className="w-full h-auto" loading="lazy" />
-                        </a>
-                      )}
-                      <h3 className="text-2xl font-display font-bold text-gray-900">{course.title}</h3>
-                      {course.summary && <p className="text-gray-700 mt-2">{course.summary}</p>}
-                      <ul className="flex flex-wrap gap-x-5 gap-y-2 mt-4 text-sm text-gray-600">
-                        {course.duration && <li className="flex items-center gap-1.5"><FiClock className="text-accent-600" /> {course.duration}</li>}
-                        {course.audience && <li className="flex items-center gap-1.5"><FiUsers className="text-accent-600" /> {course.audience}</li>}
-                      </ul>
-                      {learnings.length > 0 && (
-                        <div className="mt-5">
-                          <p className="text-sm font-semibold text-gray-900">What you will learn</p>
-                          <ul className="mt-2 space-y-1.5 text-sm text-gray-700 list-disc pl-5">
-                            {learnings.map((l) => <li key={l}>{l}</li>)}
-                          </ul>
-                        </div>
-                      )}
-                      {course.description && <p className="text-sm text-gray-700 mt-4 whitespace-pre-line">{course.description}</p>}
-                      {/* Dates and button sit at the bottom, so cards side by side line up */}
-                      <div className="mt-auto pt-5">
-                      <div className="border-t border-gray-100 pt-4">
-                        <p className="text-sm font-semibold text-gray-900">Upcoming dates</p>
-                        {course.sessions.length === 0 ? (
-                          <p className="text-sm text-gray-600 mt-1">No dates set yet. Ask to join and we will let you know.</p>
-                        ) : (
-                          <ul className="mt-2 space-y-2">
-                            {course.sessions.map((s) => (
-                              <li key={s.id} className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-gray-700 bg-earth-50 rounded-xl px-3 py-2">
-                                <span className="flex items-center gap-1.5 font-semibold"><FiCalendar className="text-accent-600" /> {describeSessionDates(s.startDate, s.endDate)}</span>
-                                <span className="flex items-center gap-1.5"><FiMapPin className="text-accent-600" /> {s.location}</span>
-                                {s.priceKes > 0 && <span className="font-semibold text-accent-800">{kes(s.priceKes)}</span>}
-                              </li>
-                            ))}
-                          </ul>
-                        )}
-                      </div>
-                      {course.registrationEnds && (
-                        <p className={`mt-5 text-sm font-semibold ${registrationOpen ? 'text-clay-700' : 'text-gray-500'}`}>
-                          {registrationOpen ? `Register before ${deadline(course.registrationEnds)}` : 'Registration for this course has closed'}
-                        </p>
-                      )}
-                      {course.registrationUrl && registrationOpen ? (
-                        <a
-                          href={course.registrationUrl}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="mt-4 self-start inline-flex items-center gap-2 bg-gradient-to-r from-accent-600 to-sage-600 text-white px-6 py-3 rounded-full font-semibold shadow-lg"
-                        >
-                          Register your place <FiExternalLink />
-                        </a>
-                      ) : (
-                        <Link
-                          href={`/courses/?course=${course.slug}#request`}
-                          scroll={false}
-                          className="mt-6 self-start inline-flex items-center gap-2 bg-gradient-to-r from-accent-600 to-sage-600 text-white px-6 py-3 rounded-full font-semibold shadow-lg"
-                        >
-                          {registrationOpen ? 'Ask to join' : 'Ask about the next one'} <FiArrowRight />
-                        </Link>
-                      )}
-                      </div>
-                    </article>
+                    <CourseCard
+                      key={course.id}
+                      course={{
+                        slug: course.slug,
+                        title: course.title,
+                        image: course.image,
+                        label: ['Course', course.duration].filter(Boolean).join(' · '),
+                        meta: next ? `${describeSessionDates(next.startDate, next.endDate)} · ${next.location}` : null,
+                        badge: status.label ? { text: status.label, closed: !status.open } : null,
+                      }}
+                    />
                   )
                 })}
               </div>
