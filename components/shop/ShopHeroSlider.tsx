@@ -41,7 +41,7 @@ export default function ShopHeroSlider({ slides }: { slides: ShopSlide[] }) {
 
   return (
     <div
-      className="relative rounded-[2rem] overflow-hidden shadow-2xl h-[440px] sm:h-[460px] lg:h-[500px] bg-sage-800"
+      className="relative rounded-[2rem] overflow-hidden shadow-2xl h-[520px] sm:h-[460px] lg:h-[500px] bg-sage-800"
       role="region"
       aria-roledescription="carousel"
       aria-label="Shop highlights"
@@ -74,11 +74,11 @@ export default function ShopHeroSlider({ slides }: { slides: ShopSlide[] }) {
           <span className="inline-block text-xs font-semibold uppercase tracking-[0.2em] text-harvest-200 bg-white/10 border border-white/20 rounded-full px-3 py-1 backdrop-blur-sm">
             {slide.kicker}
           </span>
-          <h2 className="font-display font-bold text-white text-3xl sm:text-4xl lg:text-5xl leading-tight mt-4">{slide.title}</h2>
-          <p className="text-white/85 text-base sm:text-lg mt-3 max-w-lg">{slide.text}</p>
+          <h2 className="font-display font-bold text-white text-[1.75rem] sm:text-4xl lg:text-5xl leading-tight mt-3 sm:mt-4">{slide.title}</h2>
+          <p className="text-white/85 text-[0.95rem] sm:text-lg mt-3 max-w-lg">{slide.text}</p>
           <Link
             href={slide.button.href}
-            className="inline-flex items-center gap-2 mt-6 bg-white text-accent-800 hover:bg-harvest-50 px-6 py-3 rounded-full font-semibold shadow-lg transition-colors"
+            className="inline-flex items-center gap-2 mt-5 sm:mt-6 bg-white text-accent-800 hover:bg-harvest-50 px-6 py-3 rounded-full font-semibold shadow-lg transition-colors"
           >
             {slide.button.label} <FiArrowRight />
           </Link>
