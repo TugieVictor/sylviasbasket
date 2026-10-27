@@ -33,9 +33,15 @@ rl.question('Make sure you have a backup. Type LIVE to continue: ', (answer) => 
     console.log('Cancelled. Nothing was changed.')
     process.exit(0)
   }
-  const env = { ...process.env, DATABASE_URL: url }
-  const result = command === 'node'
-    ? spawnSync(process.execPath, args, { stdio: 'inherit', env, cwd: root })
-    : spawnSync('npx', [command, ...args], { stdio: 'inherit', env, cwd: root, shell: true })
+  if (command === 'node') {
+    // Run the script in this same process, so its own questions (name, email,
+    // password) get your typing. A separate process would compete for the keyboard.
+    process.env.DATABASE_URL = url
+    const script = path.resolve(root, args[0])
+    process.argv = [process.argv[0], script, ...args.slice(1)]
+    require(script)
+    return
+  }
+  const result = spawnSync('npx', [command, ...args], { stdio: 'inherit', env: { ...process.env, DATABASE_URL: url }, cwd: root, shell: true })
   process.exit(result.status ?? 1)
 })
