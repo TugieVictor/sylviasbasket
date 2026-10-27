@@ -52,3 +52,22 @@ export const toLines = (text?: string | null) =>
     .split(/\r?\n/)
     .map((l) => l.replace(/^[-*•]\s*/, '').trim())
     .filter(Boolean)
+
+/** One active course with its upcoming dates, for the course page. */
+export async function getPublicCourse(slug: string) {
+  const today = new Date()
+  today.setHours(0, 0, 0, 0)
+  return prisma.course.findFirst({
+    where: { slug, active: true },
+    include: { sessions: { where: { status: 'OPEN', startDate: { gte: today } }, orderBy: { startDate: 'asc' } } },
+  })
+}
+
+/** Whether registration is open, and the line to show about it. */
+export function registrationStatus(course: { registrationEnds: Date | null }, todayStart: Date) {
+  const open = !course.registrationEnds || course.registrationEnds >= todayStart
+  const closes = course.registrationEnds
+    ? course.registrationEnds.toLocaleDateString('en-GB', { timeZone: 'UTC', weekday: 'short', day: 'numeric', month: 'short' })
+    : null
+  return { open, label: !open ? 'Registration closed' : closes ? `Register by ${closes}` : null }
+}
