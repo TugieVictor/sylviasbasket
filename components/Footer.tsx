@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { usePathname } from 'next/navigation'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
-import { FiMail, FiPhone, FiMapPin, FiFacebook, FiTwitter, FiInstagram, FiLinkedin, FiArrowRight, FiHeart } from 'react-icons/fi'
+import { FiMail, FiPhone, FiMapPin, FiFacebook, FiTwitter, FiInstagram, FiLinkedin, FiArrowRight, FiHeart, FiShoppingBag, FiBookOpen, FiSun, FiUsers } from 'react-icons/fi'
 import { GiPlantSeed } from 'react-icons/gi'
 
 const Footer = () => {
@@ -186,14 +186,15 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Get Involved */}
+          {/* Shop & Learn */}
           <div>
-            <h4 className="text-lg font-display font-semibold mb-4 text-gray-900">Get Involved</h4>
+            <h4 className="text-lg font-display font-semibold mb-4 text-gray-900">Shop &amp; Learn</h4>
             <ul className="space-y-3">
+              <li><Link href="/shop/" className="text-gray-700 hover:text-accent-600 transition-colors flex items-center gap-2 group"><FiShoppingBag className="w-4 h-4 group-hover:scale-110 transition-transform" />Shop</Link></li>
+              <li><Link href="/courses/" className="text-gray-700 hover:text-accent-600 transition-colors flex items-center gap-2 group"><FiBookOpen className="w-4 h-4 group-hover:scale-110 transition-transform" />Courses</Link></li>
+              <li><Link href="/farm-visits/" className="text-gray-700 hover:text-accent-600 transition-colors flex items-center gap-2 group"><FiSun className="w-4 h-4 group-hover:scale-110 transition-transform" />Farm Visits</Link></li>
               <li><Link href="/donate" className="text-gray-700 hover:text-accent-600 transition-colors flex items-center gap-2 group"><FiHeart className="w-4 h-4 group-hover:scale-110 transition-transform" />Donate</Link></li>
-              <li><Link href="/get-involved#volunteer" className="text-gray-700 hover:text-accent-600 transition-colors flex items-center gap-2 group"><FiHeart className="w-4 h-4 group-hover:scale-110 transition-transform" />Volunteer</Link></li>
-              <li><Link href="/get-involved#partner" className="text-gray-700 hover:text-accent-600 transition-colors flex items-center gap-2 group"><FiHeart className="w-4 h-4 group-hover:scale-110 transition-transform" />Partner With Us</Link></li>
-              <li><Link href="/get-involved#newsletter" className="text-gray-700 hover:text-accent-600 transition-colors flex items-center gap-2 group"><FiMail className="w-4 h-4 group-hover:scale-110 transition-transform" />Newsletter</Link></li>
+              <li><Link href="/get-involved#volunteer" className="text-gray-700 hover:text-accent-600 transition-colors flex items-center gap-2 group"><FiUsers className="w-4 h-4 group-hover:scale-110 transition-transform" />Volunteer</Link></li>
             </ul>
           </div>
 
@@ -241,6 +242,13 @@ const Footer = () => {
           <p className="text-gray-700 font-medium mb-2">
             © {currentYear} Sylvia's Basket. All rights reserved.
           </p>
+          <nav aria-label="Policies" className="flex flex-wrap justify-center gap-x-5 gap-y-2 text-sm mb-3">
+            <Link href="/policies/delivery/" className="text-gray-700 hover:text-accent-700 underline-offset-4 hover:underline">Delivery</Link>
+            <Link href="/policies/returns/" className="text-gray-700 hover:text-accent-700 underline-offset-4 hover:underline">Returns and refunds</Link>
+            <Link href="/policies/terms-of-sale/" className="text-gray-700 hover:text-accent-700 underline-offset-4 hover:underline">Terms of sale</Link>
+            <Link href="/policies/privacy/" className="text-gray-700 hover:text-accent-700 underline-offset-4 hover:underline">Privacy</Link>
+            <Link href="/admin/login/" className="text-gray-500 hover:text-accent-700 underline-offset-4 hover:underline">Admin</Link>
+          </nav>
           <p className="text-sm text-gray-600">
             Built with <FiHeart className="inline w-4 h-4 text-accent-600" /> for sustainable farming and a healthier planet
           </p>

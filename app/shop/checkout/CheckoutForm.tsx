@@ -255,6 +255,11 @@ export default function CheckoutForm({ zones }: { zones: Zone[] }) {
         <p className="text-xs text-gray-500 text-center mt-3">
           You pay on iPay&apos;s secure page with M-Pesa. Your items are held for you for 60 minutes.
         </p>
+        <p className="text-xs text-gray-500 text-center mt-2">
+          By paying you agree to our <Link href="/policies/terms-of-sale/" target="_blank" className="underline">terms of sale</Link>,{' '}
+          <Link href="/policies/delivery/" target="_blank" className="underline">delivery</Link> and{' '}
+          <Link href="/policies/returns/" target="_blank" className="underline">returns</Link> policies.
+        </p>
       </aside>
     </form>
   )
