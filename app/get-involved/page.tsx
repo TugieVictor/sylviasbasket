@@ -1,14 +1,22 @@
 'use client'
 
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { FiHeart, FiUsers, FiGlobe, FiMail, FiPhone, FiMapPin, FiShare2, FiDollarSign, FiUserCheck } from 'react-icons/fi'
 import { GiFarmer } from 'react-icons/gi'
+import Turnstile from '@/components/Turnstile'
+import { EMAIL_ERROR, PHONE_ERROR, isValidEmail, normaliseKenyanPhone } from '@/lib/validation'
+
+const emptyContactForm = { name: '', email: '', phone: '', message: '' }
 
 const GetInvolvedPage = () => {
-  const [contactForm, setContactForm] = useState({ name: '', email: '', message: '' })
+  const [contactForm, setContactForm] = useState(emptyContactForm)
+  const [contactErrors, setContactErrors] = useState<Record<string, string>>({})
   const [honeypot, setHoneypot] = useState('')
+  const [turnstileToken, setTurnstileToken] = useState('')
+  const [turnstileReset, setTurnstileReset] = useState(0)
+  const onTurnstileToken = useCallback((token: string) => setTurnstileToken(token), [])
   const [submitting, setSubmitting] = useState(false)
   const [submitMessage, setSubmitMessage] = useState('')
   const fadeInUp = {
@@ -25,9 +33,34 @@ const GetInvolvedPage = () => {
     }
   }
 
+  // Email must be valid; phone is optional but must be a Kenyan mobile number if given
+  const checkContactField = (key: 'email' | 'phone', value: string) => {
+    const problem =
+      key === 'email'
+        ? isValidEmail(value) ? '' : EMAIL_ERROR
+        : !value.trim() || normaliseKenyanPhone(value) ? '' : PHONE_ERROR
+    setContactErrors((current) => {
+      const next = { ...current }
+      if (problem) next[key] = problem
+      else delete next[key]
+      return next
+    })
+    return !problem
+  }
+
   // Handler functions for buttons
   const handleContactSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    const emailOk = checkContactField('email', contactForm.email)
+    const phoneOk = checkContactField('phone', contactForm.phone)
+    if (!contactForm.name.trim() || !contactForm.message.trim()) {
+      setSubmitMessage('Please fill in your name, email and message.')
+      return
+    }
+    if (!emailOk || !phoneOk) {
+      setSubmitMessage('Please check the highlighted fields.')
+      return
+    }
     setSubmitting(true)
     setSubmitMessage('')
 
@@ -37,21 +70,24 @@ const GetInvolvedPage = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ ...contactForm, website: honeypot }),
+        body: JSON.stringify({ ...contactForm, website: honeypot, turnstileToken }),
       })
 
       const data = await response.json()
 
       if (response.ok) {
         setSubmitMessage('Thank you! Your message has been sent successfully. We\'ll get back to you soon.')
-        setContactForm({ name: '', email: '', message: '' })
+        setContactForm(emptyContactForm)
+        setContactErrors({})
       } else {
+        setContactErrors(data.errors || {})
         setSubmitMessage(data.error || 'Failed to send message. Please try again.')
       }
     } catch (error) {
       setSubmitMessage('An error occurred. Please try emailing us directly at info@sylviasbasket.co.ke')
     } finally {
       setSubmitting(false)
+      setTurnstileReset((n) => n + 1)
     }
   }
 
@@ -453,7 +489,7 @@ const GetInvolvedPage = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
               {/* Contact Form */}
               <div>
-                <form onSubmit={handleContactSubmit} className="space-y-6">
+                <form onSubmit={handleContactSubmit} noValidate className="space-y-6">
                   {/* Hidden from people; catches spam bots */}
                   <div aria-hidden="true" style={{ position: 'absolute', left: '-10000px', width: 1, height: 1, overflow: 'hidden' }}>
                     <label htmlFor="website">Website</label>
@@ -474,18 +510,45 @@ const GetInvolvedPage = () => {
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">
+                    <label htmlFor="contact-email" className="block text-sm font-semibold text-gray-700 mb-2">
                       Email Address
                     </label>
                     <input
+                      id="contact-email"
                       type="email"
+                      inputMode="email"
+                      autoComplete="email"
                       value={contactForm.email}
                       onChange={(e) => setContactForm({...contactForm, email: e.target.value})}
+                      onBlur={(e) => e.target.value && checkContactField('email', e.target.value)}
                       required
                       disabled={submitting}
-                      className="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary-500 disabled:opacity-50"
-                      placeholder="john@example.com"
+                      aria-invalid={!!contactErrors.email}
+                      className={`w-full px-4 py-3 rounded-lg border-2 ${contactErrors.email ? 'border-red-400' : 'border-gray-200'} focus:outline-none focus:ring-2 focus:ring-primary-500 disabled:opacity-50`}
+                      placeholder="name@example.com"
                     />
+                    {contactErrors.email && <p className="text-sm text-red-700 mt-1">{contactErrors.email}</p>}
+                  </div>
+                  <div>
+                    <label htmlFor="contact-phone" className="block text-sm font-semibold text-gray-700 mb-2">
+                      Phone Number <span className="font-normal text-gray-500">(optional)</span>
+                    </label>
+                    <input
+                      id="contact-phone"
+                      type="tel"
+                      inputMode="tel"
+                      autoComplete="tel"
+                      value={contactForm.phone}
+                      onChange={(e) => setContactForm({...contactForm, phone: e.target.value})}
+                      onBlur={(e) => checkContactField('phone', e.target.value)}
+                      disabled={submitting}
+                      aria-invalid={!!contactErrors.phone}
+                      className={`w-full px-4 py-3 rounded-lg border-2 ${contactErrors.phone ? 'border-red-400' : 'border-gray-200'} focus:outline-none focus:ring-2 focus:ring-primary-500 disabled:opacity-50`}
+                      placeholder="0712 345 678"
+                    />
+                    {contactErrors.phone
+                      ? <p className="text-sm text-red-700 mt-1">{contactErrors.phone}</p>
+                      : <p className="text-xs text-gray-500 mt-1">Kenyan mobile number, for example 0712 345 678 or +254 712 345 678</p>}
                   </div>
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-2">
@@ -501,6 +564,7 @@ const GetInvolvedPage = () => {
                       placeholder="Tell us how you'd like to get involved..."
                     ></textarea>
                   </div>
+                  <Turnstile onToken={onTurnstileToken} resetKey={turnstileReset} />
                   {submitMessage && (
                     <div className={`p-4 rounded-lg ${submitMessage.includes('successfully') || submitMessage.includes('Thank you') ? 'bg-green-50 text-green-700 border border-green-200' : 'bg-red-50 text-red-700 border border-red-200'}`}>
                       {submitMessage}
