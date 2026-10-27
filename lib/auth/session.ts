@@ -51,3 +51,11 @@ export async function destroySession() {
   }
   cookies().delete(SESSION_COOKIE)
 }
+
+/** Signs this admin out everywhere except the current browser (used after a password change). */
+export async function endOtherSessions(userId: string) {
+  const token = cookies().get(SESSION_COOKIE)?.value
+  await prisma.adminSession.deleteMany({
+    where: { userId, ...(token ? { NOT: { tokenHash: fingerprint(token) } } : {}) },
+  })
+}
