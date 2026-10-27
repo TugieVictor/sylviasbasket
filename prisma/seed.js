@@ -118,6 +118,8 @@ async function main() {
       summary: 'A hands-on introduction to organic and agroecological farming.',
       duration: '2 days',
       completionRules: 'Attend both days.',
+      image: '/images/courses/organic-farming-basics.webp',
+      sortOrder: 2,
     },
   })
   if ((await prisma.courseSession.count({ where: { courseId: course.id } })) === 0) {

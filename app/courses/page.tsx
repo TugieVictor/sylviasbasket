@@ -68,7 +68,9 @@ export default async function CoursesPage({ searchParams }: { searchParams: { co
                         </div>
                       )}
                       {course.description && <p className="text-sm text-gray-700 mt-4 whitespace-pre-line">{course.description}</p>}
-                      <div className="mt-5 border-t border-gray-100 pt-4">
+                      {/* Dates and button sit at the bottom, so cards side by side line up */}
+                      <div className="mt-auto pt-5">
+                      <div className="border-t border-gray-100 pt-4">
                         <p className="text-sm font-semibold text-gray-900">Upcoming dates</p>
                         {course.sessions.length === 0 ? (
                           <p className="text-sm text-gray-600 mt-1">No dates set yet. Ask to join and we will let you know.</p>
@@ -107,6 +109,7 @@ export default async function CoursesPage({ searchParams }: { searchParams: { co
                           {registrationOpen ? 'Ask to join' : 'Ask about the next one'} <FiArrowRight />
                         </Link>
                       )}
+                      </div>
                     </article>
                   )
                 })}
