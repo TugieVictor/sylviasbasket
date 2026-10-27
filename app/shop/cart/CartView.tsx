@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { FiMinus, FiPlus, FiTrash2 } from 'react-icons/fi'
+import { FaWhatsapp } from 'react-icons/fa'
 import ProductPhoto from '@/components/shop/ProductPhoto'
 import { removeFromCart, setQuantity, useCart } from '@/lib/cart'
 
@@ -21,7 +22,21 @@ type Line = {
 
 const kes = (n: number) => `KES ${n.toLocaleString('en-KE')}`
 
-export default function CartView() {
+/** Ready-written WhatsApp message listing the cart, used while online payment is not set up. */
+function whatsappLink(number: string, lines: Line[], subtotal: number) {
+  const items = lines.map((l) => `- ${l.quantity} x ${l.productName}${l.variantLabel.toLowerCase() === 'standard' ? '' : ` (${l.variantLabel})`}: ${kes(l.unitPriceKes * l.quantity)}`)
+  const text = [
+    "Hello Sylvia's Basket, I would like to order:",
+    ...items,
+    `Subtotal: ${kes(subtotal)} (plus delivery)`,
+    '',
+    'My name: ',
+    'Delivery area, or collect from the farm: ',
+  ].join('\n')
+  return `https://wa.me/${number}?text=${encodeURIComponent(text)}`
+}
+
+export default function CartView({ whatsapp }: { whatsapp?: string }) {
   const cart = useCart()
   const [lines, setLines] = useState<Line[] | null>(null)
   const [error, setError] = useState('')
@@ -131,9 +146,23 @@ export default function CartView() {
           <span className="font-semibold text-gray-800">Subtotal</span>
           <span className="font-bold text-gray-900">{kes(subtotal)}</span>
         </div>
-        <p className="text-sm text-gray-600 mt-1">Delivery fee is added at checkout, based on where you are.</p>
+        <p className="text-sm text-gray-600 mt-1">
+          {whatsapp ? 'We confirm the delivery fee and how to pay when we reply.' : 'Delivery fee is added at checkout, based on where you are.'}
+        </p>
         {hasProblems ? (
           <p className="mt-6 text-center text-clay-700 font-semibold">Please fix the items marked above to continue.</p>
+        ) : whatsapp ? (
+          <>
+            <a
+              href={whatsappLink(whatsapp, lines, subtotal)}
+              target="_blank"
+              rel="noreferrer"
+              className="flex items-center justify-center gap-2 mt-6 bg-[#1f8f4e] hover:bg-[#187a41] text-white py-4 rounded-full font-semibold shadow-lg"
+            >
+              <FaWhatsapp className="w-5 h-5" /> Send my order on WhatsApp
+            </a>
+            <p className="text-xs text-gray-500 text-center mt-3">WhatsApp opens with your order written out. Just press send, and we will reply to confirm.</p>
+          </>
         ) : (
           <Link
             href="/shop/checkout/"

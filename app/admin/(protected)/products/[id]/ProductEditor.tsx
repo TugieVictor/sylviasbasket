@@ -3,40 +3,12 @@
 import { useRef, useState, useTransition } from 'react'
 import { FiArrowLeft, FiArrowRight, FiPlus, FiTrash2, FiUpload } from 'react-icons/fi'
 import { saveProduct, type ProductInput } from '../actions'
+import { uploadPhoto } from '@/lib/uploadPhoto'
 
 type Variant = { id?: string; label: string; priceKes: number | ''; stock: number | ''; active: boolean }
 type Img = { url: string; alt: string }
 
 const input = 'w-full px-3 py-2.5 rounded-xl border border-gray-300 focus:border-accent-600 outline-none bg-white'
-const MAX_SIDE = 1600
-
-/** Shrinks a photo in the browser before upload, so phones can send big camera photos. */
-async function shrink(file: File): Promise<{ blob: Blob; width: number; height: number }> {
-  const url = URL.createObjectURL(file)
-  try {
-    const img = await new Promise<HTMLImageElement>((resolve, reject) => {
-      const el = new Image()
-      el.onload = () => resolve(el)
-      el.onerror = () => reject(new Error('This file could not be opened as a photo.'))
-      el.src = url
-    })
-    const scale = Math.min(1, MAX_SIDE / Math.max(img.naturalWidth, img.naturalHeight))
-    const width = Math.round(img.naturalWidth * scale)
-    const height = Math.round(img.naturalHeight * scale)
-    const canvas = document.createElement('canvas')
-    canvas.width = width
-    canvas.height = height
-    canvas.getContext('2d')!.drawImage(img, 0, 0, width, height)
-    const toBlob = (type: string, quality: number) => new Promise<Blob | null>((r) => canvas.toBlob(r, type, quality))
-    let blob = await toBlob('image/webp', 0.82)
-    if (!blob || blob.type !== 'image/webp') blob = await toBlob('image/jpeg', 0.85)
-    if (!blob) throw new Error('This photo could not be prepared.')
-    return { blob, width, height }
-  } finally {
-    URL.revokeObjectURL(url)
-  }
-}
-
 export default function ProductEditor({ categories, product }: { categories: { id: string; name: string }[]; product?: ProductInput & { id: string } }) {
   const [p, setP] = useState({
     name: product?.name || '',
@@ -74,15 +46,8 @@ export default function ProductEditor({ categories, product }: { categories: { i
     setUploading((n) => n + chosen.length)
     for (const file of chosen) {
       try {
-        const { blob, width, height } = await shrink(file)
-        const form = new FormData()
-        form.append('file', blob, blob.type === 'image/webp' ? 'photo.webp' : 'photo.jpg')
-        form.append('width', String(width))
-        form.append('height', String(height))
-        const response = await fetch('/api/admin/images', { method: 'POST', body: form })
-        const data = await response.json()
-        if (!response.ok) throw new Error(data.error || 'Upload failed.')
-        setImages((list) => [...list, { url: data.url, alt: '' }])
+        const url = await uploadPhoto(file)
+        setImages((list) => [...list, { url, alt: '' }])
       } catch (e) {
         setError((e as Error).message)
       } finally {

@@ -4,7 +4,7 @@ import { prisma } from '@/lib/prisma'
 import ProductGallery from '@/components/shop/ProductGallery'
 import ShopClosed from '@/components/shop/ShopClosed'
 import ShopHeader from '@/components/shop/ShopHeader'
-import { CATEGORY_LABELS, MAX_PER_ITEM, productAvailability, productImages, shopEnabled } from '@/lib/shop'
+import { CATEGORY_LABELS, MAX_PER_ITEM, checkoutEnabled, productAvailability, productImages, shopEnabled } from '@/lib/shop'
 import AddToCart from './AddToCart'
 import { releaseExpiredOrders } from '@/lib/orders'
 
@@ -79,7 +79,8 @@ export default async function ProductPage({ params }: { params: { slug: string }
             )}
 
             <p className="text-sm text-gray-600 mt-8">
-              Prices are final prices in KES. Delivery in Nairobi and across Kenya, with fees shown at checkout.
+              Prices are final prices in KES. Delivery in Nairobi and across Kenya.{' '}
+              {checkoutEnabled() ? 'Delivery fees are shown at checkout.' : 'Add to your cart, then send your order to us on WhatsApp. We confirm the delivery fee when we reply.'}
             </p>
           </div>
         </div>

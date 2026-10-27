@@ -43,6 +43,9 @@ export async function saveCourse(form: FormData) {
     learnings: str(form, 'learnings', 3000) || null,
     audience: str(form, 'audience', 150) || null,
     duration: str(form, 'duration', 60) || null,
+    image: (() => { const v = str(form, 'image', 300); return /^\/(api\/images|images)\//.test(v) ? v : null })(),
+    registrationUrl: (() => { const v = str(form, 'registrationUrl', 500); return /^https:\/\//.test(v) ? v : null })(),
+    registrationEnds: parseDateOnly(str(form, 'registrationEnds', 10)),
     active: form.get('active') === 'on',
     sortOrder: Math.round(Number(str(form, 'sortOrder', 5)) || 0),
   }

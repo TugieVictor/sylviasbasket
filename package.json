@@ -13,6 +13,10 @@
     "db:studio:dev": "node scripts/with-dev-db.js prisma studio",
     "db:seed:dev": "node scripts/with-dev-db.js node prisma/seed.js",
     "admin:create:dev": "node scripts/with-dev-db.js node scripts/create-admin.js",
+    "db:setup:dev": "node scripts/with-dev-db.js node prisma/setup-starting-data.js",
+    "db:push:live": "node scripts/with-live-db.js prisma db push",
+    "db:setup:live": "node scripts/with-live-db.js node prisma/setup-starting-data.js",
+    "admin:create:live": "node scripts/with-live-db.js node scripts/create-admin.js",
     "db:studio": "prisma studio",
     "db:migrate": "prisma migrate dev",
     "postinstall": "prisma generate"

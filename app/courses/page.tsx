@@ -1,8 +1,8 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { FiArrowRight, FiCalendar, FiClock, FiMapPin, FiUsers } from 'react-icons/fi'
+import { FiArrowRight, FiCalendar, FiClock, FiExternalLink, FiMapPin, FiUsers } from 'react-icons/fi'
 import { describeSessionDates, getPublicCourses, toLines } from '@/lib/courses'
-import { toDateOnly } from '@/lib/visits'
+import { nairobiToday, parseDateOnly, toDateOnly } from '@/lib/visits'
 import CourseRequestForm from './CourseRequestForm'
 
 export const dynamic = 'force-dynamic'
@@ -17,6 +17,8 @@ const kes = (n: number) => `KES ${n.toLocaleString('en-KE')}`
 export default async function CoursesPage({ searchParams }: { searchParams: { course?: string } }) {
   const courses = await getPublicCourses()
   const preselected = courses.find((c) => c.slug === searchParams.course)?.id || ''
+  const today = parseDateOnly(nairobiToday())!
+  const deadline = (d: Date) => d.toLocaleDateString('en-GB', { timeZone: 'UTC', weekday: 'long', day: 'numeric', month: 'long' })
 
   return (
     <>
@@ -27,8 +29,7 @@ export default async function CoursesPage({ searchParams }: { searchParams: { co
           <p className="text-kicker text-white/70">Learn &amp; Visit</p>
           <h1 className="text-hero text-white mt-3">Courses on the farm</h1>
           <p className="text-body-lg text-white/85 mt-6 max-w-2xl mx-auto">
-            Learn organic farming and agroecology hands-on, in the fields at Limuru. Choose a course below and ask to join.
-            Sylvia will get back to you with the details.
+            Learn organic farming and agroecology hands-on, on the farm. Choose a course below and register your place.
           </p>
         </div>
       </section>
@@ -43,8 +44,15 @@ export default async function CoursesPage({ searchParams }: { searchParams: { co
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
                 {courses.map((course) => {
                   const learnings = toLines(course.learnings)
+                  const registrationOpen = !course.registrationEnds || course.registrationEnds >= today
                   return (
                     <article key={course.id} className="bg-white rounded-3xl shadow-xl border border-gray-100 p-6 md:p-8 flex flex-col">
+                      {course.image && (
+                        <a href={course.image} target="_blank" rel="noreferrer" className="block -mx-6 -mt-6 md:-mx-8 md:-mt-8 mb-6 rounded-t-3xl overflow-hidden bg-earth-50" aria-label={`Open the ${course.title} poster`}>
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img src={course.image} alt={`Poster: ${course.title}`} className="w-full h-auto" loading="lazy" />
+                        </a>
+                      )}
                       <h3 className="text-2xl font-display font-bold text-gray-900">{course.title}</h3>
                       {course.summary && <p className="text-gray-700 mt-2">{course.summary}</p>}
                       <ul className="flex flex-wrap gap-x-5 gap-y-2 mt-4 text-sm text-gray-600">
@@ -76,13 +84,29 @@ export default async function CoursesPage({ searchParams }: { searchParams: { co
                           </ul>
                         )}
                       </div>
-                      <Link
-                        href={`/courses/?course=${course.slug}#request`}
-                        scroll={false}
-                        className="mt-6 self-start inline-flex items-center gap-2 bg-gradient-to-r from-accent-600 to-sage-600 text-white px-6 py-3 rounded-full font-semibold shadow-lg"
-                      >
-                        Ask to join <FiArrowRight />
-                      </Link>
+                      {course.registrationEnds && (
+                        <p className={`mt-5 text-sm font-semibold ${registrationOpen ? 'text-clay-700' : 'text-gray-500'}`}>
+                          {registrationOpen ? `Register before ${deadline(course.registrationEnds)}` : 'Registration for this course has closed'}
+                        </p>
+                      )}
+                      {course.registrationUrl && registrationOpen ? (
+                        <a
+                          href={course.registrationUrl}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="mt-4 self-start inline-flex items-center gap-2 bg-gradient-to-r from-accent-600 to-sage-600 text-white px-6 py-3 rounded-full font-semibold shadow-lg"
+                        >
+                          Register your place <FiExternalLink />
+                        </a>
+                      ) : (
+                        <Link
+                          href={`/courses/?course=${course.slug}#request`}
+                          scroll={false}
+                          className="mt-6 self-start inline-flex items-center gap-2 bg-gradient-to-r from-accent-600 to-sage-600 text-white px-6 py-3 rounded-full font-semibold shadow-lg"
+                        >
+                          {registrationOpen ? 'Ask to join' : 'Ask about the next one'} <FiArrowRight />
+                        </Link>
+                      )}
                     </article>
                   )
                 })}

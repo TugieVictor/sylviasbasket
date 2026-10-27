@@ -2,6 +2,7 @@ import fs from 'fs'
 import path from 'path'
 import type { Product, ProductVariant } from '@prisma/client'
 import { prisma } from '@/lib/prisma'
+import { getIPayConfig } from '@/lib/payments/ipay'
 
 /**
  * Shop helpers used by the shop pages, checkout and admin.
@@ -13,6 +14,16 @@ import { prisma } from '@/lib/prisma'
 export const shopEnabled = () => process.env.SHOP_ENABLED === 'true' || process.env.NODE_ENV !== 'production'
 
 export const MAX_PER_ITEM = 20
+
+/**
+ * Online checkout needs a working payment provider. Until then the shop runs as a
+ * catalogue: customers fill a cart and send the order to Sylvia on WhatsApp.
+ * SHOP_CHECKOUT=off forces catalogue mode (for example while testing).
+ */
+export function checkoutEnabled() {
+  if (process.env.SHOP_CHECKOUT === 'off') return false
+  return getIPayConfig().enabled
+}
 
 export type ProductImage = { url: string; alt?: string }
 

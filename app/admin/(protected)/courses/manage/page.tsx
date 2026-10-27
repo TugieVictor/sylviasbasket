@@ -2,13 +2,14 @@ import Link from 'next/link'
 import { prisma } from '@/lib/prisma'
 import { toDateOnly } from '@/lib/visits'
 import { saveCourse, saveSession } from '../actions'
+import ImageUploadField from '@/components/admin/ImageUploadField'
 
 export const dynamic = 'force-dynamic'
 
 const input = 'w-full px-3 py-2.5 rounded-xl border border-gray-300 focus:border-accent-600 outline-none'
 const label = 'block text-sm font-semibold text-gray-700 mb-1'
 
-type Course = { id: string; title: string; summary: string | null; description: string | null; learnings: string | null; audience: string | null; duration: string | null; active: boolean; sortOrder: number }
+type Course = { id: string; title: string; summary: string | null; description: string | null; learnings: string | null; audience: string | null; duration: string | null; image: string | null; registrationUrl: string | null; registrationEnds: Date | null; active: boolean; sortOrder: number }
 type Session = { id: string; startDate: Date; endDate: Date | null; location: string; priceKes: number; capacity: number; status: string }
 
 function CourseForm({ course }: { course?: Course }) {
@@ -23,6 +24,11 @@ function CourseForm({ course }: { course?: Course }) {
       </div>
       <div><label className={label}>What people will learn (one per line)</label><textarea name="learnings" rows={4} defaultValue={course?.learnings || ''} className={input} /></div>
       <div><label className={label}>More details (optional)</label><textarea name="description" rows={3} defaultValue={course?.description || ''} className={input} /></div>
+      <ImageUploadField name="image" defaultValue={course?.image} label="Poster or photo (optional)" />
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div><label className={label}>Registration link (optional)</label><input name="registrationUrl" type="url" defaultValue={course?.registrationUrl || ''} className={input} placeholder="https://forms.gle/..." /><p className="text-xs text-gray-500 mt-1">If set, the Register button opens this link instead of our form.</p></div>
+        <div><label className={label}>Last day to register (optional)</label><input name="registrationEnds" type="date" defaultValue={course?.registrationEnds ? toDateOnly(course.registrationEnds) : ''} className={input} /></div>
+      </div>
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-center gap-4 text-sm text-gray-700">
           <label className="flex items-center gap-2"><input type="checkbox" name="active" defaultChecked={course ? course.active : true} /> Shown on the Courses page</label>

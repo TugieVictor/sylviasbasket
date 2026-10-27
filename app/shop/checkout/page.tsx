@@ -2,7 +2,8 @@ import type { Metadata } from 'next'
 import { prisma } from '@/lib/prisma'
 import ShopClosed from '@/components/shop/ShopClosed'
 import ShopHeader from '@/components/shop/ShopHeader'
-import { shopEnabled } from '@/lib/shop'
+import { redirect } from 'next/navigation'
+import { checkoutEnabled, shopEnabled } from '@/lib/shop'
 import CheckoutForm from './CheckoutForm'
 
 export const dynamic = 'force-dynamic'
@@ -11,6 +12,7 @@ export const metadata: Metadata = { title: 'Checkout', robots: { index: false } 
 
 export default async function CheckoutPage() {
   if (!shopEnabled()) return <ShopClosed />
+  if (!checkoutEnabled()) redirect('/shop/cart/') // orders go by WhatsApp until online payment is set up
   const zones = await prisma.deliveryZone.findMany({ where: { active: true }, orderBy: { sortOrder: 'asc' } })
   return (
     <>
