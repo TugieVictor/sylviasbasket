@@ -141,7 +141,8 @@ export async function sendStkPush(input: { phone: string; amountKes: number; ref
     if (ok && data.ResponseCode === '0' && typeof data.CheckoutRequestID === 'string') {
       return { ok: true, checkoutRequestId: data.CheckoutRequestID, merchantRequestId: String(data.MerchantRequestID || '') }
     }
-    console.error('M-Pesa STK push refused:', data)
+    // The address is logged without its secret part, to help if Safaricom refuses it
+    console.error('M-Pesa STK push refused:', data, 'callback host:', new URL(callbackUrl).host)
     return { ok: false, message: 'M-Pesa could not send the payment request. Please check the phone number and try again.' }
   } catch (error) {
     console.error('M-Pesa STK push failed:', error)

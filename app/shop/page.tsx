@@ -24,7 +24,7 @@ export const metadata: Metadata = {
 const promises = (online: boolean) => [
   { icon: FiTruck, title: 'Delivery across Kenya', text: 'Nairobi and beyond, or collect from the farm' },
   online
-    ? { icon: FiCreditCard, title: 'Pay safely online', text: 'With M-Pesa, on a secure payment page' }
+    ? { icon: FiCreditCard, title: 'Pay with M-Pesa', text: 'A PIN request comes straight to your phone' }
     : { icon: FaWhatsapp, title: 'Order on WhatsApp', text: 'Fill your cart and send it to us. We confirm and arrange payment' },
   { icon: GiPlantSeed, title: 'Grown the organic way', text: 'Every purchase supports our work with farmers' },
 ]
