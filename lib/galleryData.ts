@@ -20,6 +20,189 @@ export interface GalleryCategory {
 // Gallery data for each category
 export const galleryCategories: GalleryCategory[] = [
   {
+    slug: 'life-on-the-farm',
+    title: 'Life on the Farm',
+    description: "Animals, soil and landscape at Sylvia's farm",
+    icon: GiFarmer,
+    images: [
+      {
+        id: 'farm-1',
+        src: '/images/farm/farm-view.jpg',
+        alt: "Looking down over the farm, its trees and the gate at Sylvia's Basket farm",
+        title: 'View over the farm',
+        description: 'Looking down over the farm, its trees and the gate'
+      },
+      {
+        id: 'farm-2',
+        src: '/images/farm/farm-valley-view.jpg',
+        alt: "Green hills and woodland around the farm at Sylvia's Basket farm",
+        title: 'The valley',
+        description: 'Green hills and woodland around the farm'
+      },
+      {
+        id: 'farm-3',
+        src: '/images/farm/farm-pond.jpg',
+        alt: "The lined water pan that stores rain for the dry months at Sylvia's Basket farm",
+        title: 'Water pan',
+        description: 'The lined water pan that stores rain for the dry months'
+      },
+      {
+        id: 'farm-4',
+        src: '/images/farm/cosmos-flowers.jpg',
+        alt: "Flowers that bring bees and other helpful insects to the crops at Sylvia's Basket farm",
+        title: 'Cosmos in bloom',
+        description: 'Flowers that bring bees and other helpful insects to the crops'
+      },
+      {
+        id: 'farm-5',
+        src: '/images/farm/acacia-tree.jpg',
+        alt: "Indigenous trees kept on the farm for shade and soil health at Sylvia's Basket farm",
+        title: 'Acacia',
+        description: 'Indigenous trees kept on the farm for shade and soil health'
+      },
+      {
+        id: 'farm-6',
+        src: '/images/farm/cold-compost.jpg',
+        alt: "Crop leftovers piled to break down slowly into rich compost at Sylvia's Basket farm",
+        title: 'Cold compost',
+        description: 'Crop leftovers piled to break down slowly into rich compost'
+      },
+      {
+        id: 'farm-7',
+        src: '/images/farm/compost-earthworm.jpg',
+        alt: "Earthworms at work in the compost at Sylvia's Basket farm",
+        title: 'Living soil',
+        description: 'Earthworms at work in the compost'
+      },
+      {
+        id: 'farm-8',
+        src: '/images/farm/worm-tea.jpg',
+        alt: "A worm bin that makes liquid fertiliser for the crops at Sylvia's Basket farm",
+        title: 'Worm tea',
+        description: 'A worm bin that makes liquid fertiliser for the crops'
+      },
+      {
+        id: 'farm-9',
+        src: '/images/farm/cattle-in-yard.jpg',
+        alt: "Part of the farm's herd at Sylvia's Basket farm",
+        title: 'Cattle',
+        description: "Part of the farm's herd"
+      },
+      {
+        id: 'farm-10',
+        src: '/images/farm/cattle-at-feeding-pen.jpg',
+        alt: "Cattle at the feeding pen at Sylvia's Basket farm",
+        title: 'Feeding time',
+        description: 'Cattle at the feeding pen'
+      },
+      {
+        id: 'farm-11',
+        src: '/images/farm/two-calves.jpg',
+        alt: "Two young calves exploring the farm at Sylvia's Basket farm",
+        title: 'Calves',
+        description: 'Two young calves exploring the farm'
+      },
+      {
+        id: 'farm-12',
+        src: '/images/farm/calf-eating-napier.jpg',
+        alt: "A calf eating napier grass grown on the farm at Sylvia's Basket farm",
+        title: 'Fresh fodder',
+        description: 'A calf eating napier grass grown on the farm'
+      },
+      {
+        id: 'farm-13',
+        src: '/images/farm/young-calf-grazing.jpg',
+        alt: "A calf grazing among the grass at Sylvia's Basket farm",
+        title: 'Young calf',
+        description: 'A calf grazing among the grass'
+      },
+      {
+        id: 'farm-14',
+        src: '/images/farm/free-range-chickens.jpg',
+        alt: "Hens roaming freely in the poultry yard at Sylvia's Basket farm",
+        title: 'Free range chickens',
+        description: 'Hens roaming freely in the poultry yard'
+      },
+      {
+        id: 'farm-15',
+        src: '/images/farm/hens-feeding.jpg',
+        alt: "Hens feeding together at Sylvia's Basket farm",
+        title: 'Hens',
+        description: 'Hens feeding together'
+      },
+      {
+        id: 'farm-16',
+        src: '/images/farm/rooster.jpg',
+        alt: "Keeping watch over the flock at Sylvia's Basket farm",
+        title: 'The rooster',
+        description: 'Keeping watch over the flock'
+      },
+      {
+        id: 'farm-17',
+        src: '/images/farm/sheep-flock.jpg',
+        alt: "The flock grazing on maize stalks after harvest at Sylvia's Basket farm",
+        title: 'Sheep',
+        description: 'The flock grazing on maize stalks after harvest'
+      },
+      {
+        id: 'farm-18',
+        src: '/images/farm/sheep-grazing.jpg',
+        alt: "Sheep grazing near the drip lines at Sylvia's Basket farm",
+        title: 'Grazing',
+        description: 'Sheep grazing near the drip lines'
+      },
+      {
+        id: 'farm-19',
+        src: '/images/farm/lambs-grazing.jpg',
+        alt: "Two lambs grazing side by side at Sylvia's Basket farm",
+        title: 'Lambs',
+        description: 'Two lambs grazing side by side'
+      },
+      {
+        id: 'farm-20',
+        src: '/images/farm/ewe-and-lamb.jpg',
+        alt: "A young lamb following its mother at Sylvia's Basket farm",
+        title: 'Ewe and lamb',
+        description: 'A young lamb following its mother'
+      },
+      {
+        id: 'farm-21',
+        src: '/images/farm/sheep-on-slope.jpg',
+        alt: "A sheep among the shrubs on the slope at Sylvia's Basket farm",
+        title: 'On the hillside',
+        description: 'A sheep among the shrubs on the slope'
+      },
+      {
+        id: 'farm-22',
+        src: '/images/farm/sheep-on-hillside.jpg',
+        alt: "Sheep grazing below the fruit trees at Sylvia's Basket farm",
+        title: 'Grazing the slope',
+        description: 'Sheep grazing below the fruit trees'
+      },
+      {
+        id: 'farm-23',
+        src: '/images/farm/white-rabbit.jpg',
+        alt: "One of the farm's rabbits at Sylvia's Basket farm",
+        title: 'Rabbit',
+        description: "One of the farm's rabbits"
+      },
+      {
+        id: 'farm-24',
+        src: '/images/farm/rabbit-at-hutch-door.jpg',
+        alt: "A rabbit at the door of its hutch at Sylvia's Basket farm",
+        title: 'Rabbit hutch',
+        description: 'A rabbit at the door of its hutch'
+      },
+      {
+        id: 'farm-25',
+        src: '/images/farm/rabbits-in-hutch.jpg',
+        alt: "Rabbits resting in their hutch at Sylvia's Basket farm",
+        title: 'Rabbits',
+        description: 'Rabbits resting in their hutch'
+      },
+    ]
+  },
+  {
     slug: 'training-sessions',
     title: 'Training Sessions',
     description: 'Hands-on farmer education in the field',

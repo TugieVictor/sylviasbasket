@@ -115,6 +115,12 @@ const OurWorkPage = () => {
 
   const galleryItems = [
     {
+      title: 'Life on the Farm',
+      description: "Animals, soil and landscape at Sylvia's farm",
+      icon: <GiFarmer />,
+      slug: 'life-on-the-farm'
+    },
+    {
       title: 'Training Sessions',
       description: 'Hands-on farmer education in the field',
       icon: <FiBook />,

@@ -323,6 +323,52 @@ const HomePage = () => {
         </div>
       </section>
 
+      {/* Life on the farm: photo mosaic (files in /public/images/farm) */}
+      <section className="py-20 bg-white">
+        <div className="container-custom">
+          <motion.div
+            className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center max-w-6xl mx-auto"
+            initial="initial"
+            whileInView="animate"
+            viewport={{ once: true }}
+            variants={fadeInUp}
+          >
+            <div className="lg:col-span-4 space-y-5">
+              <span className="text-kicker">Life on the farm</span>
+              <h2 className="text-3xl md:text-4xl font-display font-bold text-gray-900">
+                A working farm where everything has a job
+              </h2>
+              <p className="text-gray-700">
+                Cattle, sheep, poultry and rabbits share the farm with compost heaps, worm bins and indigenous trees.
+                Animals feed the soil, and the soil feeds the crops.
+              </p>
+              <div className="flex flex-wrap gap-4 pt-2">
+                <Link href="/farm-visits" className="bg-gradient-to-r from-accent-600 to-sage-600 hover:from-accent-700 hover:to-sage-700 text-white px-7 py-3 rounded-full font-semibold shadow-lg transition-all inline-flex items-center gap-2">
+                  Visit the farm
+                  <FiArrowRight className="w-5 h-5" />
+                </Link>
+                <Link href="/gallery/life-on-the-farm" className="inline-flex items-center gap-2 font-semibold text-accent-700 hover:text-accent-800 py-3">
+                  See the photos
+                </Link>
+              </div>
+            </div>
+            <div className="lg:col-span-8 grid grid-cols-2 md:grid-cols-3 auto-rows-[150px] md:auto-rows-[180px] gap-3 md:gap-4">
+              {[
+                { file: 'farm-valley-view', alt: 'Green hills and woodland around the farm', span: 'col-span-2 row-span-2' },
+                { file: 'rooster', alt: 'A rooster on a wooden perch', span: 'row-span-2' },
+                { file: 'two-calves', alt: 'Two young calves on the farm', span: '' },
+                { file: 'sheep-flock', alt: 'Sheep grazing on maize stalks', span: '' },
+                { file: 'compost-earthworm', alt: 'Earthworms in the compost', span: 'hidden md:block' },
+              ].map((p) => (
+                <div key={p.file} className={`relative rounded-2xl overflow-hidden shadow-md ${p.span}`}>
+                  <img src={`/images/farm/${p.file}-sm.jpg`} alt={p.alt} loading="lazy" className="w-full h-full object-cover" />
+                </div>
+              ))}
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
       {/* Impact Stats - Glassmorphism */}
       <section className="py-20 bg-gradient-to-br from-accent-50 via-white to-sage-50">
         <div className="container-custom">
