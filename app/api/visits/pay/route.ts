@@ -1,13 +1,12 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
-import { startPayment } from '@/lib/payments'
-import { getIPayConfig } from '@/lib/payments/ipay'
+import { paymentsEnabled, startPayment } from '@/lib/payments'
 import { EMAIL_ERROR, PHONE_ERROR, isValidEmail, normaliseKenyanPhone } from '@/lib/validation'
 import { clientIp, isRateLimited } from '@/lib/security/rateLimit'
 
 export const dynamic = 'force-dynamic'
 
-/** Starts the iPay payment for a confirmed farm visit. The amount comes from the database. */
+/** Starts the payment (M-Pesa PIN request) for a confirmed farm visit. The amount comes from the database. */
 export async function POST(request: Request) {
   if (isRateLimited(`visit-pay:${clientIp(request)}`, 10)) {
     return NextResponse.json({ error: 'Too many attempts. Please try again in a few minutes.' }, { status: 429 })
@@ -22,7 +21,7 @@ export async function POST(request: Request) {
   if (visit.status !== 'CONFIRMED' || !visit.feeKes || visit.feeKes < 1) {
     return NextResponse.json({ error: 'This visit is not ready for payment.' }, { status: 400 })
   }
-  if (!getIPayConfig().enabled) {
+  if (!paymentsEnabled()) {
     return NextResponse.json({ error: 'Online payment is not available yet. Please contact us.' }, { status: 503 })
   }
 
@@ -32,7 +31,7 @@ export async function POST(request: Request) {
   if (!phone) return NextResponse.json({ error: PHONE_ERROR }, { status: 400 })
 
   try {
-    const { form } = await startPayment({
+    const { next } = await startPayment({
       purpose: 'VISIT',
       amountKes: visit.feeKes,
       phone,
@@ -40,7 +39,7 @@ export async function POST(request: Request) {
       siteOrigin: new URL(request.url).origin,
       link: { visitRequestId: visit.id },
     })
-    return NextResponse.json({ form })
+    return NextResponse.json({ next })
   } catch (error) {
     return NextResponse.json({ error: (error as Error).message }, { status: 400 })
   }

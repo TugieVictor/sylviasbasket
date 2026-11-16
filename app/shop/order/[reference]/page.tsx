@@ -12,7 +12,7 @@ export const metadata: Metadata = { title: 'Your order', robots: { index: false 
 const kes = (n: number) => `KES ${n.toLocaleString('en-KE')}`
 const steps = ['PAID', 'PACKED', 'OUT_FOR_DELIVERY', 'DELIVERED'] as const
 
-export default async function OrderPage({ params }: { params: { reference: string } }) {
+export default async function OrderPage({ params, searchParams }: { params: { reference: string }; searchParams: { paying?: string; payError?: string } }) {
   await releaseExpiredOrders()
   const order = await prisma.order.findUnique({
     where: { reference: params.reference.slice(0, 40) },
@@ -21,6 +21,11 @@ export default async function OrderPage({ params }: { params: { reference: strin
   if (!order) notFound()
 
   const lastPayment = order.payments[0]
+  // Just came from checkout with an M-Pesa request on its way: show the "check your phone" screen
+  const waiting =
+    order.status === 'AWAITING_PAYMENT' && lastPayment?.status === 'PENDING' && lastPayment.provider === 'MPESA' && lastPayment.reference === searchParams.paying
+      ? { reference: lastPayment.reference, phone: order.customerPhone }
+      : undefined
   const minutesLeft = order.stockHeldUntil ? Math.max(0, Math.ceil((order.stockHeldUntil.getTime() - Date.now()) / 60000)) : 0
   const paid = (steps as readonly string[]).includes(order.status)
   const stepLabels = { PAID: 'Paid', PACKED: 'Packed', OUT_FOR_DELIVERY: order.isPickup ? 'Ready to collect' : 'On the way', DELIVERED: order.isPickup ? 'Collected' : 'Delivered' }
@@ -34,9 +39,11 @@ export default async function OrderPage({ params }: { params: { reference: strin
       ? 'Your payment is confirmed. We will call you when your order is ready to collect from the farm.'
       : 'Your payment is confirmed. We will call you to arrange delivery.'
   } else if (order.status === 'AWAITING_PAYMENT') {
-    heading = lastPayment?.status === 'PENDING' && lastPayment.providerCode ? 'Payment being confirmed' : 'Waiting for payment'
+    heading = waiting ? 'Almost done' : lastPayment?.status === 'PENDING' && lastPayment.providerCode ? 'Payment being confirmed' : 'Waiting for payment'
     message =
-      lastPayment?.status === 'FAILED'
+      waiting
+        ? 'Your order is placed. Complete the payment on your phone.'
+        : lastPayment?.status === 'FAILED' || lastPayment?.status === 'CANCELLED'
         ? 'The payment did not go through and no money was taken. You can try again below.'
         : lastPayment?.status === 'REVIEW'
           ? 'We received a payment that does not match the order total. We will contact you shortly.'
@@ -80,7 +87,13 @@ export default async function OrderPage({ params }: { params: { reference: strin
 
           {order.status === 'AWAITING_PAYMENT' && lastPayment?.status !== 'REVIEW' && (
             <div className="bg-white rounded-3xl shadow-xl border border-gray-100 p-6 md:p-8 text-center">
-              <PayOrderButton reference={order.reference} totalLabel={kes(order.totalKes)} />
+              <PayOrderButton
+                reference={order.reference}
+                totalLabel={kes(order.totalKes)}
+                phone={order.customerPhone}
+                waiting={waiting}
+                initialError={searchParams.payError?.slice(0, 200)}
+              />
             </div>
           )}
 

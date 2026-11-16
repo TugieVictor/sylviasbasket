@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
-import { startPayment } from '@/lib/payments'
-import { getIPayConfig } from '@/lib/payments/ipay'
+import { paymentsEnabled, startPayment } from '@/lib/payments'
 import { createOrder, OrderProblem } from '@/lib/orders'
 import { shopEnabled } from '@/lib/shop'
 import { verifyTurnstile } from '@/lib/security/turnstile'
@@ -12,14 +11,14 @@ export const dynamic = 'force-dynamic'
 
 const text = (value: unknown, max: number) => (typeof value === 'string' ? value.trim().slice(0, max) : '')
 
-/** Places an order from the checkout form and starts the iPay payment. */
+/** Places an order from the checkout form and starts the payment (M-Pesa PIN request). */
 export async function POST(request: Request) {
   if (!shopEnabled()) return NextResponse.json({ error: 'The shop is not open yet.' }, { status: 404 })
   const ip = clientIp(request)
   if (isRateLimited(`order:${ip}`, 10)) {
     return NextResponse.json({ error: 'Too many orders in a short time. Please try again later.' }, { status: 429 })
   }
-  if (!getIPayConfig().enabled) {
+  if (!paymentsEnabled()) {
     return NextResponse.json({ error: 'Online payment is not available yet. Please contact us to order.' }, { status: 503 })
   }
 
@@ -59,7 +58,7 @@ export async function POST(request: Request) {
   try {
     const order = await createOrder({ items, zoneId, customerName: name, customerPhone: phone, customerEmail: email, address, notes })
     try {
-      const { form } = await startPayment({
+      const { next } = await startPayment({
         purpose: 'ORDER',
         amountKes: order.totalKes,
         phone,
@@ -67,11 +66,11 @@ export async function POST(request: Request) {
         siteOrigin: new URL(request.url).origin,
         link: { orderId: order.id },
       })
-      return NextResponse.json({ reference: order.reference, form })
+      return NextResponse.json({ reference: order.reference, next })
     } catch (error) {
       console.error('Could not start order payment:', error)
-      // The order is saved; the customer can pay from the order page
-      return NextResponse.json({ reference: order.reference })
+      // The order is saved; the customer can try paying again from the order page
+      return NextResponse.json({ reference: order.reference, payError: (error as Error).message })
     }
   } catch (error) {
     if (error instanceof OrderProblem) return NextResponse.json({ error: error.message }, { status: 409 })

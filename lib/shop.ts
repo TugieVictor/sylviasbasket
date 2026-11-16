@@ -2,7 +2,7 @@ import fs from 'fs'
 import path from 'path'
 import type { Product, ProductVariant } from '@prisma/client'
 import { prisma } from '@/lib/prisma'
-import { getIPayConfig } from '@/lib/payments/ipay'
+import { paymentsEnabled } from '@/lib/payments'
 
 /**
  * Shop helpers used by the shop pages, checkout and admin.
@@ -22,7 +22,7 @@ export const MAX_PER_ITEM = 20
  */
 export function checkoutEnabled() {
   if (process.env.SHOP_CHECKOUT === 'off') return false
-  return getIPayConfig().enabled
+  return paymentsEnabled()
 }
 
 export type ProductImage = { url: string; alt?: string }

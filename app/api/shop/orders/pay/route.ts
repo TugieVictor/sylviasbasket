@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
-import { startPayment } from '@/lib/payments'
-import { getIPayConfig } from '@/lib/payments/ipay'
+import { paymentsEnabled, startPayment } from '@/lib/payments'
+import { PHONE_ERROR, normaliseKenyanPhone } from '@/lib/validation'
 import { releaseExpiredOrders } from '@/lib/orders'
 import { clientIp, isRateLimited } from '@/lib/security/rateLimit'
 
@@ -12,7 +12,7 @@ export async function POST(request: Request) {
   if (isRateLimited(`order-pay:${clientIp(request)}`, 10)) {
     return NextResponse.json({ error: 'Too many attempts. Please try again in a few minutes.' }, { status: 429 })
   }
-  if (!getIPayConfig().enabled) {
+  if (!paymentsEnabled()) {
     return NextResponse.json({ error: 'Online payment is not available yet. Please contact us.' }, { status: 503 })
   }
   await releaseExpiredOrders()
@@ -27,16 +27,20 @@ export async function POST(request: Request) {
     )
   }
 
+  // The customer may pay from another M-Pesa number than the one on the order
+  const phone = body.phone ? normaliseKenyanPhone(String(body.phone).slice(0, 20)) : order.customerPhone
+  if (!phone) return NextResponse.json({ error: PHONE_ERROR }, { status: 400 })
+
   try {
-    const { form } = await startPayment({
+    const { next } = await startPayment({
       purpose: 'ORDER',
       amountKes: order.totalKes,
-      phone: order.customerPhone,
+      phone,
       email: order.customerEmail || '',
       siteOrigin: new URL(request.url).origin,
       link: { orderId: order.id },
     })
-    return NextResponse.json({ form })
+    return NextResponse.json({ next })
   } catch (error) {
     return NextResponse.json({ error: (error as Error).message }, { status: 400 })
   }

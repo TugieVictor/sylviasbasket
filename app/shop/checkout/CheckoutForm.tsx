@@ -126,8 +126,9 @@ export default function CheckoutForm({ zones }: { zones: Zone[] }) {
       const data = await response.json()
       if (response.ok) {
         clearCart()
-        if (data.form) setRedirect(data.form)
-        else window.location.href = `/shop/order/${data.reference}/`
+        if (data.next?.form) setRedirect(data.next.form)
+        else if (data.next?.mpesa) window.location.href = `/shop/order/${data.reference}/?paying=${encodeURIComponent(data.next.mpesa.reference)}`
+        else window.location.href = `/shop/order/${data.reference}/${data.payError ? `?payError=${encodeURIComponent(data.payError)}` : ''}`
         return
       }
       setErrors(data.errors || {})
@@ -253,7 +254,7 @@ export default function CheckoutForm({ zones }: { zones: Zone[] }) {
           </>
         )}
         <p className="text-xs text-gray-500 text-center mt-3">
-          You pay on iPay&apos;s secure page with M-Pesa. Your items are held for you for 60 minutes.
+          You pay with M-Pesa: a PIN request comes to your phone. Your items are held for you for 60 minutes.
         </p>
         <p className="text-xs text-gray-500 text-center mt-2">
           By paying you agree to our <Link href="/policies/terms-of-sale/" target="_blank" className="underline">terms of sale</Link>,{' '}

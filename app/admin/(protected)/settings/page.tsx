@@ -1,4 +1,6 @@
 import { getIPayConfig } from '@/lib/payments/ipay'
+import { getMpesaConfig } from '@/lib/payments/mpesa'
+import { activeProvider } from '@/lib/payments'
 import TestPayment from './TestPayment'
 import { getSetting } from '@/lib/settings'
 import { checkoutEnabled } from '@/lib/shop'
@@ -20,7 +22,14 @@ export default async function SettingsPage({ searchParams }: { searchParams: { d
     'admin-on': 'Access switched on.',
     'admin-off': 'Access switched off. They have been signed out.',
   }
-  const mode = !config.enabled ? 'Not set up' : config.demo ? 'Demo (iPay test account)' : config.live ? 'Live payments' : 'Test mode'
+  const provider = activeProvider()
+  const mpesa = getMpesaConfig()
+  const mode =
+    provider === 'MPESA'
+      ? mpesa.live ? 'M-Pesa, live payments' : 'M-Pesa, test mode (no real money)'
+      : provider === 'IPAY'
+        ? config.live ? 'iPay, live payments' : 'iPay, test mode'
+        : 'Not set up yet. The shop takes orders by WhatsApp.'
 
   return (
     <div className="space-y-6">
@@ -87,12 +96,13 @@ export default async function SettingsPage({ searchParams }: { searchParams: { d
       </section>
 
       <section className="bg-white rounded-2xl border border-gray-200 p-6">
-        <h2 className="text-lg font-bold text-gray-900">Payments (iPay)</h2>
+        <h2 className="text-lg font-bold text-gray-900">Online payments</h2>
         <p className="text-gray-700 mt-1">Status: <span className="font-semibold">{mode}</span></p>
+        {!provider && mpesa.problem && mpesa.consumerKey && <p className="text-sm text-clay-700 mt-1">{mpesa.problem}.</p>}
         <p className="text-sm text-gray-600 mt-1">
           Delivery fees are under Delivery, visit types under Farm visits, and courses under Courses.
         </p>
-        {config.enabled && <TestPayment />}
+        {provider && <TestPayment provider={provider} />}
       </section>
     </div>
   )

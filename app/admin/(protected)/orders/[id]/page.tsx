@@ -102,9 +102,9 @@ export default async function AdminOrderPage({ params, searchParams }: { params:
           <ul className="mt-2 text-sm divide-y divide-gray-100">
             {order.payments.map((p) => (
               <li key={p.id} className="py-2 flex flex-wrap justify-between gap-2">
-                <span>{p.reference}{p.providerTxnId ? ` · iPay ${p.providerTxnId}` : ''}</span>
+                <span>{p.reference}{p.providerTxnId ? ` · ${p.provider === 'MPESA' ? 'M-Pesa receipt' : 'iPay'} ${p.providerTxnId}` : ''}</span>
                 <span className={p.status === 'COMPLETED' ? 'text-accent-700 font-semibold' : p.status === 'REVIEW' ? 'text-harvest-700 font-semibold' : 'text-gray-500'}>
-                  {p.status === 'COMPLETED' ? `Paid ${kes(p.amountKes)}` : p.status === 'REVIEW' ? 'Amount did not match: check in iPay' : p.status.toLowerCase()}
+                  {p.status === 'COMPLETED' ? `Paid ${kes(p.amountKes)}` : p.status === 'REVIEW' ? 'Amount did not match: check your statement' : p.status.toLowerCase()}
                 </span>
               </li>
             ))}
@@ -124,7 +124,7 @@ export default async function AdminOrderPage({ params, searchParams }: { params:
         <form action={cancelOrderAction} className="bg-white rounded-2xl border border-red-200 p-5 space-y-3">
           <h2 className="font-bold text-red-800">Cancel this order</h2>
           <p className="text-sm text-gray-600">
-            The items go back into stock.{wasPaid ? ' The customer has paid, so please refund them yourself through iPay or M-Pesa, and let them know.' : ''}
+            The items go back into stock.{wasPaid ? ' The customer has paid, so please refund them yourself by M-Pesa, and let them know.' : ''}
           </p>
           <input type="hidden" name="id" value={order.id} />
           <label className="flex items-center gap-2 text-sm text-gray-700"><input type="checkbox" name="confirm" /> Yes, cancel order {order.reference}</label>

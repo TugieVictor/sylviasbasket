@@ -8,7 +8,7 @@ export const metadata: Metadata = { title: 'Payment status', robots: { index: fa
 
 const messages = {
   COMPLETED: { title: 'Payment received', text: 'Thank you. Your payment has been confirmed.', tone: 'text-accent-700' },
-  PENDING: { title: 'Payment being confirmed', text: 'We are waiting for confirmation from iPay. This usually takes a minute. Refresh this page to check again.', tone: 'text-harvest-700' },
+  PENDING: { title: 'Payment being confirmed', text: 'We are waiting for confirmation of your payment. This usually takes a minute. Refresh this page to check again.', tone: 'text-harvest-700' },
   REVIEW: { title: 'Payment needs checking', text: 'We received a payment that does not match the amount due. We will contact you shortly.', tone: 'text-harvest-700' },
   FAILED: { title: 'Payment not completed', text: 'The payment did not go through. No money was taken. You can try again.', tone: 'text-red-700' },
   CANCELLED: { title: 'Payment cancelled', text: 'The payment was cancelled.', tone: 'text-red-700' },

@@ -226,13 +226,14 @@ enum PaymentStatus {
 
 model Payment {
   id             String         @id @default(cuid())
-  reference      String         @unique // the order ID sent to iPay (oid)
+  reference      String         @unique // our payment reference, e.g. PAY-7KQ2M9XA
   purpose        PaymentPurpose
   amountKes      Int
   status         PaymentStatus  @default(PENDING)
-  provider       String         @default("IPAY")
-  providerTxnId  String?
-  providerCode   String? // last status code returned by iPay
+  provider       String         @default("IPAY") // IPAY or MPESA
+  providerTxnId  String? // iPay transaction code, or the M-Pesa receipt number
+  providerRequestId String? @unique // M-Pesa CheckoutRequestID, to match Safaricom's callback
+  providerCode   String? // last status code returned by the provider
   rawCallback    Json?
   orderId        String?
   order          Order?         @relation(fields: [orderId], references: [id], onDelete: SetNull)

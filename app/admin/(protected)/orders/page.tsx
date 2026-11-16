@@ -38,7 +38,7 @@ export default async function AdminOrdersPage({ searchParams }: { searchParams: 
       {review.length > 0 && (
         <div className="mt-5 bg-harvest-50 border border-harvest-300 rounded-2xl p-4 text-sm text-harvest-900">
           <p className="font-semibold">Payments to check</p>
-          <p className="mt-1">These payments did not match the order total, so they were not confirmed automatically. Please check them in your iPay account.</p>
+          <p className="mt-1">These payments did not match the order total, so they were not confirmed automatically. Please check them against your M-Pesa statement.</p>
           <ul className="mt-2 list-disc pl-5">
             {review.map((p) => (
               <li key={p.id}>

@@ -98,7 +98,7 @@ export const policies: Policy[] = [
     slug: 'terms-of-sale',
     title: 'Terms of sale',
     summary: "The terms that apply when you buy from the Sylvia's Basket shop.",
-    updated: 'October 2026',
+    updated: 'November 2026',
     approved: false,
     sections: [
       {
@@ -109,8 +109,8 @@ export const policies: Policy[] = [
         heading: 'Prices and payment',
         bullets: [
           'All prices are in Kenyan Shillings and are the final price for the item. Delivery fees are shown separately at checkout.',
-          'Payment is made online through iPay, our payment provider. We do not see or store your M-Pesa PIN or card details.',
-          'Your order is confirmed only once iPay confirms your payment. We then send you a confirmation email.',
+          'Payment is made online by M-Pesa: a payment request comes to your phone and you confirm it with your M-Pesa PIN. We never see or store your PIN.',
+          'Your order is confirmed only once M-Pesa confirms your payment. We then send you a confirmation email.',
         ],
       },
       {
@@ -140,7 +140,7 @@ export const policies: Policy[] = [
     slug: 'privacy',
     title: 'Privacy notice',
     summary: 'What personal information we collect, why, and your rights under the Kenya Data Protection Act, 2019.',
-    updated: 'October 2026',
+    updated: 'November 2026',
     approved: false,
     sections: [
       {
@@ -153,7 +153,7 @@ export const policies: Policy[] = [
           'When you order from the shop: your name, phone number, email, delivery address and what you ordered.',
           'When you request a farm visit or a course: your name, phone number, email, group or organisation, the dates you prefer and any message you send.',
           'When you contact us or subscribe to our newsletter: your name, email and your message.',
-          'When you pay or donate: a record of the payment from iPay, such as the amount, date and transaction reference. We never see your M-Pesa PIN or card details.',
+          'When you pay or donate: a record of the payment, such as the amount, date, phone number used and M-Pesa receipt number. We never see your M-Pesa PIN.',
         ],
       },
       {
@@ -170,7 +170,7 @@ export const policies: Policy[] = [
         heading: 'Who we share it with',
         paragraphs: ['We do not sell your information. We share it only with services that help us run the website, and only as needed:'],
         bullets: [
-          'iPay, to process payments.',
+          'Safaricom (M-Pesa), to process payments.',
           'Our website host, database and email providers, to run the site and send emails.',
           'Cloudflare Turnstile, which checks that forms are sent by people and not bots.',
           'Mailchimp, for newsletter subscribers only.',
