@@ -1,0 +1,16 @@
+# Netlify settings for running the site (with the shop) on Netlify.
+# Vercel ignores this file.
+
+[build]
+  command = "npm run build"
+  publish = ".next"
+
+[build.environment]
+  NODE_VERSION = "20"
+
+# Make sure the database engine travels with the server code
+[functions]
+  included_files = [
+    "node_modules/.prisma/client/libquery_engine-rhel-openssl-3.0.x.so.node",
+    "node_modules/.prisma/client/schema.prisma",
+  ]
