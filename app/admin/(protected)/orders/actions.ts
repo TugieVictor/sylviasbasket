@@ -38,7 +38,7 @@ export async function cancelOrderAction(form: FormData) {
   if (form.get('confirm') !== 'on') redirect(`/admin/orders/${id}/?error=Tick+the+box+to+confirm+cancelling`)
   const done = await cancelOrder(id)
   revalidatePath('/admin/orders')
-  revalidatePath('/shop')
+  revalidatePath('/shop', 'layout')
   redirect(`/admin/orders/${id}/?${done ? 'done=cancelled' : 'error=This+order+can+no+longer+be+cancelled'}`)
 }
 

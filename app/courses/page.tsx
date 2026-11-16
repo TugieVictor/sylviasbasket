@@ -4,18 +4,27 @@ import { FiArrowRight } from 'react-icons/fi'
 import CourseCard from '@/components/courses/CourseCard'
 import { describeSessionDates, getPublicCourses, registrationStatus } from '@/lib/courses'
 import { nairobiToday, parseDateOnly, toDateOnly } from '@/lib/visits'
-import CourseRequestForm from './CourseRequestForm'
+import { Suspense } from 'react'
+import { emptyDuringBuild } from '@/lib/shop'
+import CourseRequestForm, { RequestForm } from './CourseRequestForm'
 
-export const dynamic = 'force-dynamic'
+// Stored ready-made; refreshed every 5 minutes or when courses are changed in the admin
+export const revalidate = 300
 
 export const metadata: Metadata = {
   title: 'Courses',
   description: "Hands-on courses in organic farming and agroecology at Sylvia's Basket farm in Limuru. Ask to join the next course.",
 }
 
-export default async function CoursesPage({ searchParams }: { searchParams: { course?: string } }) {
-  const courses = await getPublicCourses()
-  const preselected = courses.find((c) => c.slug === searchParams.course)?.id || ''
+export default async function CoursesPage() {
+  const courses = await getPublicCourses().catch(emptyDuringBuild([] as Awaited<ReturnType<typeof getPublicCourses>>))
+  const formCourses = courses.map((c) => ({
+    id: c.id,
+    slug: c.slug,
+    title: c.title,
+    sessions: c.sessions.map((s) => ({ id: s.id, label: `${describeSessionDates(s.startDate, s.endDate)}, ${s.location}` })),
+  }))
+  const minDate = toDateOnly(new Date())
   const today = parseDateOnly(nairobiToday())!
 
   return (
@@ -78,16 +87,9 @@ export default async function CoursesPage({ searchParams }: { searchParams: { co
               </div>
             </div>
             <div className="lg:col-span-3">
-              <CourseRequestForm
-                key={preselected}
-                initialCourseId={preselected}
-                courses={courses.map((c) => ({
-                  id: c.id,
-                  title: c.title,
-                  sessions: c.sessions.map((s) => ({ id: s.id, label: `${describeSessionDates(s.startDate, s.endDate)}, ${s.location}` })),
-                }))}
-                minDate={toDateOnly(new Date())}
-              />
+              <Suspense fallback={<RequestForm courses={formCourses} minDate={minDate} initialCourseId="" />}>
+                <CourseRequestForm courses={formCourses} minDate={minDate} />
+              </Suspense>
             </div>
           </div>
         </div>

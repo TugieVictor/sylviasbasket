@@ -6,9 +6,10 @@ import ShopClosed from '@/components/shop/ShopClosed'
 import ShopHeader from '@/components/shop/ShopHeader'
 import { CATEGORY_LABELS, MAX_PER_ITEM, checkoutEnabled, productAvailability, productImages, shopEnabled } from '@/lib/shop'
 import AddToCart from './AddToCart'
-import { releaseExpiredOrders } from '@/lib/orders'
 
-export const dynamic = 'force-dynamic'
+// Stored ready-made and refreshed every minute (stock is checked again in the cart)
+export const revalidate = 60
+export const generateStaticParams = async () => [] // built on first visit, not during deploys
 
 const getProduct = (slug: string) =>
   prisma.product.findFirst({
@@ -24,7 +25,6 @@ export async function generateMetadata({ params }: { params: { slug: string } })
 
 export default async function ProductPage({ params }: { params: { slug: string } }) {
   if (!shopEnabled()) return <ShopClosed />
-  await releaseExpiredOrders()
   const product = await getProduct(params.slug)
   if (!product) notFound()
 

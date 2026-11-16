@@ -24,7 +24,7 @@ export async function saveWhatsappNumber(form: FormData) {
   const number = normaliseKenyanPhone(str(form, 'whatsappNumber', 20))
   if (!number) fail('Please enter a valid Kenyan mobile number.')
   await setSetting('whatsappNumber', number!)
-  revalidatePath('/shop')
+  revalidatePath('/shop', 'layout')
   back('done=whatsapp')
 }
 

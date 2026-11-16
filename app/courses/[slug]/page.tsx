@@ -6,7 +6,9 @@ import { GiPlantSeed } from 'react-icons/gi'
 import { describeSessionDates, getPublicCourse, registrationStatus, toLines } from '@/lib/courses'
 import { nairobiToday, parseDateOnly } from '@/lib/visits'
 
-export const dynamic = 'force-dynamic'
+// Stored ready-made; refreshed every 5 minutes or when a course is changed in the admin
+export const revalidate = 300
+export const generateStaticParams = async () => []
 
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
   const course = await getPublicCourse(params.slug)

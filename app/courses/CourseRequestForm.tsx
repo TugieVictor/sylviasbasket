@@ -1,10 +1,11 @@
 'use client'
 
 import { useCallback, useState } from 'react'
+import { useSearchParams } from 'next/navigation'
 import Turnstile from '@/components/Turnstile'
 import { EMAIL_ERROR, PHONE_ERROR, isValidEmail, normaliseKenyanPhone } from '@/lib/validation'
 
-type CourseOption = { id: string; title: string; sessions: { id: string; label: string }[] }
+type CourseOption = { id: string; slug: string; title: string; sessions: { id: string; label: string }[] }
 
 const inputClass = 'w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-accent-600 focus:ring-2 focus:ring-accent-200 outline-none bg-white'
 
@@ -19,7 +20,16 @@ function Field({ id, label, error, hint, children }: { id: string; label: string
   )
 }
 
-export default function CourseRequestForm({ courses, initialCourseId, minDate }: { courses: CourseOption[]; initialCourseId: string; minDate: string }) {
+type FormProps = { courses: CourseOption[]; minDate: string }
+
+/** Picks the course from the address (?course=...), e.g. after "Ask to join" on a course page. */
+export default function CourseRequestForm(props: FormProps) {
+  const slug = useSearchParams().get('course')
+  const initialCourseId = props.courses.find((c) => c.slug === slug)?.id || ''
+  return <RequestForm key={initialCourseId} {...props} initialCourseId={initialCourseId} />
+}
+
+export function RequestForm({ courses, initialCourseId, minDate }: FormProps & { initialCourseId: string }) {
   const [form, setForm] = useState({
     courseId: initialCourseId || courses[0]?.id || '',
     sessionId: '',

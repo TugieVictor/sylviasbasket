@@ -11,6 +11,9 @@ export async function GET(_request: Request, { params }: { params: { id: string 
       'Content-Type': image.contentType,
       'Content-Length': String(image.bytes),
       'Cache-Control': 'public, max-age=31536000, immutable',
+      // Let the hosting network keep a copy too, so photos load without waking the server
+      'CDN-Cache-Control': 'public, max-age=31536000, immutable',
+      'Netlify-CDN-Cache-Control': 'public, max-age=31536000, immutable',
       'X-Content-Type-Options': 'nosniff',
     },
   })

@@ -1,9 +1,11 @@
 import type { Metadata } from 'next'
 import { prisma } from '@/lib/prisma'
+import { emptyDuringBuild } from '@/lib/shop'
 import { describeWeekdays, earliestVisitDate } from '@/lib/visits'
 import VisitRequestForm from './VisitRequestForm'
 
-export const dynamic = 'force-dynamic'
+// Stored ready-made; refreshed every 5 minutes or when visit types are changed in the admin
+export const revalidate = 300
 
 export const metadata: Metadata = {
   title: 'Farm Visits',
@@ -11,7 +13,7 @@ export const metadata: Metadata = {
 }
 
 export default async function FarmVisitsPage() {
-  const types = await prisma.visitType.findMany({ where: { active: true }, orderBy: { sortOrder: 'asc' } })
+  const types = await prisma.visitType.findMany({ where: { active: true }, orderBy: { sortOrder: 'asc' } }).catch(emptyDuringBuild([] as Awaited<ReturnType<typeof prisma.visitType.findMany>>))
   const options = types.map((t) => ({
     id: t.id,
     name: t.name,

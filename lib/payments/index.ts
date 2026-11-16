@@ -156,7 +156,7 @@ export async function getPaymentProgress(reference: string, siteOrigin?: string)
   if (!payment) return null
   const age = Date.now() - payment.createdAt.getTime()
   const sinceCheck = payment.lastCheckedAt ? Date.now() - payment.lastCheckedAt.getTime() : Infinity
-  if (payment.status === 'PENDING' && payment.provider === 'MPESA' && age > 8000 && sinceCheck > 5000) {
+  if (payment.status === 'PENDING' && payment.provider === 'MPESA' && age > 5000 && sinceCheck > 2500) {
     payment = (await refreshMpesaPayment(payment.id, siteOrigin)) || payment
   }
   const message =

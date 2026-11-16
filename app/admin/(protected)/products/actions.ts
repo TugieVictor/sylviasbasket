@@ -95,7 +95,7 @@ export async function saveProduct(input: ProductInput): Promise<{ error: string 
     return product.id
   })
 
-  revalidatePath('/shop')
+  revalidatePath('/shop', 'layout')
   redirect(`/admin/products/${productId}/?done=saved`)
 }
 
@@ -104,7 +104,7 @@ export async function deleteProduct(form: FormData) {
   const id = clean(form.get('id'), 40)
   if (form.get('confirm') !== 'on') redirect(`/admin/products/${id}/?error=Tick+the+box+to+confirm+deleting`)
   await prisma.product.delete({ where: { id } })
-  revalidatePath('/shop')
+  revalidatePath('/shop', 'layout')
   redirect('/admin/products/?done=deleted')
 }
 
@@ -114,7 +114,7 @@ export async function toggleProduct(form: FormData) {
   const field = form.get('field') === 'availableThisWeek' ? 'availableThisWeek' : 'active'
   const product = await prisma.product.findUnique({ where: { id }, select: { active: true, availableThisWeek: true } })
   if (product) await prisma.product.update({ where: { id }, data: { [field]: !product[field] } })
-  revalidatePath('/shop')
+  revalidatePath('/shop', 'layout')
   redirect('/admin/products/')
 }
 
@@ -135,6 +135,6 @@ export async function saveCategory(form: FormData) {
   }
   if (id) await prisma.shopCategory.update({ where: { id }, data })
   else await prisma.shopCategory.create({ data })
-  revalidatePath('/shop')
+  revalidatePath('/shop', 'layout')
   redirect('/admin/products/categories/?done=saved')
 }

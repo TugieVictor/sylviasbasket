@@ -55,7 +55,7 @@ export async function saveCourse(form: FormData) {
     if (await prisma.course.findUnique({ where: { slug } })) slug = `${slug}-${Date.now().toString(36).slice(-4)}`
     await prisma.course.create({ data: { ...data, slug } })
   }
-  revalidatePath('/courses')
+  revalidatePath('/courses', 'layout')
   redirect('/admin/courses/manage/?done=course')
 }
 
@@ -72,6 +72,6 @@ export async function saveSession(form: FormData) {
   const data = { startDate, endDate, location, priceKes: whole(form, 'priceKes'), capacity: whole(form, 'capacity', 1), status }
   if (id) await prisma.courseSession.update({ where: { id }, data })
   else await prisma.courseSession.create({ data: { ...data, courseId } })
-  revalidatePath('/courses')
+  revalidatePath('/courses', 'layout')
   redirect('/admin/courses/manage/?done=date')
 }

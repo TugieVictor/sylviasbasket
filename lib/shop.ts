@@ -120,3 +120,18 @@ export async function describeCart(items: { variantId: string; quantity: number 
     }]
   })
 }
+
+/**
+ * While the site is being built, the database may be out of reach; pages then start
+ * empty and fill in on the first refresh. At any other time an error is passed on, so
+ * the last good stored version of the page keeps being shown.
+ */
+export function emptyDuringBuild<T>(fallback: T) {
+  return (error: unknown): T => {
+    if (process.env.NEXT_PHASE === 'phase-production-build') {
+      console.error('Database not reachable during build; page starts empty:', (error as Error)?.message)
+      return fallback
+    }
+    throw error
+  }
+}

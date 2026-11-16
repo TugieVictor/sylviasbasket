@@ -5,7 +5,7 @@ import { FiCheckCircle, FiSmartphone, FiXCircle } from 'react-icons/fi'
 
 type Status = 'PENDING' | 'COMPLETED' | 'FAILED' | 'CANCELLED' | 'REVIEW'
 
-const POLL_MS = 4000
+const POLL_MS = 3000
 const GIVE_UP_MS = 3 * 60 * 1000
 
 /** "07•• ••• 678" style, so the customer recognises the phone without showing it all */
